@@ -19,6 +19,7 @@ const PASTA_AUDIO = path.join(RAIZ, "bench", "audio");
 const SAIDA = path.join(RAIZ, "bench", "resultados.json");
 const MAX_PALAVRAS = 70;
 const NOVO = process.argv.includes("--novo");
+const RETRANSCREVER = NOVO || process.argv.includes("--retranscrever");
 
 const VOZ = { pt: "Microsoft Maria Desktop", en: "Microsoft Zira Desktop" };
 const LINGUA = { pt: "pt-BR", en: "en-US" };
@@ -254,7 +255,7 @@ const refeitos = new Set(pendentes.map((l) => l.nome));
 const resultados = [];
 for (const l of leituras) {
   let transcrito;
-  if (!refeitos.has(l.nome) && existsSync(l.json)) {
+  if (!RETRANSCREVER && !refeitos.has(l.nome) && existsSync(l.json)) {
     transcrito = JSON.parse(readFileSync(l.json, "utf8"));
   } else {
     const buf = readFileSync(l.wav);

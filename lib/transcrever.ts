@@ -4,6 +4,10 @@ import type { PalavraLida } from "@/lib/alinhar";
 const BASE = "https://api.assemblyai.com/v2";
 const POLL_MS = 700;
 const TIMEOUT_MS = 60000;
+const CONTEXTO = {
+  pt: "Criança lendo um texto em voz alta, com erros de leitura, palavras inventadas, hesitações e sílabas separadas.",
+  en: "A child reading a text aloud, with reading mistakes, made-up words, hesitations and separated syllables.",
+};
 
 export async function transcrever(audio: ArrayBuffer, idioma: "pt" | "en"): Promise<PalavraLida[]> {
   const chave = process.env.ASSEMBLYAI_API_KEY;
@@ -25,6 +29,7 @@ export async function transcrever(audio: ArrayBuffer, idioma: "pt" | "en"): Prom
       speech_models: ["universal-3-5-pro"],
       language_code: idioma,
       disfluencies: true,
+      prompt: CONTEXTO[idioma],
     }),
   });
   if (!criacao.ok) throw new Error("falha ao criar transcrição");

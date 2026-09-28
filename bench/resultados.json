@@ -1,21 +1,21 @@
 {
   "geradoEm": "2026-09-28",
   "resumo": {
-    "n": 30,
-    "mediaDifCorretas": 0.27,
-    "dentroDe1": 0.967,
+    "n": 125,
+    "mediaDifCorretas": 0.16,
+    "dentroDe1": 0.984,
     "dentroDe3": 1,
-    "exatos": 23,
-    "errosGabarito": 42,
-    "errosApp": 38,
-    "precisaoErros": 0.974,
-    "revocacaoErros": 0.881,
+    "exatos": 107,
+    "errosGabarito": 175,
+    "errosApp": 177,
+    "precisaoErros": 0.927,
+    "revocacaoErros": 0.937,
     "asr": {
-      "trocaAlheiaNaoLiteral": "4/12",
-      "pseudopalavraViraCorreta": "5/6",
-      "fragmentoMantido": "2/6",
-      "hesitacaoTranscrita": "3/6",
-      "repeticaoMantida": "6/6"
+      "trocaAlheiaNaoLiteral": "7/50",
+      "pseudopalavraViraCorreta": "10/25",
+      "fragmentoMantido": "9/25",
+      "hesitacaoTranscrita": "10/25",
+      "repeticaoMantida": "23/25"
     },
     "aviso": "voz sintética adulta (Windows System.Speech: Maria pt-BR, Zira en-US), não é voz de criança; mede o pipeline, não a leitura infantil real"
   },
@@ -149,7 +149,7 @@
       "idioma": "pt",
       "cenario": "repeticao_autocorrecao",
       "roteiro": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola a bola e corre atrás dela. A bola bate na porta e para. O gato pula em cima da bola. Lia ri mu… muito. Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
-      "transcricao": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola, a bola e corre atrás dela. A bola bate na porta e para. O gato pula em cima da bola. Lia rimou. Muito! Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
+      "transcricao": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola, a bola e corre atrás dela. A bola bate na porta e para. O gato pula em cima da bola. Lia rimou. Muito. Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
       "gabarito": {
         "corretas": 58,
         "erros": 0,
@@ -200,7 +200,7 @@
       "idioma": "pt",
       "cenario": "hesitacao_troca_parada",
       "roteiro": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. hã O gato vê a bola e sorvete atrás dela. A bola bate na porta e para. O gato pula em",
-      "transcricao": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. Hã? O gato vê a bola e sorvete atrás dela. A bola bate na porta e para. O gato pula em.",
+      "transcricao": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. Ãn. O gato vê a bola e sorvete atrás dela. A bola bate na porta e para. O gato pula em.",
       "gabarito": {
         "corretas": 33,
         "erros": 1,
@@ -225,7 +225,7 @@
           "tipo": "hesitacao",
           "antesDe": 14,
           "dita": "hã",
-          "asrTranscreveu": true
+          "asrTranscreveu": false
         },
         {
           "tipo": "troca_alheia",
@@ -272,7 +272,7 @@
       "idioma": "pt",
       "cenario": "duas_trocas",
       "roteiro": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, caminhão e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as filhas da alface estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta",
-      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, caminhão e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as folhas da alface estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta.",
+      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, caminhão e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as filhas da alface estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta.",
       "gabarito": {
         "corretas": 68,
         "erros": 2,
@@ -282,17 +282,18 @@
         ]
       },
       "app": {
-        "corretas": 69,
-        "erros": 1,
+        "corretas": 68,
+        "erros": 2,
         "segundos": 40.004,
-        "pcpm": 103,
+        "pcpm": 102,
         "indicesErro": [
-          22
+          22,
+          42
         ]
       },
-      "difCorretas": 1,
-      "difErros": 1,
-      "errosCasados": 1,
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
       "artefatos": [
         {
           "tipo": "troca_alheia",
@@ -310,10 +311,10 @@
           "indice": 42,
           "esperada": "folhas",
           "dita": "filhas",
-          "asrTranscreveuDita": false,
+          "asrTranscreveuDita": true,
           "app": {
-            "marca": "correta",
-            "dito": null
+            "marca": "trocada",
+            "dito": "filhas"
           }
         }
       ]
@@ -373,7 +374,7 @@
       "idioma": "pt",
       "cenario": "repeticao_autocorrecao",
       "roteiro": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura alface cenoura e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as folhas da alface es… estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta",
-      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura, alface, cenoura e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as folhas da alface S Estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta.",
+      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura, alface, cenoura e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as folhas da alface é esse. Estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta.",
       "gabarito": {
         "corretas": 70,
         "erros": 0,
@@ -401,7 +402,7 @@
           "extras": [
             "alface,:repeticao",
             "cenoura:repeticao",
-            "S:insercao"
+            "esse.:insercao"
           ]
         },
         {
@@ -409,7 +410,7 @@
           "indice": 45,
           "esperada": "estavam",
           "fragmento": "es",
-          "asrAntes": "s",
+          "asrAntes": "esse",
           "asrManteveFragmento": false,
           "app": {
             "marca": "correta",
@@ -423,7 +424,7 @@
       "idioma": "pt",
       "cenario": "hesitacao_troca_parada",
       "roteiro": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A hã turma de Davi plantou alface, cenoura e tomate. caminhão manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as",
-      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura e tomate. Cada manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu Kevs.",
+      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura e tomate. Caminhão manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu Kers.",
       "gabarito": {
         "corretas": 41,
         "erros": 1,
@@ -455,10 +456,10 @@
           "indice": 25,
           "esperada": "Toda",
           "dita": "caminhão",
-          "asrTranscreveuDita": false,
+          "asrTranscreveuDita": true,
           "app": {
             "marca": "trocada",
-            "dito": "Cada"
+            "dito": "Caminhão"
           }
         },
         {
@@ -495,7 +496,7 @@
       "idioma": "pt",
       "cenario": "duas_trocas",
       "roteiro": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não caminhão ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó goardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu as",
-      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não caminhou ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu-as.",
+      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não caminhão ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu-as.",
       "gabarito": {
         "corretas": 68,
         "erros": 2,
@@ -522,10 +523,10 @@
           "indice": 22,
           "esperada": "conseguia",
           "dita": "caminhão",
-          "asrTranscreveuDita": false,
+          "asrTranscreveuDita": true,
           "app": {
             "marca": "trocada",
-            "dito": "caminhou"
+            "dito": "caminhão"
           }
         },
         {
@@ -596,7 +597,7 @@
       "idioma": "pt",
       "cenario": "repeticao_autocorrecao",
       "roteiro": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia nao conseguia ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava ve… velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu as",
-      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia, não conseguia ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu-as.",
+      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia— não conseguia ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava vei— velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu-as.",
       "gabarito": {
         "corretas": 70,
         "erros": 0,
@@ -605,7 +606,7 @@
       "app": {
         "corretas": 70,
         "erros": 0,
-        "segundos": 38.435,
+        "segundos": 38.434,
         "pcpm": 109,
         "indicesErro": []
       },
@@ -623,7 +624,8 @@
           "asrOcorrencias": 2,
           "extras": [
             "não:repeticao",
-            "conseguia:repeticao"
+            "conseguia:repeticao",
+            "vei—:insercao"
           ]
         },
         {
@@ -631,7 +633,7 @@
           "indice": 45,
           "esperada": "velas",
           "fragmento": "ve",
-          "asrAntes": "guardava",
+          "asrAntes": "vei",
           "asrManteveFragmento": false,
           "app": {
             "marca": "correta",
@@ -645,7 +647,7 @@
       "idioma": "pt",
       "cenario": "hesitacao_troca_parada",
       "roteiro": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou hã tão escura que ela não conseguia ver as caminhão mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que",
-      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia ver as caminhão-mãos. Seu irmão menor começou a chorar com medo do barulho dos trovões. Clara lembrou que",
+      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia ver as caminhão-mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que",
       "gabarito": {
         "corretas": 41,
         "erros": 1,
@@ -694,7 +696,7 @@
       "idioma": "pt",
       "cenario": "limpo",
       "roteiro": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, outros preferiam vendê- la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia,",
-      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, outros preferiam vendê-la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia.",
+      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, Outros preferiam vendê-la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia.",
       "gabarito": {
         "corretas": 70,
         "erros": 0,
@@ -717,7 +719,7 @@
       "idioma": "pt",
       "cenario": "duas_trocas",
       "roteiro": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim sorvete virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. algons queriam derrubar a casa, outros preferiam vendê- la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia,",
-      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim sorvete virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, outros preferiam vendê-la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia.",
+      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim sorvete virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Ergans queriam derrubar a casa, outros preferiam vendê-la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia.",
       "gabarito": {
         "corretas": 68,
         "erros": 2,
@@ -727,17 +729,18 @@
         ]
       },
       "app": {
-        "corretas": 69,
-        "erros": 1,
+        "corretas": 68,
+        "erros": 2,
         "segundos": 39.422,
-        "pcpm": 105,
+        "pcpm": 103,
         "indicesErro": [
-          21
+          21,
+          42
         ]
       },
-      "difCorretas": 1,
-      "difErros": 1,
-      "errosCasados": 1,
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
       "artefatos": [
         {
           "tipo": "troca_alheia",
@@ -757,8 +760,8 @@
           "dita": "algons",
           "asrTranscreveuDita": false,
           "app": {
-            "marca": "correta",
-            "dito": null
+            "marca": "trocada",
+            "dito": "Ergans"
           }
         }
       ]
@@ -867,7 +870,7 @@
       "idioma": "pt",
       "cenario": "hesitacao_troca_parada",
       "roteiro": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam hã quebradas e o jardim tinha virado um matagal. Num tesoura, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado.",
-      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num dia, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado.",
+      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num tesoura, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado.",
       "gabarito": {
         "corretas": 41,
         "erros": 1,
@@ -899,10 +902,10 @@
           "indice": 26,
           "esperada": "sábado,",
           "dita": "tesoura",
-          "asrTranscreveuDita": false,
+          "asrTranscreveuDita": true,
           "app": {
             "marca": "trocada",
-            "dito": "dia,"
+            "dito": "tesoura,"
           }
         },
         {
@@ -939,7 +942,7 @@
       "idioma": "en",
       "cenario": "duas_trocas",
       "roteiro": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The kite window up and up until it looked as small as a bird. Then a strong gust pulled the strong out of his hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
-      "transcricao": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The kite window up and up until it looked as small as a bird. Then a strong gust pulled the string out of his hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "transcricao": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The kite window up and up until it looked as small as a bird. Then a strong gust pulled the strong out of his hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
       "gabarito": {
         "corretas": 68,
         "erros": 2,
@@ -949,17 +952,18 @@
         ]
       },
       "app": {
-        "corretas": 69,
-        "erros": 1,
+        "corretas": 68,
+        "erros": 2,
         "segundos": 24.049,
-        "pcpm": 172,
+        "pcpm": 170,
         "indicesErro": [
-          24
+          24,
+          42
         ]
       },
-      "difCorretas": 1,
-      "difErros": 1,
-      "errosCasados": 1,
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
       "artefatos": [
         {
           "tipo": "troca_alheia",
@@ -977,10 +981,10 @@
           "indice": 42,
           "esperada": "string",
           "dita": "strong",
-          "asrTranscreveuDita": false,
+          "asrTranscreveuDita": true,
           "app": {
-            "marca": "correta",
-            "dito": null
+            "marca": "trocada",
+            "dito": "strong"
           }
         }
       ]
@@ -1040,7 +1044,7 @@
       "idioma": "en",
       "cenario": "repeticao_autocorrecao",
       "roteiro": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The dad The kite went up and up until it looked as small as a bird. Then a strong gust pulled the string out of his ha… hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
-      "transcricao": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The dad— the kite went up and up until it looked as small as a bird. Then a strong gust pulled the string out of his ha— hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "transcricao": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The dad— the kite went up and up until it looked as small as a bird. Then a strong gust pulled the string out of his ha-hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
       "gabarito": {
         "corretas": 70,
         "erros": 0,
@@ -1049,8 +1053,8 @@
       "app": {
         "corretas": 70,
         "erros": 0,
-        "segundos": 26.163,
-        "pcpm": 161,
+        "segundos": 26.171,
+        "pcpm": 160,
         "indicesErro": []
       },
       "difCorretas": 0,
@@ -1067,8 +1071,7 @@
           "asrOcorrencias": 2,
           "extras": [
             "dad—:repeticao",
-            "the:repeticao",
-            "ha—:insercao"
+            "the:repeticao"
           ]
         },
         {
@@ -1076,11 +1079,11 @@
           "indice": 46,
           "esperada": "hand.",
           "fragmento": "ha",
-          "asrAntes": "ha",
-          "asrManteveFragmento": true,
+          "asrAntes": null,
+          "asrManteveFragmento": false,
           "app": {
-            "marca": "correta",
-            "dito": null
+            "marca": "autocorrecao",
+            "dito": "ha-"
           }
         }
       ]
@@ -1264,7 +1267,7 @@
       "idioma": "en",
       "cenario": "repeticao_autocorrecao",
       "roteiro": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the quiet the quiet garden. There were no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an old apple tree. ev… Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
-      "transcricao": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the quiet— the quiet garden. There were no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an old apple tree. Um Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
+      "transcricao": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the quiet— the quiet garden. There were no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an old apple tree. Er. Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
       "gabarito": {
         "corretas": 70,
         "erros": 0,
@@ -1273,8 +1276,8 @@
       "app": {
         "corretas": 70,
         "erros": 0,
-        "segundos": 29.67,
-        "pcpm": 142,
+        "segundos": 29.752,
+        "pcpm": 141,
         "indicesErro": []
       },
       "difCorretas": 0,
@@ -1299,7 +1302,7 @@
           "indice": 45,
           "esperada": "Every",
           "fragmento": "ev",
-          "asrAntes": "um",
+          "asrAntes": "er",
           "asrManteveFragmento": false,
           "app": {
             "marca": "correta",
@@ -1349,6 +1352,4262 @@
           "app": {
             "marca": "trocada",
             "dito": "jacket"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "sapo-da-lagoa",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapo passa o dia em cima de uma folha grande. Quando vê uma mosca, ele abre a boca e pega a mosca com a língua. Pedro gosta de ver o sapo pular na água. De noite, o sapo canta com os amigos. Pedro dorme ouvindo a música da lagoa.",
+      "transcricao": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapo passa o dia em cima de uma folha grande. Quando vê uma mosca, ele abre a boca e pega a mosca com a língua. Pedro gosta de ver o sapo pular na água. De noite, o sapo canta com os amigos. Pedro dorme ouvindo a música da lagoa.",
+      "gabarito": {
+        "corretas": 64,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 64,
+        "erros": 0,
+        "segundos": 32.237,
+        "pcpm": 119,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "sapo-da-lagoa",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapo passa o dia em janela de uma folha grande. Quando vê uma mosca, ele abre a boca e pega a mosca com a longua. Pedro gosta de ver o sapo pular na água. De noite, o sapo canta com os amigos. Pedro dorme ouvindo a música da lagoa.",
+      "transcricao": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapo passa o dia em janela de uma folha grande. Quando vê uma mosca, ele abre a boca e pega a mosca com a longua. Pedro gosta de ver o sapo pular na água. De noite, o sapo canta com os amigos. Pedro dorme ouvindo a música da lagoa.",
+      "gabarito": {
+        "corretas": 62,
+        "erros": 2,
+        "indicesErro": [
+          20,
+          39
+        ]
+      },
+      "app": {
+        "corretas": 62,
+        "erros": 2,
+        "segundos": 32.12,
+        "pcpm": 116,
+        "indicesErro": [
+          20,
+          39
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 20,
+          "esperada": "cima",
+          "dita": "janela",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "janela"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 39,
+          "esperada": "língua.",
+          "dita": "longua",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "longua."
+          }
+        }
+      ]
+    },
+    {
+      "texto": "sapo-da-lagoa",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapo passa o dia em cima de uma folha grande. Quando vê uma boca e pega a mosca com a língua. Pedro gosta de ver o sapo pular na água. De noite, o sapo canta com os amigos. Pedro dorme ouvindo a música da lagoa.",
+      "transcricao": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapo passa o dia em cima de uma folha grande. Quando vê uma mosca e pega a mosca com a língua. Pedro gosta de ver o sapo pular na água. De noite, o sapo canta com os amigos. Pedro dorme ouvindo a música da lagoa.",
+      "gabarito": {
+        "corretas": 60,
+        "erros": 4,
+        "indicesErro": [
+          28,
+          29,
+          30,
+          31
+        ]
+      },
+      "app": {
+        "corretas": 60,
+        "erros": 4,
+        "segundos": 30.338,
+        "pcpm": 119,
+        "indicesErro": [
+          29,
+          30,
+          31,
+          32
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 3,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "trecho": "mosca, ele abre a",
+          "app": [
+            "correta",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "sapo-da-lagoa",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapo passa o dia em cima em cima de uma folha grande. Quando vê uma mosca, ele abre a boca e pega a mosca com a língua. Pedro go… gosta de ver o sapo pular na água. De noite, o sapo canta com os amigos. Pedro dorme ouvindo a música da lagoa.",
+      "transcricao": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapo passa o dia em cima, em cima de uma folha grande. Quando vê uma mosca, ele abre a boca e pega a mosca com a língua. Pedro Geó gosta de ver o sapo pular na água. De noite, o sapo canta com os amigos. Pedro dorme ouvindo a música da lagoa.",
+      "gabarito": {
+        "corretas": 64,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 64,
+        "erros": 0,
+        "segundos": 34.721,
+        "pcpm": 111,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            19,
+            20
+          ],
+          "trecho": "em cima",
+          "asrOcorrencias": 2,
+          "extras": [
+            "em:repeticao",
+            "cima:repeticao",
+            "Geó:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 41,
+          "esperada": "gosta",
+          "fragmento": "go",
+          "asrAntes": "geo",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "sapo-da-lagoa",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapo hã passa o dia em cima de uma janela grande. Quando vê uma mosca, ele abre a boca e pega a mosca com",
+      "transcricao": "Perto da casa de Pedro tem uma lagoa. Na lagoa mora um sapo verde. O sapoã passa o dia em cima de uma janela grande. Quando vê uma mosca, ele abre a boca e pega a mosca com",
+      "gabarito": {
+        "corretas": 37,
+        "erros": 1,
+        "indicesErro": [
+          23
+        ]
+      },
+      "app": {
+        "corretas": 36,
+        "erros": 2,
+        "segundos": 19.099,
+        "pcpm": 113,
+        "indicesErro": [
+          15,
+          23
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 16,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 23,
+          "esperada": "folha",
+          "dita": "janela",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "janela"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 37
+        }
+      ]
+    },
+    {
+      "texto": "depois-da-chuva",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e viu as gotas caindo na rua. Depois da chuva, o sol voltou. Nina calçou as botas amarelas e foi para o quintal. Ela pulou nas poças e molhou a roupa toda. A mãe riu e deu uma toalha para ela. No céu, apareceu um arco- íris bem bonito.",
+      "transcricao": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e viu as gotas caindo na rua. Depois da chuva, o sol voltou. Nina calçou as botas amarelas e foi para o quintal. Ela pulou nas poças e molhou a roupa toda. A mãe riu e deu uma toalha para ela. No céu apareceu um arco-íris bem bonito.",
+      "gabarito": {
+        "corretas": 63,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 63,
+        "erros": 0,
+        "segundos": 32.831,
+        "pcpm": 115,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "depois-da-chuva",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e viu as gotas sorvete na rua. Depois da chuva, o sol voltou. Nina calçou as botas amarelas e foi para o quintal. Ela polou nas poças e molhou a roupa toda. A mãe riu e deu uma toalha para ela. No céu, apareceu um arco- íris bem bonito.",
+      "transcricao": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e viu as gotas sorvete na rua. Depois da chuva, o sol voltou. Nina calçou as botas amarelas e foi para o quintal. Ela pulou nas poças e molhou a roupa toda. A mãe riu e deu uma toalha para ela. No céu, apareceu um arco-íris bem bonito.",
+      "gabarito": {
+        "corretas": 61,
+        "erros": 2,
+        "indicesErro": [
+          18,
+          38
+        ]
+      },
+      "app": {
+        "corretas": 62,
+        "erros": 1,
+        "segundos": 32.971,
+        "pcpm": 113,
+        "indicesErro": [
+          18
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 18,
+          "esperada": "caindo",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 38,
+          "esperada": "pulou",
+          "dita": "polou",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "depois-da-chuva",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e viu as gotas caindo na rua. Depois da chuva, o sol voltou. Nina e foi para o quintal. Ela pulou nas poças e molhou a roupa toda. A mãe riu e deu uma toalha para ela. No céu, apareceu um arco- íris bem bonito.",
+      "transcricao": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e viu as gotas caindo na rua. Depois da chuva, o sol voltou. Nina foi para o quintal. Ela pulou nas poças e molhou a roupa toda. A mãe riu e deu uma toalha para ela. No céu apareceu um arco-íris bem bonito.",
+      "gabarito": {
+        "corretas": 59,
+        "erros": 4,
+        "indicesErro": [
+          28,
+          29,
+          30,
+          31
+        ]
+      },
+      "app": {
+        "corretas": 58,
+        "erros": 5,
+        "segundos": 30.851,
+        "pcpm": 113,
+        "indicesErro": [
+          28,
+          29,
+          30,
+          31,
+          32
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "trecho": "calçou as botas amarelas",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "depois-da-chuva",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e viu as gotas caindo na caindo na rua. Depois da chuva, o sol voltou. Nina calçou as botas amarelas e foi para o quintal. Ela pulou nas po… poças e molhou a roupa toda. A mãe riu e deu uma toalha para ela. No céu, apareceu um arco- íris bem bonito.",
+      "transcricao": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e viu as gotas caindo na, caindo na rua. Depois da chuva, o sol voltou. Nina calçou as botas amarelas e foi para o quintal. Ela pulou nas poças e molhou a roupa toda. A mãe riu e deu uma toalha para ela. No céu apareceu um arco-íris bem bonito.",
+      "gabarito": {
+        "corretas": 63,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 63,
+        "erros": 0,
+        "segundos": 35.627,
+        "pcpm": 106,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            18,
+            19
+          ],
+          "trecho": "caindo na",
+          "asrOcorrencias": 2,
+          "extras": [
+            "caindo:repeticao",
+            "na:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 40,
+          "esperada": "poças",
+          "fragmento": "po",
+          "asrAntes": "nas",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "depois-da-chuva",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e hã viu as gotas caindo na rua. Depois da sorvete, o sol voltou. Nina calçou as botas amarelas e foi para o quintal.",
+      "transcricao": "Hoje choveu muito. Nina ficou em casa com a mãe. Ela olhou pela janela e viu as gotas caindo na rua. Depois da sorvete, o sol voltou. Nina calçou as botas amarelas e foi para o quintal.",
+      "gabarito": {
+        "corretas": 36,
+        "erros": 1,
+        "indicesErro": [
+          23
+        ]
+      },
+      "app": {
+        "corretas": 36,
+        "erros": 1,
+        "segundos": 20.535,
+        "pcpm": 105,
+        "indicesErro": [
+          23
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 15,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 23,
+          "esperada": "chuva,",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete,"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 36
+        }
+      ]
+    },
+    {
+      "texto": "pipoca",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia cães grandes, pequenos, pretos e malhados. Um filhote marrom chegou perto da grade e lambeu a mão de Ana. Ele tinha uma orelha em pé e outra caída. Ana soube na hora que era ele. O filhote ganhou o nome de Pipoca, porque pulava sem parar. Em casa, Pipoca cheirou cada canto e",
+      "transcricao": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia cães grandes, pequenos, pretos e malhados. Um filhote marrom chegou perto da grade e lambeu a mão de Ana. Ele tinha uma orelha em pé e outra caída. Ana soube na hora que era ele. O filhote ganhou o nome de Pipoca porque pulava sem parar. Em casa, Pipoca cheirou cada canto e",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 38.684,
+        "pcpm": 109,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "pipoca",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia cães grandes, pequenos, pretos e caminhão. Um filhote marrom chegou perto da grade e lambeu a mão de Ana. Ele tinha uma orelha em pé e ootra caída. Ana soube na hora que era ele. O filhote ganhou o nome de Pipoca, porque pulava sem parar. Em casa, Pipoca cheirou cada canto e",
+      "transcricao": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia cães grandes, pequenos, pretos e caminhão. Um filhote marrom chegou perto da grade e lambeu a mão de Ana. Ele tinha uma orelha em pé e outra caída. Ana soube na hora que era ele. O filhote ganhou o nome de Pipoca porque pulava sem parar. Em casa, Pipoca cheirou cada canto e",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          22,
+          43
+        ]
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 38.691,
+        "pcpm": 107,
+        "indicesErro": [
+          22
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 22,
+          "esperada": "malhados.",
+          "dita": "caminhão",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "caminhão."
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 43,
+          "esperada": "outra",
+          "dita": "ootra",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "pipoca",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia cães grandes, pequenos, pretos e malhados. Um filhote marrom chegou perto da grade e Ana. Ele tinha uma orelha em pé e outra caída. Ana soube na hora que era ele. O filhote ganhou o nome de Pipoca, porque pulava sem parar. Em casa, Pipoca cheirou cada canto e",
+      "transcricao": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia cães grandes, pequenos, pretos e malhados. Um filhote marrom chegou perto da grade e Ana— Ele tinha uma orelha em pé e outra caída. Ana soube na hora que era ele. O filhote ganhou o nome de Pipoca porque pulava sem parar. Em casa, Pipoca cheirou cada canto e",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 37.654,
+        "pcpm": 105,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "lambeu a mão de",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "pipoca",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia cães grandes, pequenos, pretos e malhados. e malhados. Um filhote marrom chegou perto da grade e lambeu a mão de Ana. Ele tinha uma orelha em pé e outra caída. Ana so… soube na hora que era ele. O filhote ganhou o nome de Pipoca, porque pulava sem parar. Em casa, Pipoca cheirou cada canto e",
+      "transcricao": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia cães grandes, pequenos, pretos e malhados. E malhados. Um filhote marrom chegou perto da grade e lambeu a mão de Ana. Ele tinha uma orelha em pé e outra caída. Anassu. Soube na hora que era ele. O filhote ganhou o nome de Pipoca porque pulava sem parar. Em casa, Pipoca cheirou cada canto e",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 42.612,
+        "pcpm": 97,
+        "indicesErro": [
+          45
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "e malhados.",
+          "asrOcorrencias": 2,
+          "extras": [
+            "E:repeticao",
+            "malhados.:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 46,
+          "esperada": "soube",
+          "fragmento": "so",
+          "asrAntes": "anassu",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "pipoca",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia hã cães grandes, pequenos, pretos e malhados. Um filhote caminhão chegou perto da grade e lambeu a mão de Ana. Ele tinha uma orelha em pé",
+      "transcricao": "Ana queria muito um cachorro. Num domingo, a família foi até um abrigo de animais. Lá havia cães grandes, pequenos, pretos e malhados. Um filhote caminhão chegou perto da grade e lambeu a mão de Ana. Ele tinha uma orelha em pé.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 24.102,
+        "pcpm": 102,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "marrom",
+          "dita": "caminhão",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "caminhão"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "formigas",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que ela. Elas vivem em grupos que moram no formigueiro, embaixo da terra. Dentro do formigueiro existem muitos túneis e salas. Cada formiga tem uma tarefa. Algumas buscam comida, outras cuidam dos ovos e outras protegem a entrada. Quando uma formiga acha comida, ela deixa um cheiro no caminho. Assim, as outras sabem para",
+      "transcricao": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que ela. Elas vivem em grupos que moram no formigueiro, embaixo da terra. Dentro do formigueiro existem muitos túneis e salas. Cada formiga tem uma tarefa. Algumas buscam comida, outras cuidam dos ovos e outras protegem a entrada. Quando uma formiga acha comida, ela deixa um cheiro no caminho. Assim, as outras sabem para",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 44.317,
+        "pcpm": 95,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "formigas",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que ela. Elas vivem em sorvete que moram no formigueiro, embaixo da terra. Dentro do formigueiro existem muitos túneis e salas. Cada formiga tem uma tarefa. algomas buscam comida, outras cuidam dos ovos e outras protegem a entrada. Quando uma formiga acha comida, ela deixa um cheiro no caminho. Assim, as outras sabem para",
+      "transcricao": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que ela. Elas vivem em sorvete que moram no formigueiro, embaixo da terra. Dentro do formigueiro existem muitos túneis e salas. Cada formiga tem uma tarefa. Algumas buscam comida, outras cuidam dos ovos e outras protegem a entrada. Quando uma formiga acha comida, ela deixa um cheiro no caminho. Assim, as outras sabem para",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 44.447,
+        "pcpm": 93,
+        "indicesErro": [
+          21
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "grupos",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "Algumas",
+          "dita": "algomas",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "formigas",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que ela. Elas vivem em grupos que moram no formigueiro, embaixo da terra. Dentro do e salas. Cada formiga tem uma tarefa. Algumas buscam comida, outras cuidam dos ovos e outras protegem a entrada. Quando uma formiga acha comida, ela deixa um cheiro no caminho. Assim, as outras sabem para",
+      "transcricao": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que ela. Elas vivem em grupos que moram no formigueiro, embaixo da terra. Dentro do ishalas, cada formiga tem uma tarefa. Algumas buscam comida, Outras cuidam dos ovos e outras protegem a entrada. Quando uma formiga acha comida, ela deixa um cheiro no caminho. Assim, as outras sabem para",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 64,
+        "erros": 6,
+        "segundos": 41.466,
+        "pcpm": 93,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34,
+          35,
+          36
+        ]
+      },
+      "difCorretas": 2,
+      "difErros": 2,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "formigueiro existem muitos túneis",
+          "app": [
+            "trocada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "formigas",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que ela. Elas vivem em grupos que grupos que moram no formigueiro, embaixo da terra. Dentro do formigueiro existem muitos túneis e salas. Cada formiga tem uma tarefa. Algumas buscam comida, outras cu… cuidam dos ovos e outras protegem a entrada. Quando uma formiga acha comida, ela deixa um cheiro no caminho. Assim, as outras sabem para",
+      "transcricao": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que ela. Elas vivem em grupos que grupos que moram no formigueiro, embaixo da terra. Dentro do formigueiro existem muitos túneis e salas. Cada formiga tem uma tarefa. Algumas buscam comida, outras cuidam dos ovos e outras protegem a entrada. Quando uma formiga acha comida, ela deixa um cheiro no caminho. Assim, as outras sabem para",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 47.234,
+        "pcpm": 89,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "grupos que",
+          "asrOcorrencias": 2,
+          "extras": [
+            "grupos:repeticao",
+            "que:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 46,
+          "esperada": "cuidam",
+          "fragmento": "cu",
+          "asrAntes": "outras",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "formigas",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que hã ela. Elas vivem em grupos que moram no formigueiro, tesoura da terra. Dentro do formigueiro existem muitos túneis e salas. Cada formiga tem uma tarefa.",
+      "transcricao": "As formigas são insetos pequenos, mas muito fortes. Uma formiga consegue carregar folhas bem maiores do que an— ela. Elas vivem em grupos que moram no formigueiro, tesoura da terra. Dentro do formigueiro existem muitos túneis e salas. Cada formiga tem uma tarefa.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          26
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 27.341,
+        "pcpm": 90,
+        "indicesErro": [
+          26
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 26,
+          "esperada": "embaixo",
+          "dita": "tesoura",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "tesoura"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "bicho-preguica",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "O bicho- preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado nos galhos, preso pelas garras compridas e curvas. Como se move muito devagar, muita gente pensa que ele é apenas preguiçoso. Na verdade, o seu corpo gasta pouca energia, porque ele come quase só folhas, que dão pouca força. Por isso, a preguiça dorme bastante e anda sem pressa. Esse jeito calmo também",
+      "transcricao": "O bicho-preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado nos galhos, preso pelas garras compridas e curvas. Como se move muito devagar, muita gente pensa que ele é apenas preguiçoso. Na verdade, o seu corpo gasta pouca energia, Porque ele come quase só folhas, que dão pouca força. Por isso, a preguiça dorme bastante e anda sem pressa. Esse jeito calmo também.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 41.412,
+        "pcpm": 101,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "bicho-preguica",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "O bicho- preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado nos galhos, preso pelas sorvete compridas e curvas. Como se move muito devagar, muita gente pensa que ele é apenas preguiçoso. Na verdade, o seu cirpo gasta pouca energia, porque ele come quase só folhas, que dão pouca força. Por isso, a preguiça dorme bastante e anda sem pressa. Esse jeito calmo também",
+      "transcricao": "O bicho-preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado nos galhos, preso pelas sorvete-compridas e curvas. Como se move muito devagar, muita gente pensa que ele é apenas preguiçoso. Na verdade, o seu serpo gasta pouca energia, Porque ele come quase só folhas, que dão pouca força. Por isso, a preguiça dorme bastante e anda sem pressa. Esse jeito calmo também.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 41.513,
+        "pcpm": 98,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "garras",
+          "dita": "sorvete",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete-"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "corpo",
+          "dita": "cirpo",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "serpo"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "bicho-preguica",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "O bicho- preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado nos galhos, preso pelas garras compridas e curvas. Como se move muito devagar, muita é apenas preguiçoso. Na verdade, o seu corpo gasta pouca energia, porque ele come quase só folhas, que dão pouca força. Por isso, a preguiça dorme bastante e anda sem pressa. Esse jeito calmo também",
+      "transcricao": "O bicho-preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado nos galhos, preso pelas garras compridas e curvas. Como se move muito devagar, muita é apenas preguiçoso. Na verdade, o seu corpo gasta pouca energia, Porque ele come quase só folhas, que dão pouca força. Por isso, a preguiça dorme bastante e anda sem pressa. Esse jeito calmo também.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 39.867,
+        "pcpm": 99,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "gente pensa que ele",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "bicho-preguica",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "O bicho- preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado nos galhos, preso pelas garras compridas garras compridas e curvas. Como se move muito devagar, muita gente pensa que ele é apenas preguiçoso. Na verdade, o seu corpo gasta pouca en… energia, porque ele come quase só folhas, que dão pouca força. Por isso, a preguiça dorme bastante e anda sem pressa. Esse jeito calmo também",
+      "transcricao": "O bicho-preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado nos galhos, preso pelas garras compridas, garras compridas e curvas. Como se move muito devagar, muita gente pensa que ele é apenas preguiçoso. Na verdade, o seu corpo gasta pouca em Energia, porque ele come quase só folhas, que dão pouca força. Por isso, a preguiça dorme bastante e anda sem pressa. Esse jeito calmo também.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 44.407,
+        "pcpm": 95,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "garras compridas",
+          "asrOcorrencias": 2,
+          "extras": [
+            "garras:repeticao",
+            "compridas:repeticao",
+            "em:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "energia,",
+          "fragmento": "en",
+          "asrAntes": "em",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "bicho-preguica",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "O bicho- preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado hã nos galhos, preso pelas garras compridas e curvas. caminhão se move muito devagar, muita gente pensa que ele é apenas preguiçoso. Na verdade, o seu",
+      "transcricao": "O bicho-preguiça vive nas árvores das florestas do Brasil. Ele passa quase o dia inteiro pendurado a— nos galhos, preso pelas garras compridas e curvas. Caminhão se move muito devagar, muita gente pensa que ele é apenas preguiçoso. Na verdade, o seu",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 25.592,
+        "pcpm": 96,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "Como",
+          "dita": "caminhão",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "Caminhão"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "sabado-de-feira",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de barracas coloridas, e os feirantes gritam os preços para chamar os fregueses. A avó de Caio sempre começa pela barraca de frutas. Ela aperta as mangas com cuidado e cheira os abacaxis antes de escolher. Caio gosta mesmo é da barraca de pastel, bem no meio da rua. Enquanto espera o pastel ficar",
+      "transcricao": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de barracas coloridas, e os feirantes gritam os preços para chamar os fregueses. A avó de Caio sempre começa pela barraca de frutas. Ela aperta as mangas com cuidado e cheira os abacaxis antes de escolher. Caio gosta mesmo é da barraca de pastel, bem no meio da rua. Enquanto espera o pastel ficar.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 37.36,
+        "pcpm": 112,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "sabado-de-feira",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de barracas coloridas, e os sorvete gritam os preços para chamar os fregueses. A avó de Caio sempre começa pela barraca de frutas. Ela aperta as mengas com cuidado e cheira os abacaxis antes de escolher. Caio gosta mesmo é da barraca de pastel, bem no meio da rua. Enquanto espera o pastel ficar",
+      "transcricao": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de barracas coloridas, e o sorvete gritam os preços para chamar os fregueses. A avó de Caio sempre começa pela barraca de frutas. Ela aperta as mengas com cuidado e cheira os abacaxis antes de escolher. Caio gosta mesmo é da barraca de pastel, bem no meio da rua. Enquanto espera o pastel ficar.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 67,
+        "erros": 3,
+        "segundos": 37.163,
+        "pcpm": 108,
+        "indicesErro": [
+          20,
+          21,
+          42
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "feirantes",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "mangas",
+          "dita": "mengas",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "mengas"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "sabado-de-feira",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de barracas coloridas, e os feirantes gritam os preços para chamar os fregueses. A avó pela barraca de frutas. Ela aperta as mangas com cuidado e cheira os abacaxis antes de escolher. Caio gosta mesmo é da barraca de pastel, bem no meio da rua. Enquanto espera o pastel ficar",
+      "transcricao": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de barracas coloridas, e os feirantes gritam os preços para chamar os fregueses. A avó pela barraca de frutas. Ela aperta as mangas com cuidado e cheira os abacaxis antes de escolher. Caio gosta mesmo é da barraca de pastel, bem no meio da rua. Enquanto espera o pastel ficar.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 35.42,
+        "pcpm": 112,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "de Caio sempre começa",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "sabado-de-feira",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de barracas coloridas, e os feirantes gritam feirantes gritam os preços para chamar os fregueses. A avó de Caio sempre começa pela barraca de frutas. Ela aperta as mangas com cuidado e ch… cheira os abacaxis antes de escolher. Caio gosta mesmo é da barraca de pastel, bem no meio da rua. Enquanto espera o pastel ficar",
+      "transcricao": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de barracas coloridas, e os feirantes gritam, feirantes gritam os preços para chamar os fregueses. A avó de Caio sempre começa pela barraca de frutas. Ela aperta as mangas com cuidado e se eide. Cheira os abacaxis antes de escolher. Caio gosta mesmo é da barraca de pastel, bem no meio da rua. Enquanto espera o pastel ficar.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 40.799,
+        "pcpm": 103,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "feirantes gritam",
+          "asrOcorrencias": 2,
+          "extras": [
+            "feirantes:repeticao",
+            "gritam:repeticao",
+            "se:insercao",
+            "eide.:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 46,
+          "esperada": "cheira",
+          "fragmento": "ch",
+          "asrAntes": "eide",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "sabado-de-feira",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de hã barracas coloridas, e os feirantes gritam os preços para tesoura os fregueses. A avó de Caio sempre começa pela barraca de frutas. Ela aperta as",
+      "transcricao": "Todo sábado, Caio acorda cedo para ir à feira com a avó. A rua fica cheia de an— barracas coloridas, e os feirantes gritam os preços para tesoura os fregueses. A avó de Caio sempre começa pela barraca de frutas. Ela aperta as—",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          26
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 23.611,
+        "pcpm": 104,
+        "indicesErro": [
+          26
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 26,
+          "esperada": "chamar",
+          "dita": "tesoura",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "tesoura"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "tartarugas-marinhas",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas saem do mar e arrastam o corpo pesado pela areia. Cada fêmea cava um buraco fundo, coloca muitos ovos e depois os cobre com cuidado antes de voltar para a água. Os ovos ficam escondidos por várias semanas, aquecidos pelo sol. Curiosamente, a temperatura da areia decide se os filhotes serão machos ou",
+      "transcricao": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas saem do mar e arrastam o corpo pesado pela areia. Cada fêmea cava um buraco fundo, coloca muitos ovos e depois os cobre com cuidado antes de voltar para a água. Os ovos ficam escondidos por várias semanas, aquecidos pelo sol. Curiosamente, a temperatura da areia decide se os filhotes serão machos ou",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 41.025,
+        "pcpm": 102,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "tartarugas-marinhas",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas saem do mar e sorvete o corpo pesado pela areia. Cada fêmea cava um buraco fundo, coloca muitos ovos e depois os cobre com cuidado antas de voltar para a água. Os ovos ficam escondidos por várias semanas, aquecidos pelo sol. Curiosamente, a temperatura da areia decide se os filhotes serão machos ou",
+      "transcricao": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas saem do mar e sorvete o corpo pesado pela areia. Cada fêmea cava um buraco fundo, coloca muitos ovos e depois os cobre com cuidado antes de voltar para a água. Os ovos ficam escondidos por várias semanas, aquecidos pelo sol. Curiosamente, a temperatura da areia decide se os filhotes serão machos ou",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 41.07,
+        "pcpm": 101,
+        "indicesErro": [
+          21
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "arrastam",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "antes",
+          "dita": "antas",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "tartarugas-marinhas",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas saem do mar e arrastam o corpo pesado pela areia. Cada fêmea cava um ovos e depois os cobre com cuidado antes de voltar para a água. Os ovos ficam escondidos por várias semanas, aquecidos pelo sol. Curiosamente, a temperatura da areia decide se os filhotes serão machos ou",
+      "transcricao": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas saem do mar e arrastam o corpo pesado pela areia. Cada fêmea cava ovos e depois os cobre com cuidado antes de voltar para a água. Os ovos ficam escondidos por várias semanas, aquecidos pelo sol. Curiosamente, a temperatura da areia decide se os filhotes serão machos ou",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 65,
+        "erros": 5,
+        "segundos": 38.099,
+        "pcpm": 102,
+        "indicesErro": [
+          30,
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "buraco fundo, coloca muitos",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "tartarugas-marinhas",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas saem do mar e arrastam o arrastam o corpo pesado pela areia. Cada fêmea cava um buraco fundo, coloca muitos ovos e depois os cobre com cuidado antes de voltar pa… para a água. Os ovos ficam escondidos por várias semanas, aquecidos pelo sol. Curiosamente, a temperatura da areia decide se os filhotes serão machos ou",
+      "transcricao": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas saem do mar e arrastam, arrastam o corpo pesado pela areia. Cada fêmea cava um buraco fundo, coloca muitos ovos e depois os cobre com cuidado antes de voltar pear. Para água. Os ovos ficam escondidos por várias semanas, aquecidos pelo sol. Curiosamente, a temperatura da areia decide se os filhotes serão machos ou",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 43.736,
+        "pcpm": 95,
+        "indicesErro": [
+          46
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "arrastam o",
+          "asrOcorrencias": 1,
+          "extras": [
+            "arrastam:repeticao",
+            "pear.:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "para",
+          "fragmento": "pa",
+          "asrAntes": "pear",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "tartarugas-marinhas",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas hã saem do mar e arrastam o corpo pesado caminhão areia. Cada fêmea cava um buraco fundo, coloca muitos ovos e depois os cobre com cuidado",
+      "transcricao": "Todos os anos, nas praias do litoral brasileiro, acontece algo muito especial. Durante a noite, tartarugas marinhas saem do mar e arrastam o corpo pesado caminhão areia. Cada fêmea cava um buraco fundo, coloca muitos ovos e depois os cobre com cuidado.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 25.565,
+        "pcpm": 96,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "pela",
+          "dita": "caminhão",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "caminhão"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "nova-aluna",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado de uma cidade do interior para a capital, e tudo parecia grande e barulhento demais. No primeiro recreio, sentou sozinha num banco e fingiu estar ocupada com a lancheira. Uma menina chamada Bruna se aproximou e perguntou se ela sabia jogar bolinha de gude. Lara não sabia, mas aceitou aprender. Bruna explicou as",
+      "transcricao": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado de uma cidade do interior para a capital, e tudo parecia grande e barulhento demais. No primeiro recreio, sentou sozinha num banco e fingiu estar ocupada com a lancheira. Uma menina chamada Bruna se aproximou e perguntou se ela sabia jogar bolinha de gude. Lara não sabia, mas aceitou aprender. Bruna explicou-as.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 39.202,
+        "pcpm": 107,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "nova-aluna",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado de uma cidade do sorvete para a capital, e tudo parecia grande e barulhento demais. No primeiro recreio, sentou sozinha num banco e fingiu estar ocopada com a lancheira. Uma menina chamada Bruna se aproximou e perguntou se ela sabia jogar bolinha de gude. Lara não sabia, mas aceitou aprender. Bruna explicou as",
+      "transcricao": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado de uma cidade do sorvete para a capital, e tudo parecia grande e barulhento demais. No primeiro recreio, sentou sozinha num banco e fingiu estar ocupada com a lancheira. Uma menina chamada Bruna se aproximou e perguntou se ela sabia jogar bolinha de Lara não sabia, mas aceitou aprender. Bruna explicou-as.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 39.267,
+        "pcpm": 104,
+        "indicesErro": [
+          21,
+          60
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "interior",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "ocupada",
+          "dita": "ocopada",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "nova-aluna",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado de uma cidade do interior para a capital, e tudo parecia grande e barulhento sentou sozinha num banco e fingiu estar ocupada com a lancheira. Uma menina chamada Bruna se aproximou e perguntou se ela sabia jogar bolinha de gude. Lara não sabia, mas aceitou aprender. Bruna explicou as",
+      "transcricao": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado de uma cidade do interior para a capital, e tudo parecia grande e barulhento. Sentou sozinha num banco e fingiu estar ocupada com a lancheira. Uma menina chamada Bruna se aproximou e perguntou se ela sabia jogar bolinha de gude. Lara não sabia, mas aceitou aprender. Bruna explicou-as.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 35.405,
+        "pcpm": 112,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "demais. No primeiro recreio,",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "nova-aluna",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado de uma cidade do interior para interior para a capital, e tudo parecia grande e barulhento demais. No primeiro recreio, sentou sozinha num banco e fingiu estar ocupada com a la… lancheira. Uma menina chamada Bruna se aproximou e perguntou se ela sabia jogar bolinha de gude. Lara não sabia, mas aceitou aprender. Bruna explicou as",
+      "transcricao": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado de uma cidade do interior para interior para a capital, e tudo parecia grande e barulhento demais. No primeiro recreio, sentou sozinha num banco e fingiu estar ocupada com a lã. Lancheira. Uma menina chamada Bruna se aproximou e perguntou se ela sabia jogar bolinha de gude. Lara não sabia, mas aceitou aprender. Bruna explicou-as.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 42.029,
+        "pcpm": 100,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "interior para",
+          "asrOcorrencias": 2,
+          "extras": [
+            "interior:repeticao",
+            "para:repeticao",
+            "lã.:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "lancheira.",
+          "fragmento": "la",
+          "asrAntes": "la",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "nova-aluna",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado hã de uma cidade do interior para a capital, e tesoura parecia grande e barulhento demais. No primeiro recreio, sentou sozinha num banco e fingiu estar",
+      "transcricao": "Quando Lara chegou à nova escola, no meio do ano, não conhecia ninguém. Ela tinha se mudado de uma cidade do interior para a capital, e Tesoura parecia grande e barulhento demais. No primeiro recreio, sentou sozinha num banco e fingiu estar",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          26
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 23.326,
+        "pcpm": 105,
+        "indicesErro": [
+          26
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 26,
+          "esperada": "tudo",
+          "dita": "tesoura",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "Tesoura"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "viagem-da-agua",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de chegar à sua casa. Isso acontece porque a água do planeta está sempre em movimento, num caminho que os cientistas chamam de ciclo da água. Tudo começa com o calor do sol, que aquece mares, lagos e rios. Aos poucos, parte dessa água se transforma em vapor, um gás invisível que sobe para",
+      "transcricao": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de chegar à sua casa. Isso acontece porque a água do planeta está sempre em movimento, num caminho que os cientistas chamam de ciclo da água. Tudo começa com o calor do sol, que aquece mares, lagos e rios. Aos poucos, parte dessa água se transforma em vapor, um gás invisível que sobe para",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 35.474,
+        "pcpm": 118,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "viagem-da-agua",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de chegar à sua casa. sorvete acontece porque a água do planeta está sempre em movimento, num caminho que os cientistas chamam de ciclo da água. todo começa com o calor do sol, que aquece mares, lagos e rios. Aos poucos, parte dessa água se transforma em vapor, um gás invisível que sobe para",
+      "transcricao": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de chegar à sua casa. Sorvete acontece porque a água do planeta está sempre em movimento, num caminho que os cientistas chamam de ciclo da água. Todo começa com o calor do sol, que aquece mares, lagos e rios. Aos poucos, parte dessa água se transforma em vapor, um gás invisível que sobe para",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 36.106,
+        "pcpm": 113,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "Isso",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "Sorvete"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "Tudo",
+          "dita": "todo",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "Todo"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "viagem-da-agua",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de chegar à sua casa. Isso acontece porque a água do planeta está sempre em os cientistas chamam de ciclo da água. Tudo começa com o calor do sol, que aquece mares, lagos e rios. Aos poucos, parte dessa água se transforma em vapor, um gás invisível que sobe para",
+      "transcricao": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de chegar à sua casa. Isso acontece porque a água do planeta está sempre em o cientistas chamam de ciclo da água. Tudo começa com o calor do sol, que aquece mares, lagos e rios. Aos poucos, parte dessa água se transforma em vapor, um gás invisível que sobe para...",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 65,
+        "erros": 5,
+        "segundos": 33.324,
+        "pcpm": 117,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34,
+          35
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "movimento, num caminho que",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "viagem-da-agua",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de chegar à sua casa. Isso acontece isso acontece porque a água do planeta está sempre em movimento, num caminho que os cientistas chamam de ciclo da água. Tudo começa com o ca… calor do sol, que aquece mares, lagos e rios. Aos poucos, parte dessa água se transforma em vapor, um gás invisível que sobe para",
+      "transcricao": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de chegar à sua casa. Isso acontece, isso acontece porque a água do planeta está sempre em movimento, num caminho que os cientistas chamam de ciclo da água. Tudo começa com o ca— calor do sol, que aquece mares, lagos e rios. Aos poucos, parte dessa água se transforma em vapor, um gás invisível que sobe para",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 38.712,
+        "pcpm": 108,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "Isso acontece",
+          "asrOcorrencias": 2,
+          "extras": [
+            "isso:repeticao",
+            "acontece:repeticao",
+            "ca—:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 46,
+          "esperada": "calor",
+          "fragmento": "ca",
+          "asrAntes": "ca",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "viagem-da-agua",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de hã chegar à sua casa. Isso acontece porque a água do janela está sempre em movimento, num caminho que os cientistas chamam de ciclo da água.",
+      "transcricao": "A água que você bebe hoje pode ter passado por nuvens, rios e até geleiras antes de an— chegar à sua casa. Isso acontece porque a água do Janela está sempre em movimento, num caminho que os cientistas chamam de ciclo da água.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          27
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 20.192,
+        "pcpm": 122,
+        "indicesErro": [
+          27
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 27,
+          "esperada": "planeta",
+          "dita": "janela",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "Janela"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "quadrilha",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar a quadrilha sem confusão. Metade das crianças errava o passo, a outra metade esquecia a hora de trocar de par, e o túnel sempre desabava no meio. A professora já estava quase desistindo quando Bento teve uma ideia. Ele levou a música para casa e passou a tarde inteira desenhando no caderno cada",
+      "transcricao": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar a quadrilha sem confusão. Metade das crianças errava o passo, a outra metade esquecia a hora de trocar de par, e o túnel sempre desabava no meio. A professora já estava quase desistindo quando Bento teve uma ideia. Ele levou a música para casa e passou a tarde inteira desenhando no caderno cada",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 35.431,
+        "pcpm": 119,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "quadrilha",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar a quadrilha sem confusão. Metade das tesoura errava o passo, a outra metade esquecia a hora de trocar de par, e o túnel sempre desabava no maio. A professora já estava quase desistindo quando Bento teve uma ideia. Ele levou a música para casa e passou a tarde inteira desenhando no caderno cada",
+      "transcricao": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar a quadrilha sem confusão. Metade das tesouras errava o passo, a outra metade esquecia a hora de trocar de par, e o túnel sempre desabava no maio. A professora já estava quase desistindo quando Bento teve uma ideia. Ele levou a música para casa e passou a tarde inteira desenhando no caderno cada",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          23,
+          43
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 35.392,
+        "pcpm": 115,
+        "indicesErro": [
+          23,
+          43
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 23,
+          "esperada": "crianças",
+          "dita": "tesoura",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "tesouras"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 43,
+          "esperada": "meio.",
+          "dita": "maio",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "maio."
+          }
+        }
+      ]
+    },
+    {
+      "texto": "quadrilha",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar a quadrilha sem confusão. Metade das crianças errava o passo, a outra metade esquecia de par, e o túnel sempre desabava no meio. A professora já estava quase desistindo quando Bento teve uma ideia. Ele levou a música para casa e passou a tarde inteira desenhando no caderno cada",
+      "transcricao": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar a quadrilha sem confusão. Metade das crianças errava o passo, a outra metade esquecia de par, e o túnel sempre desabava no meio. A professora já estava quase desistindo quando Bento teve uma ideia. Ele levou a música para casa e passou a tarde inteira desenhando no caderno cada",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 34.113,
+        "pcpm": 116,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "a hora de trocar",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "quadrilha",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar a quadrilha sem confusão. Metade das metade das crianças errava o passo, a outra metade esquecia a hora de trocar de par, e o túnel sempre desabava no meio. A pr… professora já estava quase desistindo quando Bento teve uma ideia. Ele levou a música para casa e passou a tarde inteira desenhando no caderno cada",
+      "transcricao": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar a quadrilha sem confusão. Metade das metade das crianças errava o passo, a outra metade esquecia a hora de trocar de par, e o túnel sempre desabava no meio. Aperre! A professora já estava quase desistindo quando Bento teve uma ideia. Ele levou a música para casa e passou a tarde inteira desenhando no caderno cada",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 38.502,
+        "pcpm": 109,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "Metade das",
+          "asrOcorrencias": 2,
+          "extras": [
+            "metade:repeticao",
+            "das:repeticao",
+            "Aperre!:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "professora",
+          "fragmento": "pr",
+          "asrAntes": "a",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "quadrilha",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar hã a quadrilha sem confusão. Metade das crianças errava o tesoura, a outra metade esquecia a hora de trocar de par, e o túnel sempre desabava",
+      "transcricao": "Faltava apenas uma semana para a festa junina, e a turma de Bento ainda não conseguia ensaiar a quadrilha sem confusão. Metade das crianças errava o tesoura, a outra metade esquecia a hora de trocar de par, e o túnel sempre desabava.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          26
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 21.507,
+        "pcpm": 114,
+        "indicesErro": [
+          26
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 26,
+          "esperada": "passo,",
+          "dita": "tesoura",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "tesoura,"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "morcegos",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os únicos mamíferos capazes de voar de verdade, batendo as asas como os pássaros. Suas asas, porém, são diferentes: formadas por uma pele fina esticada entre dedos compridos, parecem mãos abertas. A maioria dos morcegos sai para buscar alimento à noite. Para não bater em árvores e paredes no escuro, muitos deles emitem sons",
+      "transcricao": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os únicos mamíferos capazes de voar de verdade, batendo as asas como os pássaros. Suas asas, porém, são diferentes, formadas por uma pele fina esticada entre dedos compridos, Parecem mãos abertas. A maioria dos morcegos sai para buscar alimento à noite. Para não bater em árvores e paredes no escuro, muitos deles emitem sons.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 42.062,
+        "pcpm": 100,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "morcegos",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os únicos mamíferos capazes de sorvete de verdade, batendo as asas como os pássaros. Suas asas, porém, são diferentes: formadas por uma pele fina esticada entre dados compridos, parecem mãos abertas. A maioria dos morcegos sai para buscar alimento à noite. Para não bater em árvores e paredes no escuro, muitos deles emitem sons",
+      "transcricao": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os únicos mamíferos capazes de sorvete de verdade, batendo as asas como os pássaros. Suas asas, porém, são diferentes, formadas por uma pele fina esticada entre dados compridos, Parecem mãos abertas. A maioria dos morcegos sai para buscar alimento à noite. Para não bater em árvores e paredes no escuro, muitos deles emitem sons.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 42.534,
+        "pcpm": 96,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "voar",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "dedos",
+          "dita": "dados",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "dados"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "morcegos",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os únicos mamíferos capazes de voar de verdade, batendo as asas como os pássaros. Suas formadas por uma pele fina esticada entre dedos compridos, parecem mãos abertas. A maioria dos morcegos sai para buscar alimento à noite. Para não bater em árvores e paredes no escuro, muitos deles emitem sons",
+      "transcricao": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os únicos mamíferos capazes de voar de verdade, batendo as asas como os pássaros. Suas formadas por uma pele fina esticada entre dedos compridos parecem mãos abertas. A maioria dos morcegos sai para buscar alimento à noite. Para não bater em árvores e paredes no escuro, muitos deles emitem sons.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 38.471,
+        "pcpm": 103,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "asas, porém, são diferentes:",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "morcegos",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os únicos mamíferos capazes de voar de voar de verdade, batendo as asas como os pássaros. Suas asas, porém, são diferentes: formadas por uma pele fina esticada entre dedos compridos, parecem ma… mãos abertas. A maioria dos morcegos sai para buscar alimento à noite. Para não bater em árvores e paredes no escuro, muitos deles emitem sons",
+      "transcricao": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os únicos mamíferos capazes de voar, de voar de verdade, batendo as asas como os pássaros. Suas asas, porém, são diferentes, formadas por uma pele fina esticada entre dedos compridos, Parecem em mia. Mãos abertas. A maioria dos morcegos sai para buscar alimento à noite. Para não bater em árvores e paredes no escuro, muitos deles emitem sons.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 44.764,
+        "pcpm": 94,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "voar de",
+          "asrOcorrencias": 2,
+          "extras": [
+            "voar:repeticao",
+            "de:repeticao",
+            "em:insercao",
+            "mia.:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "mãos",
+          "fragmento": "ma",
+          "asrAntes": "mia",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "morcegos",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os hã únicos mamíferos capazes de voar de verdade, batendo as asas janela os pássaros. Suas asas, porém, são diferentes: formadas por uma pele fina esticada entre",
+      "transcricao": "Os morcegos têm fama de assustadores, mas são animais muito importantes para a natureza. Eles são os an— únicos mamíferos capazes de voar de verdade, batendo as asas janela os pássaros. Suas asas, porém, são diferentes, formadas por uma pele fina esticada entre",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          27
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 26.475,
+        "pcpm": 93,
+        "indicesErro": [
+          27
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 27,
+          "esperada": "como",
+          "dita": "janela",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "janela"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "rex-the-dog",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs to the pond and looks at the ducks. The ducks swim away fast. Then Rex sees a stick on the grass. He picks it up and brings it to Ben. Ben throws the stick far. Rex runs and gets it again. At home, Rex drinks some water and naps on his bed.",
+      "transcricao": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs to the pond and looks at the ducks. The ducks swim away fast. Then Rex sees a stick on the grass. He picks it up and brings it to Ben. Ben throws the stick far. Rex runs and gets it again. At home, Rex drinks some water and naps on his bed.",
+      "gabarito": {
+        "corretas": 69,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 0,
+        "segundos": 26.35,
+        "pcpm": 157,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "rex-the-dog",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs to the pond and pocket at the ducks. The ducks swim away fast. Then Rex sees a stick on the grass. He picks it up and brongs it to Ben. Ben throws the stick far. Rex runs and gets it again. At home, Rex drinks some water and naps on his bed.",
+      "transcricao": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs to the pond and pockit at the ducks. The ducks swim away fast. Then Rex sees a stick on the grass. He picks it up and brongs it to Ben. Ben throws the stick far. Rex runs and gets it again. At home, Rex drinks some water and naps on his bed.",
+      "gabarito": {
+        "corretas": 67,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          43
+        ]
+      },
+      "app": {
+        "corretas": 67,
+        "erros": 2,
+        "segundos": 26.525,
+        "pcpm": 152,
+        "indicesErro": [
+          21,
+          43
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "looks",
+          "dita": "pocket",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "pockit"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 43,
+          "esperada": "brings",
+          "dita": "brongs",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "brongs"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "rex-the-dog",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs to the pond and looks at the ducks. The ducks swim away fast. Then on the grass. He picks it up and brings it to Ben. Ben throws the stick far. Rex runs and gets it again. At home, Rex drinks some water and naps on his bed.",
+      "transcricao": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs to the pond and looks at the ducks. The ducks swim away fast. Then on the grass. He picks it up and brings it to Ben. Ben throws the stick far. Rex runs and gets it again. At home, Rex drinks some water and naps on his bed.",
+      "gabarito": {
+        "corretas": 65,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 65,
+        "erros": 4,
+        "segundos": 25.366,
+        "pcpm": 154,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "Rex sees a stick",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "rex-the-dog",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs to the pond and looks and looks at the ducks. The ducks swim away fast. Then Rex sees a stick on the grass. He picks it up and brings it to Ben. Ben th… throws the stick far. Rex runs and gets it again. At home, Rex drinks some water and naps on his bed.",
+      "transcricao": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs to the pond and looks and looks at the ducks. The ducks swim away fast. Then Rex sees a stick on the grass. He picks it up and brings it to Ben. Ben th— throws the stick far. Rex runs and gets it again. At home, Rex drinks some water and naps on his bed.",
+      "gabarito": {
+        "corretas": 69,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 0,
+        "segundos": 28.872,
+        "pcpm": 143,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            20,
+            21
+          ],
+          "trecho": "and looks",
+          "asrOcorrencias": 2,
+          "extras": [
+            "and:repeticao",
+            "looks:repeticao",
+            "th—:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 48,
+          "esperada": "throws",
+          "fragmento": "th",
+          "asrAntes": "th",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "rex-the-dog",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs um to the pond and looks at the ducks. The ducks window away fast. Then Rex sees a stick on the grass. He picks it",
+      "transcricao": "Ben has a big brown dog named Rex. Rex likes to run in the park. He runs um to the pond and looks at the ducks. The ducks window away fast. Then Rex sees a stick on the grass. He picks it.",
+      "gabarito": {
+        "corretas": 40,
+        "erros": 1,
+        "indicesErro": [
+          27
+        ]
+      },
+      "app": {
+        "corretas": 40,
+        "erros": 1,
+        "segundos": 16.49,
+        "pcpm": 146,
+        "indicesErro": [
+          27
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 27,
+          "esperada": "swim",
+          "dita": "window",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "window"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 40
+        }
+      ]
+    },
+    {
+      "texto": "little-seed",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "Ruby put a little seed in a pot. She gave it water and set it in the sun. Every day she looked at the pot, but she saw only dirt. Then one morning, a tiny green leaf came up. Ruby was so happy! The plant grew tall. Soon it had a big yellow flower. Ruby showed the flower to her mom and dad.",
+      "transcricao": "Ruby put a little seed in a pot. She gave it water and set it in the sun. Every day she looked at the pot, but she saw only dirt. Then one morning, a tiny green leaf came up. Ruby was so happy! The plant grew tall. Soon it had a big yellow flower. Ruby showed the flower to her mom and dad.",
+      "gabarito": {
+        "corretas": 63,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 63,
+        "erros": 0,
+        "segundos": 23.969,
+        "pcpm": 158,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "little-seed",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "Ruby put a little seed in a pot. She gave it water and set it in the sun. jacket day she looked at the pot, but she saw only dirt. Then one morning, a tiny green leaf ceme up. Ruby was so happy! The plant grew tall. Soon it had a big yellow flower. Ruby showed the flower to her mom and dad.",
+      "transcricao": "Ruby put a little seed in a pot. She gave it water and set it in the sun. Day jacket day, she looked at the pot, but she saw only dirt. Then one morning, a tiny green leaf seemed up. Ruby was so happy. The plant grew tall. Soon it had a big yellow flower. Ruby showed the flower to her mom and dad.",
+      "gabarito": {
+        "corretas": 61,
+        "erros": 2,
+        "indicesErro": [
+          18,
+          37
+        ]
+      },
+      "app": {
+        "corretas": 61,
+        "erros": 2,
+        "segundos": 23.216,
+        "pcpm": 158,
+        "indicesErro": [
+          18,
+          37
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 18,
+          "esperada": "Every",
+          "dita": "jacket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "Day"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 37,
+          "esperada": "came",
+          "dita": "ceme",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "seemed"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "little-seed",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "Ruby put a little seed in a pot. She gave it water and set it in the sun. Every day she looked at the pot, but she saw morning, a tiny green leaf came up. Ruby was so happy! The plant grew tall. Soon it had a big yellow flower. Ruby showed the flower to her mom and dad.",
+      "transcricao": "Ruby put a little seed in a pot. She gave it water and set it in the sun. Every day she looked at the pot, but she saw— morning, a tiny green leaf came up. Ruby was so happy. The plant grew tall. Soon it had a big yellow flower. Ruby showed the flower to her mom and dad.",
+      "gabarito": {
+        "corretas": 59,
+        "erros": 4,
+        "indicesErro": [
+          28,
+          29,
+          30,
+          31
+        ]
+      },
+      "app": {
+        "corretas": 59,
+        "erros": 4,
+        "segundos": 21.862,
+        "pcpm": 162,
+        "indicesErro": [
+          28,
+          29,
+          30,
+          31
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            28,
+            29,
+            30,
+            31
+          ],
+          "trecho": "only dirt. Then one",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "little-seed",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Ruby put a little seed in a pot. She gave it water and set it in the sun. Every day every day she looked at the pot, but she saw only dirt. Then one morning, a tiny green leaf came up. Ruby was so ha… happy! The plant grew tall. Soon it had a big yellow flower. Ruby showed the flower to her mom and dad.",
+      "transcricao": "Ruby put a little seed in a pot. She gave it water and set it in the sun. Every day, every day she looked at the pot, but she saw only dirt. Then one morning, a tiny green leaf came up. Ruby was so ha-happy! The plant grew tall. Soon it had a big yellow flower. Ruby showed the flower to her mom and dad.",
+      "gabarito": {
+        "corretas": 63,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 63,
+        "erros": 0,
+        "segundos": 26.251,
+        "pcpm": 144,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            18,
+            19
+          ],
+          "trecho": "Every day",
+          "asrOcorrencias": 2,
+          "extras": [
+            "every:repeticao",
+            "day:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 42,
+          "esperada": "happy!",
+          "fragmento": "ha",
+          "asrAntes": null,
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "autocorrecao",
+            "dito": "ha-"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "little-seed",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Ruby put a little seed in a pot. She gave it water and set it um in the sun. Every day she looked at the pot, but she saw pocket dirt. Then one morning, a tiny green leaf",
+      "transcricao": "Ruby put a little seed in a pot. She gave it water and set it, um, in the sun. Every day she looked at the pot, but she saw pocket dirt. Then one morning, a tiny green leaf.",
+      "gabarito": {
+        "corretas": 36,
+        "erros": 1,
+        "indicesErro": [
+          28
+        ]
+      },
+      "app": {
+        "corretas": 36,
+        "erros": 1,
+        "segundos": 14.082,
+        "pcpm": 153,
+        "indicesErro": [
+          28
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 15,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 28,
+          "esperada": "only",
+          "dita": "pocket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "pocket"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 36
+        }
+      ]
+    },
+    {
+      "texto": "class-fish",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "Our class has a pet fish named Bubbles. He is orange with a white spot on his back. Bubbles lives in a glass tank next to the window. Each week, a different child gets to feed him. This week it is Tom's turn. Tom must give Bubbles only a small pinch of food, because too much can make a fish sick. On Friday, Tom forgot to close the lid. Bubbles",
+      "transcricao": "Our class has a pet fish named Bubbles. He is orange with a white spot on his back. Bubbles lives in a glass tank next to the window. Each week, a different child gets to feed him. This week it is Tom's turn. Tom must give Bubbles only a small pinch of food, because too much can make a fish sick. On Friday, Tom forgot to close the lid. Bubbles.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 27.579,
+        "pcpm": 152,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "class-fish",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "Our class has a pet fish named Bubbles. He is orange with a white spot on his back. Bubbles lives in a jacket tank next to the window. Each week, a different child gets to feed him. This week it is Tom's torn. Tom must give Bubbles only a small pinch of food, because too much can make a fish sick. On Friday, Tom forgot to close the lid. Bubbles",
+      "transcricao": "Our class has a pet fish named Bubbles. He is orange with a white spot on his back. Bubbles lives in a jacket tank next to the window. Each week, a different child gets to feed him. This week it is Tom's turn. Tom must give Bubbles only a small pinch of food, because too much can make a fish sick. On Friday, Tom forgot to close the lid. Bubbles.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          22,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 27.669,
+        "pcpm": 150,
+        "indicesErro": [
+          22
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 22,
+          "esperada": "glass",
+          "dita": "jacket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "jacket"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "turn.",
+          "dita": "torn",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "class-fish",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "Our class has a pet fish named Bubbles. He is orange with a white spot on his back. Bubbles lives in a glass tank next to the window. Each week, a feed him. This week it is Tom's turn. Tom must give Bubbles only a small pinch of food, because too much can make a fish sick. On Friday, Tom forgot to close the lid. Bubbles",
+      "transcricao": "Our class has a pet fish named Bubbles. He is orange with a white spot on his back. Bubbles lives in a glass tank next to the window. Each week, a feed him. This week it is Tom's turn. Tom must give Bubbles only a small pinch of food, because too much can make a fish sick. On Friday, Tom forgot to close the lid. Bubbles.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 26.379,
+        "pcpm": 150,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "different child gets to",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "class-fish",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Our class has a pet fish named Bubbles. He is orange with a white spot on his back. Bubbles lives in a glass a glass tank next to the window. Each week, a different child gets to feed him. This week it is Tom's turn. Tom must gi… give Bubbles only a small pinch of food, because too much can make a fish sick. On Friday, Tom forgot to close the lid. Bubbles",
+      "transcricao": "Our class has a pet fish named Bubbles. He is orange with a white spot on his back. Bubbles lives in a glass— a glass tank next to the window. Each week, a different child gets to feed him. This week it is Tom's turn. Tom must gi— give Bubbles only a small pinch of food, because too much can make a fish sick. On Friday, Tom forgot to close the lid. Bubbles",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 29.868,
+        "pcpm": 141,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "a glass",
+          "asrOcorrencias": 2,
+          "extras": [
+            "a:repeticao",
+            "glass:repeticao",
+            "gi—:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "give",
+          "fragmento": "gi",
+          "asrAntes": "gi",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "class-fish",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Our class has a pet fish named Bubbles. He is orange with a white spot on his um back. Bubbles lives in a glass tank next to the jacket. Each week, a different child gets to feed him. This week it is Tom's",
+      "transcricao": "Our class has a pet fish named Bubbles. He is orange with a white spot on his um, back. Bubbles lives in a glass tank next to the jacket. Each week, a different child gets to feed him. This week it is Tom's.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          27
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 16.415,
+        "pcpm": 150,
+        "indicesErro": [
+          27
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 27,
+          "esperada": "window.",
+          "dita": "jacket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "jacket."
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "moon-shapes",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a full, bright circle, and other times it is only a thin curve like a smile. The moon does not really change shape. It does not make its own light either. Instead, it shines because sunlight bounces off its surface. As the moon travels around the Earth, we see different parts of its sunny",
+      "transcricao": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a full, bright circle, and other times it is only a thin curve like a smile. The moon does not really change shape. It does not make its own light either. Instead, it shines because sunlight bounces off its surface. As the moon travels around the Earth, we see different parts of its sunny,",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 26.806,
+        "pcpm": 157,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "moon-shapes",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a full, bright circle, and pocket times it is only a thin curve like a smile. The moon does not really change shape. It does not meke its own light either. Instead, it shines because sunlight bounces off its surface. As the moon travels around the Earth, we see different parts of its sunny",
+      "transcricao": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a full, bright circle, and pocket times it is only a thin curve like a smile. The moon does not really change shape. It does not make its own light either. Instead, it shines because sunlight bounces off its surface. As the moon travels around the Earth, we see different parts of its sunny,",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 26.966,
+        "pcpm": 154,
+        "indicesErro": [
+          21
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "other",
+          "dita": "pocket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "pocket"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "make",
+          "dita": "meke",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "moon-shapes",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a full, bright circle, and other times it is only a thin curve like a not really change shape. It does not make its own light either. Instead, it shines because sunlight bounces off its surface. As the moon travels around the Earth, we see different parts of its sunny",
+      "transcricao": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a full, bright circle, and other times it is only a thin curve— like a not-really-change shape. It does not make its own light either. Instead, it shines because sunlight bounces off its surface. As the moon travels around the Earth, we see different parts of its sunny,",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 24.571,
+        "pcpm": 161,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "smile. The moon does",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "moon-shapes",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a full, bright circle, and other times other times it is only a thin curve like a smile. The moon does not really change shape. It does not make its own li… light either. Instead, it shines because sunlight bounces off its surface. As the moon travels around the Earth, we see different parts of its sunny",
+      "transcricao": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a full, bright circle, and other times— other times it is only a thin curve like a smile. The moon does not really change shape. It does not make its own lee light either. Instead, it shines because sunlight bounces off its surface. M As the moon travels around the Earth, we see different parts of its sunny",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 29.247,
+        "pcpm": 144,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "other times",
+          "asrOcorrencias": 2,
+          "extras": [
+            "other:repeticao",
+            "times:repeticao",
+            "lee:insercao",
+            "M:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "light",
+          "fragmento": "li",
+          "asrAntes": "lee",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "moon-shapes",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a um full, bright circle, and other times it is jacket a thin curve like a smile. The moon does not really change shape. It does not",
+      "transcricao": "Have you ever noticed that the moon looks different from night to night? Sometimes it is a, um, full, bright circle, and other times it is jacket a thin curve like a smile. The moon does not really change shape. It does not.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 16.394,
+        "pcpm": 150,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "only",
+          "dita": "jacket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "jacket"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "lemonade-stand",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade stand. They squeezed lemons, stirred in sugar, and filled a big jug with ice. Kim painted a sign with bright letters, and Max set up a table at the end of the driveway. For a long time, nobody stopped. Cars drove past, and the ice began to melt. Max wanted to give up,",
+      "transcricao": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade stand. They squeezed lemons, stirred in sugar, and filled a big jug with ice. Kim painted a sign with bright letters, and Max set up a table at the end of the driveway. For a long time, nobody stopped. Cars drove past, and the ice began to melt. Max wanted to give up.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 27.583,
+        "pcpm": 152,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "lemonade-stand",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade stand. They squeezed lemons, pocket in sugar, and filled a big jug with ice. Kim painted a sign with bright letters, and Max set up a teble at the end of the driveway. For a long time, nobody stopped. Cars drove past, and the ice began to melt. Max wanted to give up,",
+      "transcricao": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade stand. They squeezed lemons, pocketed sugar, and filled a big jug with ice. Kim painted a sign with bright letters, and Max set up a table at the end of the driveway. For a long time, nobody stopped. Cars drove past, and the ice began to melt. Max wanted to give up.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          43
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 27.583,
+        "pcpm": 148,
+        "indicesErro": [
+          21,
+          22
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "stirred",
+          "dita": "pocket",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "pocketed"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 43,
+          "esperada": "table",
+          "dita": "teble",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "lemonade-stand",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade stand. They squeezed lemons, stirred in sugar, and filled a big jug with ice. with bright letters, and Max set up a table at the end of the driveway. For a long time, nobody stopped. Cars drove past, and the ice began to melt. Max wanted to give up,",
+      "transcricao": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade stand. They squeezed lemons, stirred in sugar, and filled a big jug with ice with bright letters, and Max set up a table at the end of the driveway. For a long time, nobody stopped. Cars drove past, and the ice began to melt. Max wanted to give up.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 26.517,
+        "pcpm": 149,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "Kim painted a sign",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "lemonade-stand",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade stand. They squeezed lemons, stirred in stirred in sugar, and filled a big jug with ice. Kim painted a sign with bright letters, and Max set up a table at the end of the dr… driveway. For a long time, nobody stopped. Cars drove past, and the ice began to melt. Max wanted to give up,",
+      "transcricao": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade stand. They squeezed lemons, stirred and stirred in sugar, and filled a big jug with ice. Kim painted a sign with bright letters, and Max set up a table at the end of the dr— driveway. For a long time, nobody stopped. Cars drove past, and the ice began to melt. Max wanted to give up.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 29.983,
+        "pcpm": 140,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "stirred in",
+          "asrOcorrencias": 1,
+          "extras": [
+            "and:insercao",
+            "stirred:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 49,
+          "esperada": "driveway.",
+          "fragmento": "dr",
+          "asrAntes": "dr",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "autocorrecao",
+            "dito": "dr—"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "lemonade-stand",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade um stand. They squeezed lemons, stirred in sugar, and jacket a big jug with ice. Kim painted a sign with bright letters, and Max set up",
+      "transcricao": "On the first hot day of summer, Max and his sister Kim decided to open a lemonade um stand. They squeezed lemons, stirred in sugar, and jacket a big jug with ice. Kim painted a sign with bright letters, and Max set up.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 16.853,
+        "pcpm": 146,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "filled",
+          "dita": "jacket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "jacket"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "float-or-sink",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "Leo had always wondered why some things float and others sink. For the school science fair, he decided to find out. He filled a large tub with water and collected objects from around the house: a spoon, an apple, a rubber duck, a coin, a candle, and a small rock. Before testing each one, he wrote down his guess. He was sure the apple would sink because it felt heavy,",
+      "transcricao": "Leo had always wondered why some things float and others sink. For the school science fair, he decided to find out. He filled a large tub with water and collected objects from around the house: a spoon, an apple, a rubber duck, a coin, a candle, and a small rock. Before testing each one, he wrote down his guess. He was sure the apple would sink because it felt heavy.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 26.99,
+        "pcpm": 156,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "float-or-sink",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "Leo had always wondered why some things float and others sink. For the school science fair, he decided to find out. He pocket a large tub with water and collected objects from around the house: a spoon, an apple, a rubber duck, a ciin, a candle, and a small rock. Before testing each one, he wrote down his guess. He was sure the apple would sink because it felt heavy,",
+      "transcricao": "Leo had always wondered why some things float and others sink. For the school science fair, he decided to find out. He pocketed a large tub with water and collected objects from around the house: a spoon, an apple, a rubber duck, a scion, a candle, and a small rock. Before testing each one, he wrote down his guess. He was sure the apple would sink because it felt heavy.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          22,
+          43
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 27.136,
+        "pcpm": 150,
+        "indicesErro": [
+          22,
+          43
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 22,
+          "esperada": "filled",
+          "dita": "pocket",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "pocketed"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 43,
+          "esperada": "coin,",
+          "dita": "ciin",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "scion,"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "float-or-sink",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "Leo had always wondered why some things float and others sink. For the school science fair, he decided to find out. He filled a large tub with water and collected objects a spoon, an apple, a rubber duck, a coin, a candle, and a small rock. Before testing each one, he wrote down his guess. He was sure the apple would sink because it felt heavy,",
+      "transcricao": "Leo had always wondered why some things float and others sink. For the school science fair, he decided to find out. He filled a large tub with water and collected objects: a spoon, an apple, a rubber duck, a coin, a candle, and a small rock. Before testing each one, he wrote down his guess. He was sure the apple would sink because it felt heavy.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 25.381,
+        "pcpm": 156,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "from around the house:",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "float-or-sink",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Leo had always wondered why some things float and others sink. For the school science fair, he decided to find out. He filled he filled a large tub with water and collected objects from around the house: a spoon, an apple, a rubber duck, a coin, a ca… candle, and a small rock. Before testing each one, he wrote down his guess. He was sure the apple would sink because it felt heavy,",
+      "transcricao": "Leo had always wondered why some things float and others sink. For the school science fair, he decided to find out. He filled— he filled a large tub with water and collected objects from around the house: a spoon, an apple, a rubber duck, a coin, a ca— candle, and a small rock. Before testing each one, he wrote down his guess. He was sure the apple would sink because it felt heavy.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 29.699,
+        "pcpm": 141,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "He filled",
+          "asrOcorrencias": 2,
+          "extras": [
+            "he:repeticao",
+            "filled:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "candle,",
+          "fragmento": "ca",
+          "asrAntes": "ca",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "autocorrecao",
+            "dito": "ca—"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "float-or-sink",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Leo had always wondered why some things float and others sink. For the school science fair, he um decided to find out. He filled a large tub window water and collected objects from around the house: a spoon, an apple, a rubber duck,",
+      "transcricao": "Leo had always wondered why some things float and others sink. For the school science fair, he, um, decided to find out. He filled a large tub window water and collected objects from around the house: a spoon, an apple, a rubber duck.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          26
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 17.588,
+        "pcpm": 140,
+        "indicesErro": [
+          26
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 26,
+          "esperada": "with",
+          "dita": "window",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "window"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "amazon-river",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in the Andes Mountains and travels across South America until it reaches the Atlantic Ocean on the coast of Brazil. Along the way, thousands of smaller rivers join it, and by the time it meets the sea, it carries more water than any other river in the world. In some places, the Amazon is",
+      "transcricao": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in the Andes Mountains and travels across South America until it reaches the Atlantic Ocean on the coast of Brazil. Along the way, thousands of smaller rivers join it, and by the time it meets the sea, it carries more water than any other river in the world. In some places, the Amazon is",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 26.474,
+        "pcpm": 159,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "amazon-river",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in the Andes Mountains and pocket across South America until it reaches the Atlantic Ocean on the coast of Brazil. Along the way, thousands of smaller rovers join it, and by the time it meets the sea, it carries more water than any other river in the world. In some places, the Amazon is",
+      "transcricao": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in the Andes Mountains and pockets across South America until it reaches the Atlantic Ocean on the coast of Brazil. Along the way, thousands of smaller rovers join it, and by the time it meets the sea, it carries more water than any other river in the world. In some places, the Amazon is",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 26.505,
+        "pcpm": 154,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "travels",
+          "dita": "pocket",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "pockets"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "rivers",
+          "dita": "rovers",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "rovers"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "amazon-river",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in the Andes Mountains and travels across South America until it reaches the Atlantic Ocean Brazil. Along the way, thousands of smaller rivers join it, and by the time it meets the sea, it carries more water than any other river in the world. In some places, the Amazon is",
+      "transcricao": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in the Andes Mountains and travels across South America until it reaches the Atlantic Ocean— Brazil. Along the way, thousands of smaller rivers join it, and by the time it meets the sea, it carries more water than any other river in the world. In some places, the Amazon is",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 25.659,
+        "pcpm": 154,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "on the coast of",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "amazon-river",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in the Andes Mountains and travels across travels across South America until it reaches the Atlantic Ocean on the coast of Brazil. Along the way, thousands of smaller rivers join it, and by the ti… time it meets the sea, it carries more water than any other river in the world. In some places, the Amazon is",
+      "transcricao": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in the Andes Mountains and travels across— travels across South America until it reaches the Atlantic Ocean on the coast of Brazil. Along the way, thousands of smaller rivers join it, and by the ti— time it meets the sea, it carries more water than any other river in the world. In some places, the Amazon is",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 29.189,
+        "pcpm": 144,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "travels across",
+          "asrOcorrencias": 2,
+          "extras": [
+            "travels:repeticao",
+            "across:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 48,
+          "esperada": "time",
+          "fragmento": "ti",
+          "asrAntes": "ti",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "autocorrecao",
+            "dito": "ti—"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "amazon-river",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in um the Andes Mountains and travels across South America jacket it reaches the Atlantic Ocean on the coast of Brazil. Along the way, thousands of smaller",
+      "transcricao": "The Amazon River winds through the largest rainforest on Earth. It begins as tiny streams high in, um, the Andes Mountains and travels across South America. Jacket. It reaches the Atlantic Ocean on the coast of Brazil. Along the way, thousands of smaller",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 17.564,
+        "pcpm": 140,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "until",
+          "dita": "jacket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "Jacket."
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "grandpas-bicycle",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The tires were flat, the chain was covered in rust, and the bell no longer rang. Nina asked if she could ride it, and Grandpa laughed. He said it would need a lot of work first, but he was willing to help if she was patient. Every Saturday that spring, they worked on the",
+      "transcricao": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The tires were flat, the chain was covered in rust, and the bell no longer rang. Nina asked if she could ride it, and Grandpa laughed. He said it would need a lot of work first, but he was willing to help if she was patient. Every Saturday that spring, they worked on the",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 26.576,
+        "pcpm": 158,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "grandpas-bicycle",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The tires were flat, the pocket was covered in rust, and the bell no longer rang. Nina asked if she could ride it, and Grandpa laughed. He seid it would need a lot of work first, but he was willing to help if she was patient. Every Saturday that spring, they worked on the",
+      "transcricao": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The tires were flat, the pocket was covered in rust, and the bell no longer rang. Nina asked if she could ride it, and Grandpa laughed. He sighed it would need a lot of work first, but he was willing to help if she was patient. Every Saturday that spring, they worked on the",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          43
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 26.834,
+        "pcpm": 152,
+        "indicesErro": [
+          21,
+          43
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "chain",
+          "dita": "pocket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "pocket"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 43,
+          "esperada": "said",
+          "dita": "seid",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "sighed"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "grandpas-bicycle",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The tires were flat, the chain was covered in rust, and the bell no longer she could ride it, and Grandpa laughed. He said it would need a lot of work first, but he was willing to help if she was patient. Every Saturday that spring, they worked on the",
+      "transcricao": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The tires were flat, the chain was covered in rust, and the bell no longer— She could ride it, and Grandpa laughed. He said it would need a lot of work first, but he was willing to help if she was patient. Every Saturday that spring, they worked on the",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 24.389,
+        "pcpm": 162,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "rang. Nina asked if",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "grandpas-bicycle",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The tires were flat, the chain was chain was covered in rust, and the bell no longer rang. Nina asked if she could ride it, and Grandpa laughed. He said it wo… would need a lot of work first, but he was willing to help if she was patient. Every Saturday that spring, they worked on the",
+      "transcricao": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The tires were flat, the chain was— chain was covered in rust, and the bell no longer rang. Nina asked if she could ride it, and Grandpa laughed. He said uh it wou— would need a lot of work first, but he was willing to help if she was patient. Every Saturday that spring, they worked on the",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 28.951,
+        "pcpm": 145,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "chain was",
+          "asrOcorrencias": 2,
+          "extras": [
+            "chain:repeticao",
+            "was:repeticao",
+            "wou—:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "would",
+          "fragmento": "wo",
+          "asrAntes": "wou",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "grandpas-bicycle",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The um tires were flat, the chain was covered in jacket, and the bell no longer rang. Nina asked if she could ride it, and Grandpa laughed.",
+      "transcricao": "In the back of Grandpa's garage, under a dusty sheet, Nina found an old blue bicycle. The, um, tires were flat, the chain was covered in jacket, and the bell no longer rang. Nina asked if she could ride it, and Grandpa laughed.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 17.652,
+        "pcpm": 139,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "rust,",
+          "dita": "jacket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "jacket,"
           }
         },
         {
