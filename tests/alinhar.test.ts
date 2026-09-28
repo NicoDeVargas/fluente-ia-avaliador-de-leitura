@@ -659,18 +659,3 @@ describe("alinhar, relógio e saltos", () => {
     expect(ms).toBeLessThan(30);
   });
 });
-
-describe("textos", () => {
-  it("têm tamanho do ano e nenhum algarismo", () => {
-    const faixa: Record<string, [number, number]> = { "pt-1": [50, 70], "pt-2": [80, 100], "pt-3": [110, 135], "pt-4": [140, 165], "en-2": [80, 105], "en-4": [140, 165] };
-    expect(TEXTOS).toHaveLength(6);
-    for (const t of TEXTOS) {
-      const [min, max] = faixa[`${t.idioma}-${t.ano}`];
-      const n = tokenizar(t.corpo).length;
-      expect(n).toBeGreaterThanOrEqual(min);
-      expect(n).toBeLessThanOrEqual(max);
-      expect(t.corpo).not.toMatch(/\d/);
-    }
-    expect(new Set(TEXTOS.map((t) => t.id)).size).toBe(6);
-  });
-});

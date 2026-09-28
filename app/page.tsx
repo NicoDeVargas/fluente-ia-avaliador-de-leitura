@@ -3,8 +3,6 @@ import { ArrowRight, ChartBar, LockSimple } from "@phosphor-icons/react/dist/ssr
 import { SeletorIdioma, Topo } from "@/components/ui";
 import { EscolhaTexto } from "@/components/EscolhaTexto";
 import { idiomaDe, sufixo, textos } from "@/lib/i18n";
-import { TEXTOS } from "@/lib/textos";
-import { tokenizar } from "@/lib/alinhar";
 import { ESTILO } from "@/lib/marcas";
 
 export default async function Inicio({ searchParams }: PageProps<"/">) {
@@ -12,9 +10,6 @@ export default async function Inicio({ searchParams }: PageProps<"/">) {
   const idioma = idiomaDe(lang);
   const t = textos[idioma];
   const ex = t.inicio.exemplo;
-  const lista = TEXTOS.filter((x) => x.idioma === idioma)
-    .sort((a, b) => a.ano - b.ano)
-    .map((x) => ({ id: x.id, ano: x.ano, titulo: x.titulo, inicio: x.corpo.split(/(?<=[.!?])\s/)[0], palavras: tokenizar(x.corpo).length }));
 
   return (
     <div lang={t.lang} className="contents">
@@ -49,7 +44,7 @@ export default async function Inicio({ searchParams }: PageProps<"/">) {
           </figure>
         </section>
         <div className="entrar lg:col-start-2 lg:row-span-2 lg:row-start-1">
-          <EscolhaTexto idioma={idioma} lista={lista} />
+          <EscolhaTexto idioma={idioma} />
         </div>
         <section aria-labelledby="como" className="lg:col-start-1 lg:row-start-2">
           <h2 id="como" className="font-display text-xl font-semibold tracking-tight">

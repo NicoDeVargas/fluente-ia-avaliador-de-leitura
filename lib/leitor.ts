@@ -40,3 +40,19 @@ export function useLeitor(): Leitor | null {
     return null;
   }
 }
+
+const CHAVE_ULTIMO = "fluente:ultimoTexto";
+
+export function ultimoTexto(): string | undefined {
+  try {
+    return sessionStorage.getItem(CHAVE_ULTIMO) ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export function salvarUltimoTexto(id: string) {
+  try {
+    sessionStorage.setItem(CHAVE_ULTIMO, id);
+  } catch {}
+}

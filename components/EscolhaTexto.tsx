@@ -4,18 +4,11 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "@phosphor-icons/react";
 import { sufixo, textos, type Idioma } from "@/lib/i18n";
-import { salvarLeitor, useLeitor } from "@/lib/leitor";
-import { campo } from "@/components/ui";
+import { salvarLeitor, salvarUltimoTexto, ultimoTexto, useLeitor } from "@/lib/leitor";
+import { sortearTexto } from "@/lib/textos";
+import { campo, primario } from "@/components/ui";
 
-export interface ResumoTexto {
-  id: string;
-  ano: number;
-  titulo: string;
-  inicio: string;
-  palavras: number;
-}
-
-export function EscolhaTexto({ idioma, lista }: { idioma: Idioma; lista: ResumoTexto[] }) {
+export function EscolhaTexto({ idioma }: { idioma: Idioma }) {
   const t = textos[idioma];
   const router = useRouter();
   const salvo = useLeitor();
@@ -28,7 +21,7 @@ export function EscolhaTexto({ idioma, lista }: { idioma: Idioma; lista: ResumoT
   const apelidoAtual = apelido ?? salvo?.apelido ?? "";
   const anoAtual = ano ?? salvo?.ano ?? null;
 
-  function escolher(id: string) {
+  function comecar() {
     const nome = apelidoAtual.trim();
     if (!nome) {
       setErro("apelido");
@@ -42,8 +35,11 @@ export function EscolhaTexto({ idioma, lista }: { idioma: Idioma; lista: ResumoT
       refAno.current?.scrollIntoView({ block: "center", behavior: "smooth" });
       return;
     }
+    const texto = sortearTexto(idioma, anoAtual, ultimoTexto());
+    if (!texto) return;
     salvarLeitor({ apelido: nome, ano: anoAtual });
-    router.push(`/ler/${id}${sufixo(idioma)}`);
+    salvarUltimoTexto(texto.id);
+    router.push(`/ler/${texto.id}${sufixo(idioma)}`);
   }
 
   return (
@@ -107,36 +103,17 @@ export function EscolhaTexto({ idioma, lista }: { idioma: Idioma; lista: ResumoT
         </div>
       </section>
 
-      <section aria-labelledby="textos">
-        <h2 id="textos" className="font-display text-xl font-semibold tracking-tight">
-          {t.inicio.textos}
-        </h2>
-        <p className="mt-1 text-sm text-suave">{t.inicio.textosAjuda}</p>
-        <ul className="mt-5 flex flex-col gap-3">
-          {lista.map((texto) => (
-            <li key={texto.id}>
-              <button
-                type="button"
-                onClick={() => escolher(texto.id)}
-                className="group grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 rounded-2xl border border-linha bg-papel p-4 text-left transition hover:border-acento/60 active:scale-[0.99] sm:gap-5 sm:p-5"
-              >
-                <span className="flex size-14 flex-col items-center justify-center rounded-xl bg-acento-suave text-acento-texto">
-                  <span className="font-display text-2xl font-bold leading-none tabular-nums">{texto.ano}</span>
-                  <span className="mt-0.5 text-[11px] font-semibold leading-none">{t.inicio.rotuloAno}</span>
-                </span>
-                <span className="min-w-0">
-                  <span className="block font-display text-lg font-semibold leading-snug tracking-tight">{texto.titulo}</span>
-                  <span className="mt-1 block truncate text-sm text-suave">{texto.inicio}</span>
-                  <span className="mt-1 block text-sm text-suave">
-                    {t.ano(texto.ano)}, {t.inicio.palavras(texto.palavras)}
-                  </span>
-                </span>
-                <ArrowRight size={22} weight="bold" className="text-acento-texto transition group-hover:translate-x-0.5" aria-hidden />
-              </button>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <div className="flex flex-col gap-2">
+        <button
+          type="button"
+          onClick={comecar}
+          className={`${primario} w-full`}
+        >
+          {t.sorteio.comecar}
+          <ArrowRight size={22} weight="bold" aria-hidden />
+        </button>
+        <p className="text-center text-sm text-suave">{t.sorteio.ajuda}</p>
+      </div>
     </div>
   );
 }

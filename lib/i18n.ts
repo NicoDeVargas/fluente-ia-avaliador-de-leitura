@@ -21,11 +21,6 @@ const en = {
     apelido: "Nickname",
     apelidoAjuda: "A first name or nickname. No full names.",
     anoLeitor: "School grade",
-    escolha: "Choose",
-    rotuloAno: "grade",
-    textos: "Pick a text",
-    textosAjuda: "Each text is original and written for the grade shown.",
-    palavras: (n: number) => `${n} words`,
     faltaApelido: "Write a nickname first.",
     faltaAno: "Choose the grade first.",
     comoFunciona: "How it works",
@@ -140,6 +135,11 @@ const en = {
     ],
     voltar: "Try a reading",
   },
+  sorteio: {
+    comecar: "Start",
+    ajuda: "An original text for the chosen grade is picked at random.",
+    outro: "Different text",
+  },
   idiomas: { en: "English", pt: "Português" } as Record<Idioma, string>,
 };
 
@@ -161,11 +161,6 @@ const pt: Dicionario = {
     apelido: "Apelido",
     apelidoAjuda: "Um primeiro nome ou apelido. Sem nome completo.",
     anoLeitor: "Ano escolar",
-    escolha: "Escolha",
-    rotuloAno: "ano",
-    textos: "Escolha um texto",
-    textosAjuda: "Os textos são originais e escritos para o ano indicado.",
-    palavras: (n: number) => `${n} palavras`,
     faltaApelido: "Escreva um apelido primeiro.",
     faltaAno: "Escolha o ano primeiro.",
     comoFunciona: "Como funciona",
@@ -279,6 +274,11 @@ const pt: Dicionario = {
       "Os textos são originais e não foram calibrados com textos padronizados.",
     ],
     voltar: "Fazer uma leitura",
+  },
+  sorteio: {
+    comecar: "Começar",
+    ajuda: "Um texto original do ano escolhido é sorteado.",
+    outro: "Outro texto",
   },
   idiomas: { en: "English", pt: "Português" },
 };
