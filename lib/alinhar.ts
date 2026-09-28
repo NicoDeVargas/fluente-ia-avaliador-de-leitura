@@ -52,10 +52,11 @@ const ACERTOS_APOS_SALTO = 3;
 const JANELA_REPETICAO = 3;
 const ESPELHADAS = "bdpq";
 const MAX_PEDACOS = 6;
+const MAX_LETRAS = 16;
 const HIFENS = /[-‐‑]/;
 const SEPARA_TEXTO = /(?<=[–—])/;
 const SEPARA_FALA = /(?<=[-‐‑–—])/;
-export const MS_POR_SILABA_SILABADA = 300;
+export const MS_POR_SILABA_SILABADA = 450;
 
 interface Token { texto: string; norm: string; inicio: number; fim: number; hesitacao: boolean; pausa: boolean; intervalo: number; salto: number }
 type Tipo = "par" | "troca" | "extra" | "pulo";
@@ -155,7 +156,7 @@ function lerTokens(palavras: PalavraLida[], idioma: Idioma): Token[] {
 
 const MOVIMENTOS: [Tipo, number, number][] = [
   ["par", 1, 1], ["par", 2, 1], ["par", 1, 2], ["troca", 1, 1], ["extra", 1, 0], ["pulo", 0, 1],
-  ...Array.from({ length: MAX_PEDACOS - 2 }, (_, d): [Tipo, number, number] => ["par", d + 3, 1]),
+  ...Array.from({ length: MAX_LETRAS - 2 }, (_, d): [Tipo, number, number] => ["par", d + 3, 1]),
 ];
 const movimentoJunta = (k: number) => (k === 2 ? 1 : k + 3);
 
@@ -200,9 +201,12 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
   const juntaLidos = new Uint8Array(n * m);
   for (let i = 0; i < n; i++) {
     let junto = lidos[i].norm;
-    for (let k = 2; k <= MAX_PEDACOS && i + k <= n; k++) {
-      if (lidos[i + k - 1].hesitacao) break;
-      junto += lidos[i + k - 1].norm;
+    let letras = junto.length === 1;
+    for (let k = 2; k <= MAX_LETRAS && i + k <= n; k++) {
+      const t = lidos[i + k - 1];
+      letras &&= t.norm.length === 1;
+      if (t.hesitacao || (k > MAX_PEDACOS && !letras)) break;
+      junto += t.norm;
       for (const j of alvos.get(junto) ?? []) juntaLidos[i * m + j] = k;
     }
   }

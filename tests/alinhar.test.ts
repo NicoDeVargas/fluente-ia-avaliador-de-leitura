@@ -731,15 +731,15 @@ describe("alinhar, leitura silabada", () => {
     expect(r.silabadas).toBe(0);
   });
 
-  it("palavra lenta: 300 ms ou mais por sílaba", () => {
-    expect(MS_POR_SILABA_SILABADA).toBe(300);
+  it("palavra lenta: 450 ms ou mais por sílaba", () => {
+    expect(MS_POR_SILABA_SILABADA).toBe(450);
     const palavras = [
       { texto: "a", inicio: 0, fim: 200 },
-      { texto: "borboleta", inicio: 300, fim: 1500 },
-      { texto: "pousou", inicio: 1600, fim: 2199 },
-      { texto: "na", inicio: 2300, fim: 2900 },
-      { texto: "flor", inicio: 3000, fim: 3900 },
-      { texto: "amarela", inicio: 4000, fim: 4500 },
+      { texto: "borboleta", inicio: 300, fim: 2100 },
+      { texto: "pousou", inicio: 2200, fim: 3099 },
+      { texto: "na", inicio: 3200, fim: 3900 },
+      { texto: "flor", inicio: 4000, fim: 4900 },
+      { texto: "amarela", inicio: 5000, fim: 6300 },
     ];
     const r = alinhar(corpo, palavras, "pt");
     expect(marcas(r)).toEqual(Array(6).fill("correta"));
@@ -765,6 +765,47 @@ describe("alinhar, leitura silabada", () => {
   it("composta com hífen lida em duas partes não é silabada", () => {
     const r = alinhar("pegou o guarda-chuva", rapido("pegou o guarda chuva"), "pt");
     expect(marcas(r)).toEqual(Array(3).fill("correta"));
+    expect(r.silabadas).toBe(0);
+  });
+
+  it("ritmo de leitor fluente não é silabada", () => {
+    const palavras = [
+      { texto: "a", inicio: 0, fim: 150 },
+      { texto: "borboleta", inicio: 200, fim: 1800 },
+      { texto: "pousou", inicio: 1900, fim: 2700 },
+      { texto: "na", inicio: 2800, fim: 3000 },
+      { texto: "flor", inicio: 3100, fim: 3500 },
+      { texto: "amarela", inicio: 3600, fim: 5200 },
+    ];
+    expect(alinhar(corpo, palavras, "pt").silabadas).toBe(0);
+  });
+
+  it("letra por letra é correta e silabada, com hífen ou separadas", () => {
+    for (const fala of ["a B-O-R-B-O-L-E-T-A pousou na flor amarela", "a B O R B O L E T A pousou na flor amarela", "a borboleta pousou na F-L-O-R amarela"]) {
+      const r = alinhar(corpo, rapido(fala), "pt");
+      expect(marcas(r), fala).toEqual(Array(6).fill("correta"));
+      expect(r.extras, fala).toEqual([]);
+      expect(r.silabadas, fala).toBe(1);
+    }
+  });
+
+  it("letras e depois a palavra: autocorreção silabada", () => {
+    const r = alinhar(corpo, rapido("a b o r b o l e t a borboleta pousou na flor amarela"), "pt");
+    expect(marcas(r)).toEqual(["correta", "autocorrecao", "correta", "correta", "correta", "correta"]);
+    expect(r.itens[1].silabada).toBe(true);
+    expect(r.extras).toEqual([]);
+  });
+
+  it("letras que não formam a palavra não viram silabada", () => {
+    const r = alinhar(corpo, rapido("a b o r b u l e t a pousou na flor amarela"), "pt");
+    expect(r.itens[1].silabada).toBeUndefined();
+    expect(r.silabadas).toBe(0);
+  });
+
+  it("um fragmento só antes da palavra não é silabada", () => {
+    const r = alinhar(corpo, rapido("a bor borboleta pousou na flor amarela"), "pt");
+    expect(r.itens[1].marca).toBe("autocorrecao");
+    expect(r.itens[1].silabada).toBeUndefined();
     expect(r.silabadas).toBe(0);
   });
 

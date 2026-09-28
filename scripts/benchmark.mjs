@@ -29,8 +29,32 @@ const VOGAIS = { a: "e", e: "a", i: "o", o: "i", u: "o" };
 
 process.loadEnvFile(path.join(RAIZ, ".env.local"));
 
+const vazio = (p) => normalizar(p) === "";
+
 function palavras(corpo) {
-  return corpo.split(/\s+/).flatMap((p) => p.split(/(?<=[-‐‑–—])/)).filter((p) => normalizar(p) !== "");
+  return corpo.split(/\s+/).flatMap((p) => p.split(/(?<=[–—])/)).filter((p) => !vazio(p));
+}
+
+function falas(corpo) {
+  return palavras(corpo).flatMap((p) => p.split(/(?<=[-‐‑])/)).filter((p) => !vazio(p));
+}
+
+function itemDaFala(corpo) {
+  return palavras(corpo).flatMap((p, k) => p.split(/(?<=[-‐‑])/).filter((q) => !vazio(q)).map(() => k));
+}
+
+function noGabarito(l, item) {
+  const unicos = (v) => [...new Set(v.map((k) => item[k]))];
+  const erros = unicos(l.erros);
+  const corretas = unicos(l.corretas).filter((k) => !erros.includes(k));
+  const eventos = l.eventos.map((e) => ({
+    ...e,
+    ...(e.indice !== undefined && { indice: item[e.indice] }),
+    ...(e.indices && { indices: unicos(e.indices) }),
+    ...(e.antesDe !== undefined && { antesDe: item[e.antesDe] }),
+    ...(e.ultimaLida !== undefined && { ultimaLida: item[e.ultimaLida] }),
+  }));
+  return { ...l, corretas, erros, eventos };
 }
 
 function trocarMiolo(original, nova) {
@@ -65,7 +89,7 @@ function pseudo(palavra) {
 }
 
 function cenarios(texto) {
-  const ws = palavras(texto.corpo);
+  const ws = falas(texto.corpo);
   const n = Math.min(ws.length, MAX_PALAVRAS);
   const idioma = texto.idioma;
   const fala = (k) => ({ dizer: ws[k] });
@@ -154,7 +178,8 @@ function cenarios(texto) {
     });
   }
 
-  return lista.map((l) => ({ ...l, texto: texto.id, idioma, n, ws }));
+  const item = itemDaFala(texto.corpo);
+  return lista.map((l) => ({ ...noGabarito(l, item), texto: texto.id, idioma, n, ws }));
 }
 
 function xml(s) {
@@ -273,7 +298,7 @@ for (const l of leituras) {
     roteiro: roteiro(l),
     transcricao: transcrito.map((p) => p.texto).join(" "),
     gabarito: { corretas: l.corretas.length, erros: l.erros.length, indicesErro: l.erros },
-    app: { corretas: r.corretas, erros: r.erros, segundos: r.segundos, pcpm: r.pcpm, indicesErro: errosApp },
+    app: { corretas: r.corretas, erros: r.erros, segundos: r.segundos, pcpm: r.pcpm, silabadas: r.silabadas, indicesErro: errosApp },
     difCorretas: Math.abs(r.corretas - l.corretas.length),
     difErros: Math.abs(r.erros - l.erros.length),
     errosCasados: acertos,
@@ -304,6 +329,7 @@ const resumo = {
   errosApp: apontados,
   precisaoErros: apontados ? Number((vp / apontados).toFixed(3)) : null,
   revocacaoErros: reais ? Number((vp / reais).toFixed(3)) : null,
+  silabadasPorLeituraLimpa: Number(media(resultados.filter((r) => r.cenario === "limpo").map((r) => r.app.silabadas)).toFixed(2)),
   asr: {
     trocaAlheiaNaoLiteral: `${corrigidas(porTipo("troca_alheia"))}/${porTipo("troca_alheia").length}`,
     pseudopalavraViraCorreta: `${porTipo("troca_pseudopalavra").filter((e) => e.app.marca === "correta").length}/${porTipo("troca_pseudopalavra").length}`,
@@ -321,6 +347,7 @@ console.log(`leituras: ${resumo.n}`);
 console.log(`|dif| médio em palavras corretas: ${resumo.mediaDifCorretas}  (exatas ${resumo.exatos}/${resumo.n})`);
 console.log(`dentro de ±1: ${pct(resumo.dentroDe1)}   dentro de ±3: ${pct(resumo.dentroDe3)}`);
 console.log(`erros: gabarito ${reais}, app ${apontados}, casados ${vp}  precisão ${pct(resumo.precisaoErros ?? 0)}  revocação ${pct(resumo.revocacaoErros ?? 0)}`);
+console.log(`silabadas por leitura limpa: ${resumo.silabadasPorLeituraLimpa}`);
 console.log(`ASR: troca alheia não transcrita literalmente ${resumo.asr.trocaAlheiaNaoLiteral}, pseudopalavra virou a palavra certa ${resumo.asr.pseudopalavraViraCorreta}, fragmento mantido ${resumo.asr.fragmentoMantido}, hesitação transcrita ${resumo.asr.hesitacaoTranscrita}, repetição mantida ${resumo.asr.repeticaoMantida}`);
 console.log(`aviso: ${resumo.aviso}`);
 console.log(`resultado em ${path.relative(RAIZ, SAIDA)}`);
