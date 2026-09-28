@@ -5,16 +5,21 @@ import Link from "next/link";
 import { ArrowLeft, Microphone, PencilSimple, Stop } from "@phosphor-icons/react";
 import type { Resultado as TResultado } from "@/lib/alinhar";
 import { sufixo, textos, type Idioma } from "@/lib/i18n";
+import { gravacao } from "@/lib/i18n-gravacao";
 import { salvarLeitor, useLeitor } from "@/lib/leitor";
 import { Aviso, campo, primario, secundario } from "@/components/ui";
 import { Resultado } from "@/components/Resultado";
 
 const DURACAO = 60000;
-const LIMITE = 70000;
+const MARGEM_FALA = 500;
+const LIMITE_DURO = 90000;
+const JANELA_CALIBRACAO = 300;
+const JANELA_FALA = 150;
+const SEM_FALA_LIMITE = 20000;
 const MINIMO = 5000;
 const TIPOS = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus"];
 
-type Fase = "pronto" | "pedindo" | "gravando" | "analisando" | "resultado";
+type Fase = "pronto" | "pedindo" | "escutando" | "gravando" | "analisando" | "resultado";
 type Erro = "semMicrofone" | "semSuporte" | "curta" | "falhou" | "muitas" | "falhaGravacao";
 
 interface Props {
@@ -35,12 +40,14 @@ function extensao(tipo: string) {
 export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto }: Props) {
   const t = textos[idioma];
   const l = t.leitura;
+  const g = gravacao[idioma];
   const leitor = useLeitor();
   const [editando, setEditando] = useState(false);
   const [fase, setFase] = useState<Fase>("pronto");
   const [erro, setErro] = useState<Erro | null>(null);
   const [decorrido, setDecorrido] = useState(0);
-  const [gravacao, setGravacao] = useState<{ blob: Blob; url: string } | null>(null);
+  const [semFalaDica, setSemFalaDica] = useState(false);
+  const [audio, setAudio] = useState<{ blob: Blob; url: string } | null>(null);
   const [saida, setSaida] = useState<{
     id: string;
     resultado: TResultado;
@@ -51,6 +58,17 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
   const cancelado = useRef(false);
   const descartar = useRef(false);
   const url = useRef<string | null>(null);
+  const audioCtx = useRef<AudioContext | null>(null);
+  const falaInicio = useRef<number | null>(null);
+  const limiar = useRef<number | null>(null);
+  const ruidos = useRef<number[]>([]);
+  const acimaDesde = useRef<number | null>(null);
+
+  function fecharAudio() {
+    const ctx = audioCtx.current;
+    audioCtx.current = null;
+    if (ctx && ctx.state !== "closed") ctx.close().catch(() => {});
+  }
 
   useEffect(() => {
     cancelado.current = false;
@@ -59,6 +77,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
       if (relogio.current) clearInterval(relogio.current);
       if (gravador.current?.state === "recording") gravador.current.stop();
       if (url.current) URL.revokeObjectURL(url.current);
+      fecharAudio();
     };
   }, []);
 
@@ -141,6 +160,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
     };
     rec.onerror = () => {
       if (relogio.current) clearInterval(relogio.current);
+      fecharAudio();
       if (rec.state !== "inactive") {
         descartar.current = true;
         rec.stop();
@@ -152,6 +172,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
     rec.onstop = () => {
       parar();
       if (relogio.current) clearInterval(relogio.current);
+      fecharAudio();
       if (cancelado.current) return;
       if (descartar.current) {
         descartar.current = false;
@@ -168,19 +189,74 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
       });
       if (url.current) URL.revokeObjectURL(url.current);
       url.current = URL.createObjectURL(blob);
-      setGravacao({ blob, url: url.current });
+      setAudio({ blob, url: url.current });
       enviar(blob);
     };
     gravador.current = rec;
+    let analisador: AnalyserNode | null = null;
+    let buffer: Float32Array<ArrayBuffer> | null = null;
+    try {
+      const ctx = new AudioContext();
+      audioCtx.current = ctx;
+      const fonte = ctx.createMediaStreamSource(fluxo);
+      analisador = ctx.createAnalyser();
+      analisador.fftSize = 1024;
+      fonte.connect(analisador);
+      buffer = new Float32Array(analisador.fftSize);
+    } catch {
+      analisador = null;
+      buffer = null;
+    }
+    falaInicio.current = null;
+    limiar.current = null;
+    ruidos.current = [];
+    acimaDesde.current = null;
+    setSemFalaDica(false);
     rec.start(1000);
     inicio.current = Date.now();
     setDecorrido(0);
-    setFase("gravando");
+    setFase("escutando");
     relogio.current = window.setInterval(() => {
-      const passou = Date.now() - inicio.current;
-      setDecorrido(Math.min(LIMITE, passou));
-      if (passou >= LIMITE && rec.state === "recording") rec.stop();
-    }, 200);
+      const agora = Date.now();
+      const passouInicio = agora - inicio.current;
+      if (passouInicio >= LIMITE_DURO && rec.state === "recording") {
+        rec.stop();
+        return;
+      }
+      if (!analisador || !buffer) return;
+      analisador.getFloatTimeDomainData(buffer);
+      let soma = 0;
+      for (let i = 0; i < buffer.length; i++) soma += buffer[i] * buffer[i];
+      const rms = Math.sqrt(soma / buffer.length);
+      if (falaInicio.current === null) {
+        if (passouInicio < JANELA_CALIBRACAO) {
+          ruidos.current.push(rms);
+          return;
+        }
+        if (limiar.current === null) {
+          const media = ruidos.current.length ? ruidos.current.reduce((a, b) => a + b, 0) / ruidos.current.length : 0;
+          limiar.current = Math.max(0.02, media * 3);
+        }
+        if (rms > limiar.current) {
+          if (acimaDesde.current === null) acimaDesde.current = agora;
+          if (agora - acimaDesde.current >= JANELA_FALA) {
+            falaInicio.current = agora;
+            setSemFalaDica(false);
+            setDecorrido(0);
+            setFase("gravando");
+          }
+        } else {
+          acimaDesde.current = null;
+        }
+        if (falaInicio.current === null && passouInicio >= SEM_FALA_LIMITE) {
+          setSemFalaDica(true);
+        }
+      } else {
+        const passouFala = agora - falaInicio.current;
+        setDecorrido(Math.min(DURACAO, passouFala));
+        if (passouFala >= DURACAO + MARGEM_FALA && rec.state === "recording") rec.stop();
+      }
+    }, 50);
   }
 
   function terminar() {
@@ -197,7 +273,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
     if (url.current) URL.revokeObjectURL(url.current);
     url.current = null;
     setSaida(null);
-    setGravacao(null);
+    setAudio(null);
     setErro(null);
     setFase("pronto");
     window.history.replaceState(null, "", `/ler/${textoId}${sufixo(idioma)}`);
@@ -218,7 +294,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
           ano={leitor.ano}
           resultado={saida.resultado}
           contagemInicial={null}
-          audioUrl={gravacao?.url}
+          audioUrl={audio?.url}
           onLerDeNovo={lerDeNovo}
         />
       </div>
@@ -226,7 +302,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
   }
 
   const restante = Math.max(0, Math.ceil((DURACAO - decorrido) / 1000));
-  const ocupado = fase === "gravando" || fase === "analisando" || fase === "pedindo";
+  const ocupado = fase === "escutando" || fase === "gravando" || fase === "analisando" || fase === "pedindo";
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 pb-40">
@@ -272,7 +348,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
       </div>
 
       <article
-        className={`folha rounded-2xl border px-5 py-8 transition-colors sm:px-12 sm:py-12 ${fase === "gravando" ? "border-acento/50" : "border-linha"}`}
+        className={`folha rounded-2xl border px-5 py-8 transition-colors sm:px-12 sm:py-12 ${fase === "gravando" || fase === "escutando" ? "border-acento/50" : "border-linha"}`}
       >
         <p lang={idiomaTexto} className="max-w-[32ch] text-[1.6rem] leading-[1.85] tracking-[0.005em] sm:text-[2.1rem] sm:leading-[1.8]">
           {corpo}
@@ -291,8 +367,8 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
           {erro && (
             <Aviso
               acao={
-                erro === "falhou" && gravacao ? (
-                  <button type="button" onClick={() => enviar(gravacao.blob)} className={`${secundario} min-h-11 shrink-0 py-2`}>
+                erro === "falhou" && audio ? (
+                  <button type="button" onClick={() => enviar(audio.blob)} className={`${secundario} min-h-11 shrink-0 py-2`}>
                     {l.tentarDeNovo}
                   </button>
                 ) : undefined
@@ -301,7 +377,27 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
               {l[erro]}
             </Aviso>
           )}
-          {fase === "gravando" ? (
+          {fase === "escutando" ? (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="flex flex-1 items-center gap-3" role="status" aria-live="polite">
+                  <span className="relative flex size-3" aria-hidden>
+                    <span className="pulsar absolute inset-0 rounded-full bg-acento" />
+                    <span className="relative size-3 rounded-full bg-acento" />
+                  </span>
+                  <span className="font-semibold">{g.aguardando}</span>
+                </div>
+                <button type="button" onClick={cancelar} className={`${secundario} px-4`}>
+                  {l.cancelar}
+                </button>
+                <button type="button" onClick={terminar} className={`${primario} sm:min-w-36`}>
+                  <Stop size={18} weight="fill" aria-hidden />
+                  {l.terminei}
+                </button>
+              </div>
+              {semFalaDica && <p className="text-sm text-suave">{g.semFalaAviso}</p>}
+            </div>
+          ) : fase === "gravando" ? (
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className="flex flex-1 items-center gap-3" role="timer" aria-live="off">
