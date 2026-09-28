@@ -1,2 +1,15 @@
+/node_modules
+/.next/
+/out/
+/build
+/coverage
+.DS_Store
+*.pem
+npm-debug.log*
+*.tsbuildinfo
+next-env.d.ts
 .superpowers/
 .claude/
+.env*
+!.env.example
+.vercel
