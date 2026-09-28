@@ -431,12 +431,106 @@ describe("alinhar, relógio e saltos", () => {
     expect(r.erros).toBe(5);
   });
 
+  it("gagueira na primeira palavra depois do salto mantém o salto", () => {
+    const a = lerComSalto(["cla", "clara", "lembrou"]);
+    const r = alinhar(a.corpo, a.palavras, "pt");
+    expect(marcas(r).slice(a.inicio, a.fim + 1)).toEqual(Array(12).fill("pulada"));
+    expect(r.itens[a.fim + 1].marca).toBe("autocorrecao");
+    expect(r.itens[a.fim + 1].dito).toBe("cla");
+    expect(r.itens[a.fim + 2].marca).toBe("correta");
+    expect(r.extras).toEqual([]);
+    const b = lerComSalto(["clara", "clara", "lembrou"]);
+    const q = alinhar(b.corpo, b.palavras, "pt");
+    expect(marcas(q).slice(b.inicio, b.fim + 1)).toEqual(Array(12).fill("pulada"));
+    expect(q.itens[b.fim + 1].marca).toBe("correta");
+    expect(q.extras.map((e) => [e.texto, e.tipo])).toEqual([["clara", "repeticao"]]);
+    expect(q.erros).toBe(12);
+  });
+
+  it("fala antes do texto fica como inserção e a primeira palavra trocada é do texto", () => {
+    const corpo = corpoDe("bola-azul");
+    const resto = tokenizar(corpo).slice(1, 10).join(" ");
+    const r = alinhar(corpo, [...ler("pronto", 500), ...ler(`Lua ${resto}`, 10000, 5000)], "pt");
+    expect(r.extras).toEqual([{ texto: "pronto", inicio: 0, fim: 500, tipo: "insercao" }]);
+    expect(r.itens[0].marca).toBe("trocada");
+    expect(r.itens[0].dito).toBe("Lua");
+    expect(r.itens[0].inicio).toBe(5000);
+    expect(r.itens[0].hesitacao).toBe(false);
+    expect(r.corretas).toBe(9);
+    expect(r.erros).toBe(1);
+    expect(r.segundos).toBe(5);
+    expect(r.pcpm).toBe(108);
+  });
+
+  it("fala antes do texto com a primeira palavra pulada", () => {
+    const corpo = corpoDe("bola-azul");
+    const resto = tokenizar(corpo).slice(1, 10).join(" ");
+    const r = alinhar(corpo, [...ler("pronto", 500), ...ler(resto, 9500, 5000)], "pt");
+    expect(r.extras.map((e) => [e.texto, e.tipo])).toEqual([["pronto", "insercao"]]);
+    expect(r.itens[0].marca).toBe("pulada");
+    expect(r.itens.slice(1, 10).every((i) => i.marca === "correta" && i.hesitacao === false)).toBe(true);
+    expect(r.corretas).toBe(9);
+    expect(r.erros).toBe(1);
+    expect(r.segundos).toBe(4.5);
+    expect(r.pcpm).toBe(120);
+  });
+
+  it("okay antes da leitura não muda o PCPM", () => {
+    const corpo = corpoDe("lost-kite");
+    const texto = ler(tokenizar(corpo).slice(1, 11).join(" "), 8000, 3000);
+    const com = alinhar(corpo, [...ler("okay", 400), ...texto], "en");
+    const sem = alinhar(corpo, texto, "en");
+    expect(com.extras.map((e) => [e.texto, e.tipo])).toEqual([["okay", "insercao"]]);
+    expect(marcas(com)).toEqual(marcas(sem));
+    expect(com.segundos).toBe(sem.segundos);
+    expect(com.pcpm).toBe(sem.pcpm);
+    expect(com.pcpm).toBe(120);
+  });
+
+  it("preâmbulo que cita a primeira palavra: o relógio começa na leitura de verdade", () => {
+    const corpo = corpoDe("bola-azul");
+    const texto = tokenizar(corpo).slice(0, 10).join(" ");
+    const r = alinhar(corpo, [...ler("vou ler a da Lia", 2500), ...ler(texto, 10000, 5000)], "pt");
+    expect(r.itens[0].marca).toBe("correta");
+    expect(r.itens[0].inicio).toBe(5000);
+    expect(r.corretas).toBe(10);
+    expect(r.erros).toBe(0);
+    expect(r.segundos).toBe(5);
+    expect(r.pcpm).toBe(120);
+  });
+
+  it("fala depois da última palavra lida é inserção, não troca da próxima", () => {
+    const corpo = corpoDe("horta-da-escola");
+    const tokens = tokenizar(corpo);
+    const estava = tokens.indexOf("estava");
+    const r = alinhar(corpo, ler([...tokens.slice(0, estava + 1), "pronto"].join(" "), 15000), "pt");
+    expect(r.itens[estava + 1].marca).toBe("nao_lida");
+    expect(r.extras.map((e) => [e.texto, e.tipo])).toEqual([["pronto", "insercao"]]);
+    expect(r.erros).toBe(0);
+    expect(r.corretas).toBe(estava + 1);
+  });
+
+  it("palavras parecidas no fim da leitura são trocadas", () => {
+    const r = alinhar("o menino viu a casa", ler("o menino viu o caso", 5000), "pt");
+    expect(marcas(r)).toEqual(["correta", "correta", "correta", "trocada", "trocada"]);
+    expect(r.itens.slice(3).map((i) => i.dito)).toEqual(["o", "caso"]);
+    expect(r.corretas).toBe(3);
+    expect(r.erros).toBe(2);
+  });
+
+  it("b, d, p e q trocadas contam como tentativa da mesma palavra", () => {
+    const r = alinhar("o dado caiu", ler("o bado dado caiu", 4000), "pt");
+    expect(marcas(r)).toEqual(["correta", "autocorrecao", "correta"]);
+    expect(r.itens[1].dito).toBe("bado");
+    expect(r.extras).toEqual([]);
+  });
+
   it("alinha um texto longo rapidamente", () => {
     const corpo = corpoDe("quiet-garden");
     const tokens = tokenizar(corpo);
     const fala = [...tokens, ...tokens].map((t, k) => (k % 7 === 3 ? "blue" : t)).join(" ");
     const palavras = ler(fala, 59000);
-    for (let k = 0; k < 10; k++) alinhar(corpo, palavras, "en");
+    for (let k = 0; k < 20; k++) alinhar(corpo, palavras, "en");
     const inicio = performance.now();
     for (let k = 0; k < 10; k++) alinhar(corpo, palavras, "en");
     const ms = (performance.now() - inicio) / 10;

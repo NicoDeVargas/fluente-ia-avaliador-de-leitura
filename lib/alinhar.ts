@@ -30,8 +30,12 @@ const EDICAO = 1e9;
 const PULO_SEGUINTE = 1e8;
 const ACERTO = 1e4;
 const REPETICAO = 1;
+const TROCA_PARECIDA = 5;
+const TROCA_DIFERENTE = 2;
+const EXTRA_APOS_PRIMEIRA = 3;
 const ACERTOS_APOS_SALTO = 3;
 const JANELA_REPETICAO = 3;
+const ESPELHADAS = "bdpq";
 
 interface Token { texto: string; norm: string; inicio: number; fim: number; hesitacao: boolean; pausa: boolean }
 type Tipo = "par" | "troca" | "extra" | "pulo";
@@ -90,7 +94,12 @@ function parecida(tentativa: string, alvo: string) {
   if (tentativa === alvo) return false;
   if (alvo.startsWith(tentativa)) return true;
   const limite = Math.max(1, Math.floor(alvo.length / 3));
-  return tentativa[0] === alvo[0] && Math.abs(tentativa.length - alvo.length) <= limite && distancia(tentativa, alvo) <= limite;
+  const curtas = tentativa.length <= 2 && alvo.length <= 2;
+  return (curtas || mesmaInicial(tentativa, alvo)) && Math.abs(tentativa.length - alvo.length) <= limite && distancia(tentativa, alvo) <= limite;
+}
+
+function mesmaInicial(a: string, b: string) {
+  return a[0] === b[0] || (ESPELHADAS.includes(a[0]) && ESPELHADAS.includes(b[0]));
 }
 
 function naJanela(norm: string, j: number, esperados: string[]) {
@@ -113,9 +122,11 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
   const m = esperados.length;
   const L = m + 1;
   const K = ACERTOS_APOS_SALTO;
-  const estados = 2 + 2 * (K - 1);
+  const P = 2 + 2 * (K - 1);
+  const F = P + 1;
+  const estados = P + 2;
   const primeiroFinal = 2 + (K - 1);
-  const depois = Array.from({ length: estados }, (_, s) => (s < 2 || (s - 2) % (K - 1) === 0 ? 0 : s - 1));
+  const depois = Array.from({ length: estados }, (_, s) => (s === P ? F : s < 2 || s === F || (s - 2) % (K - 1) === 0 ? 0 : s - 1));
   const equivalentes = EQUIVALENTES[idioma];
   const juncoes = JUNCOES[idioma];
 
@@ -172,11 +183,17 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
       const juntaE = dentro && juntaEsperados[j] === 1;
       const repeticao = repete[j] === 1;
       const tenta = dentro && tentativa[j] === 1;
+      const imediata = j > 0 && igual[j - 1] === 1;
       const custoExtra = repeticao ? EDICAO - REPETICAO : EDICAO;
-      const aposSalto = dentro && inicioDeFrase[j] ? estados - 1 : primeiroFinal - 1;
+      const aposSalto = dentro && inicioDeFrase[j] ? P - 1 : primeiroFinal - 1;
+      const custoTroca = tenta ? EDICAO - TROCA_PARECIDA : EDICAO + TROCA_DIFERENTE;
       for (let s = 0; s < estados; s++) {
-        const extraPermitido = hesitacao || s === 0 || (s >= 2 && repeticao) || tenta;
-        if (s >= 2 && !casa && !juntaL && !juntaE && !extraPermitido) {
+        const ehR = s >= 2 && s < P;
+        const comoD = s === 0 || s === F;
+        const livre = comoD || s === P;
+        const seguinte = s === F ? 0 : s;
+        const extraPermitido = hesitacao || livre || (ehR && repeticao) || tenta;
+        if (ehR && !casa && !juntaL && !juntaE && !extraPermitido) {
           V[s][aqui] = Infinity;
           continue;
         }
@@ -189,10 +206,13 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
         if (casa && (v = -ACERTO + Vp[diagonal]) < melhor) { melhor = v; mov = 0; prox = px; }
         if (juntaL && (v = -ACERTO + Vp[diagonal + L]) < melhor) { melhor = v; mov = 1; prox = px; }
         if (juntaE && (v = -2 * ACERTO + Vp[diagonal + 1]) < melhor) { melhor = v; mov = 2; prox = px; }
-        if (dentro && s === 0 && !casa && (v = EDICAO + V[0][diagonal]) < melhor) { melhor = v; mov = 3; prox = 0; }
-        if (extraPermitido && (v = (hesitacao ? 0 : custoExtra) + V[s][aqui + L]) < melhor) { melhor = v; mov = 4; prox = s; }
-        if (dentro && s === 0) {
-          if ((v = EDICAO + V[0][aqui + 1]) < melhor) { melhor = v; mov = 5; prox = 0; }
+        if (dentro && !casa && (comoD || (s === P && tenta)) && (v = custoTroca + Vp[diagonal]) < melhor) { melhor = v; mov = 3; prox = px; }
+        const barato = s === 1 ? tenta : ehR && (tenta || imediata);
+        const custo = hesitacao ? 0 : barato ? PULO_SEGUINTE : custoExtra + (s === F ? EXTRA_APOS_PRIMEIRA : 0);
+        const aposExtra = hesitacao ? s : seguinte;
+        if (extraPermitido && (v = custo + V[aposExtra][aqui + L]) < melhor) { melhor = v; mov = 4; prox = aposExtra; }
+        if (dentro && livre) {
+          if ((v = EDICAO + V[seguinte][aqui + 1]) < melhor) { melhor = v; mov = 5; prox = seguinte; }
           if ((v = EDICAO + V[1][aqui + 1]) < melhor) { melhor = v; mov = 5; prox = 1; }
         }
         if (dentro && s === 1 && (v = PULO_SEGUINTE + V[1][aqui + 1]) < melhor) { melhor = v; mov = 5; prox = 1; }
@@ -206,7 +226,7 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
   const passos: Passo[] = [];
   let i = 0;
   let j = 0;
-  let s = 0;
+  let s = P;
   while (i < n) {
     const k = s * tamanho + i * L + j;
     const [tipo, di, dj] = MOVIMENTOS[escolha[k]];
