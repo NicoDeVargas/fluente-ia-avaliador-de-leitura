@@ -211,7 +211,8 @@ describe("alinhar, casos extras", () => {
     expect(r.extras.map((e) => e.tipo)).toEqual(["insercao", "insercao"]);
     expect(r.corretas).toBe(1);
     expect(r.erros).toBe(0);
-    expect(r.pcpm).toBe(20);
+    expect(r.segundos).toBe(2);
+    expect(r.pcpm).toBe(30);
   });
 
   it("várias tentativas antes de acertar viram uma autocorreção", () => {
@@ -241,6 +242,107 @@ describe("alinhar, casos extras", () => {
     expect(marcas(r)).toEqual(["correta", "correta", "trocada", "nao_lida", "nao_lida"]);
     expect(r.itens[2].dito).toBe("sumiu");
     expect(r.erros).toBe(1);
+  });
+});
+
+describe("alinhar, como um avaliador humano", () => {
+  it("pular uma palavra no fim da leitura é pulada, não troca", () => {
+    const r = alinhar("a menina viu um gato preto", ler("a menina viu gato", 4000), "pt");
+    expect(marcas(r)).toEqual(["correta", "correta", "correta", "pulada", "correta", "nao_lida"]);
+    expect(r.corretas).toBe(4);
+    expect(r.erros).toBe(1);
+  });
+
+  it("repetir a última palavra ao parar é repetição, não erro", () => {
+    const r = alinhar("a menina viu um gato preto", ler("a menina viu viu", 4000), "pt");
+    expect(marcas(r)).toEqual(["correta", "correta", "correta", "nao_lida", "nao_lida", "nao_lida"]);
+    expect(r.extras.map((e) => [e.texto, e.tipo])).toEqual([["viu", "repeticao"]]);
+    expect(r.erros).toBe(0);
+    expect(r.segundos).toBe(3);
+  });
+
+  it("uma ou duas palavras coincidentes não fazem a leitura saltar adiante", () => {
+    const r = alinhar("o menino viu o caso de a casa pegar fogo", ler("o menino viu a casa", 5000), "pt");
+    expect(marcas(r)).toEqual(["correta", "correta", "correta", "trocada", "trocada", ...Array(5).fill("nao_lida")]);
+    expect(r.itens.slice(3, 5).map((i) => i.dito)).toEqual(["a", "casa"]);
+    expect(r.corretas).toBe(3);
+    expect(r.erros).toBe(2);
+  });
+
+  it("o tempo termina na última palavra do texto, não em falas depois dela", () => {
+    const r = alinhar("o gato subiu no muro", ler("o gato subiu no muro pronto acabei", 7000), "pt");
+    expect(r.extras.map((e) => e.tipo)).toEqual(["insercao", "insercao"]);
+    expect(r.segundos).toBe(5);
+    expect(r.pcpm).toBe(60);
+  });
+
+  it("o cronômetro começa na primeira palavra lida", () => {
+    const palavras = ler("o gato subiu no muro", 15000, 5000);
+    const r = alinhar("o gato subiu no muro", palavras, "pt");
+    expect(r.itens.map((i) => i.hesitacao)).toEqual(Array(5).fill(false));
+    expect(r.segundos).toBe(10);
+    expect(r.pcpm).toBe(30);
+  });
+
+  it("o corte de 60 s conta a partir da primeira palavra", () => {
+    const palavras: PalavraLida[] = [
+      { texto: "um", inicio: 4000, fim: 4500 },
+      { texto: "dois", inicio: 30000, fim: 30500 },
+      { texto: "tres", inicio: 63500, fim: 64000 },
+      { texto: "quatro", inicio: 64000, fim: 64500 },
+    ];
+    const r = alinhar("um dois tres quatro cinco", palavras, "pt");
+    expect(marcas(r)).toEqual(["correta", "correta", "correta", "nao_lida", "nao_lida"]);
+    expect(r.segundos).toBe(60);
+    expect(r.pcpm).toBe(3);
+  });
+
+  it("variantes da fala contam como corretas", () => {
+    const r = alinhar("Ele está indo para casa com você.", ler("ele tá indo pra casa com cê", 7000), "pt");
+    expect(marcas(r)).toEqual(Array(7).fill("correta"));
+    expect(r.erros).toBe(0);
+  });
+
+  it("pro vale por para o", () => {
+    const r = alinhar("voltou para o quarto", ler("voltou pro quarto", 3000), "pt");
+    expect(marcas(r)).toEqual(Array(4).fill("correta"));
+    expect(r.itens[1].inicio).toBe(1000);
+    expect(r.itens[2].inicio).toBe(1000);
+    expect(r.corretas).toBe(4);
+    expect(r.pcpm).toBe(80);
+  });
+
+  it("algarismos valem pelas palavras de número", () => {
+    const pt = alinhar("os dois meninos viram três gatos e uma vaca", ler("os 2 meninos viram 3 gatos e 1 vaca", 9000), "pt");
+    expect(pt.corretas).toBe(9);
+    const en = alinhar("One afternoon she saw seven birds", ler("1 afternoon she saw 7 birds", 6000), "en");
+    expect(en.corretas).toBe(6);
+  });
+
+  it("grafias diferentes dos nomes dos textos contam como corretas", () => {
+    expect(alinhar("Mateus levantou a mão", ler("Matheus levantou a mão", 4000), "pt").corretas).toBe(4);
+    expect(alinhar("Maya's grandmother lived", ler("Maia's grandmother lived", 3000), "en").corretas).toBe(3);
+  });
+
+  it("palavra dividida em duas pelo reconhecedor conta como uma", () => {
+    const r = alinhar("tall sunflowers grew", ler("tall sun flowers grew", 4000), "en");
+    expect(marcas(r)).toEqual(Array(3).fill("correta"));
+    expect(r.itens[1].inicio).toBe(1000);
+    expect(r.itens[1].fim).toBe(3000);
+    expect(r.extras).toEqual([]);
+  });
+
+  it("duas palavras juntadas pelo reconhecedor contam como duas", () => {
+    const r = alinhar("he saw every one of them", ler("he saw everyone of them", 5000), "en");
+    expect(marcas(r)).toEqual(Array(6).fill("correta"));
+    expect(r.corretas).toBe(6);
+  });
+
+  it("variações de hesitação são removidas", () => {
+    expect(alinhar("the dog ran home", ler("the umm dog mhm ran uhm home", 7000), "en").extras).toEqual([]);
+    const pt = alinhar("o gato é preto", ler("o ãh gato né é... preto", 6000), "pt");
+    expect(marcas(pt)).toEqual(Array(4).fill("correta"));
+    expect(pt.extras).toEqual([]);
   });
 });
 
