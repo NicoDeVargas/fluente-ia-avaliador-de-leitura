@@ -141,9 +141,11 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
     };
     rec.onerror = () => {
       if (relogio.current) clearInterval(relogio.current);
-      descartar.current = true;
-      if (rec.state !== "inactive") rec.stop();
-      else parar();
+      if (rec.state !== "inactive") {
+        descartar.current = true;
+        rec.stop();
+      } else parar();
+      if (cancelado.current) return;
       setErro("falhaGravacao");
       setFase("pronto");
     };
