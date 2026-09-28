@@ -26,6 +26,9 @@ const JUNCOES: Record<Idioma, Map<string, string>> = { pt: juncoes("pt"), en: ju
 
 const LIMITE_MS = 60000;
 const PAUSA_MS = 3000;
+const PAUSA_CONVERSA_MS = 1500;
+const CONVERSA_INICIO = 3;
+const CONVERSA_FIM = 2;
 const EDICAO = 1e9;
 const PULO_SEGUINTE = 1e8;
 const ACERTO = 1e4;
@@ -37,7 +40,7 @@ const ACERTOS_APOS_SALTO = 3;
 const JANELA_REPETICAO = 3;
 const ESPELHADAS = "bdpq";
 
-interface Token { texto: string; norm: string; inicio: number; fim: number; hesitacao: boolean; pausa: boolean }
+interface Token { texto: string; norm: string; inicio: number; fim: number; hesitacao: boolean; pausa: boolean; intervalo: number }
 type Tipo = "par" | "troca" | "extra" | "pulo";
 interface Linha { igual: Uint8Array; tentativa: Uint8Array; juntaEsperados: Uint8Array; repete: Uint8Array }
 interface Passo { tipo: Tipo; i: number; j: number; di: number; dj: number }
@@ -98,6 +101,10 @@ function parecida(tentativa: string, alvo: string) {
   return (curtas || mesmaInicial(tentativa, alvo)) && Math.abs(tentativa.length - alvo.length) <= limite && distancia(tentativa, alvo) <= limite;
 }
 
+function tentativaDe(tentativa: string, alvo: string) {
+  return parecida(tentativa, alvo) && (tentativa.length > 2 || mesmaInicial(tentativa, alvo));
+}
+
 function mesmaInicial(a: string, b: string) {
   return a[0] === b[0] || (ESPELHADAS.includes(a[0]) && ESPELHADAS.includes(b[0]));
 }
@@ -111,7 +118,7 @@ function naJanela(norm: string, j: number, esperados: string[]) {
 
 function lerTokens(palavras: PalavraLida[], idioma: Idioma): Token[] {
   return palavras.flatMap((p) =>
-    pedacos(p.texto).map((texto) => ({ texto, norm: normalizar(texto), inicio: p.inicio, fim: p.fim, hesitacao: ehHesitacao(texto, idioma), pausa: false })),
+    pedacos(p.texto).map((texto) => ({ texto, norm: normalizar(texto), inicio: p.inicio, fim: p.fim, hesitacao: ehHesitacao(texto, idioma), pausa: false, intervalo: 0 })),
   );
 }
 
@@ -158,6 +165,13 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
     if (lidos[i + 1].hesitacao) continue;
     for (const j of posicoes.get(lidos[i].norm + lidos[i + 1].norm) ?? []) juntaLidos[i * m + j] = 1;
   }
+  const aposPausa = new Uint8Array(n);
+  let fimAnterior = -Infinity;
+  lidos.forEach((t, i) => {
+    if (t.hesitacao) return;
+    aposPausa[i] = t.inicio - fimAnterior >= PAUSA_CONVERSA_MS ? 1 : 0;
+    fimAnterior = t.fim;
+  });
   const inicioDeFrase = new Uint8Array(m);
   for (let j = 1; j < m; j++) inicioDeFrase[j] = /[.!?…]["”’)]*$/.test(originais[j - 1]) ? 1 : 0;
 
@@ -208,7 +222,7 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
         if (juntaE && (v = -2 * ACERTO + Vp[diagonal + 1]) < melhor) { melhor = v; mov = 2; prox = px; }
         if (dentro && !casa && (comoD || (s === P && tenta)) && (v = custoTroca + Vp[diagonal]) < melhor) { melhor = v; mov = 3; prox = px; }
         const barato = s === 1 ? tenta : ehR && (tenta || imediata);
-        const custo = hesitacao ? 0 : barato ? PULO_SEGUINTE : custoExtra + (s === F ? EXTRA_APOS_PRIMEIRA : 0);
+        const custo = hesitacao ? 0 : barato ? PULO_SEGUINTE : custoExtra + (s === F && aposPausa[i] ? EXTRA_APOS_PRIMEIRA : 0);
         const aposExtra = hesitacao ? s : seguinte;
         if (extraPermitido && (v = custo + V[aposExtra][aqui + L]) < melhor) { melhor = v; mov = 4; prox = aposExtra; }
         if (dentro && livre) {
@@ -238,11 +252,61 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
   return passos;
 }
 
-function montar(lidos: Token[], originais: string[], esperados: string[], idioma: Idioma) {
-  const passos = caminho(lidos, originais, esperados, idioma).filter((p) => !(p.tipo === "extra" && lidos[p.i].hesitacao));
+const alinhado = (p: Passo) => p.tipo === "par" || p.tipo === "troca";
 
-  const falados = passos.flatMap((p) => (p.tipo === "pulo" ? [] : lidos.slice(p.i, p.i + p.di)));
-  falados.forEach((t, k) => (t.pausa = k > 0 && t.inicio - falados[k - 1].fim > PAUSA_MS));
+function inicioDaLeitura(passos: Passo[], lidos: Token[], esperados: string[]): Passo[] {
+  const f = passos.findIndex(alinhado);
+  const primeiro = passos[f];
+  if (f <= 0 || primeiro.j === 0) return passos;
+  const j0 = primeiro.j;
+  const extras = passos.slice(0, f).filter((p) => p.tipo === "extra");
+  let q = 0;
+  for (let k = 1; k <= extras.length; k++) {
+    if (lidos[(extras[k] ?? primeiro).i].intervalo >= PAUSA_CONVERSA_MS) q = k;
+  }
+  let fim = extras.length;
+  while (fim > q && tentativaDe(lidos[extras[fim - 1].i].norm, esperados[j0])) fim--;
+  const trecho = extras.slice(q, fim);
+  const parece = trecho.some((p) => esperados.slice(0, j0).some((e) => e === lidos[p.i].norm || parecida(lidos[p.i].norm, e)));
+  if (!trecho.length || (trecho.length <= CONVERSA_INICIO && !parece && trecho.length !== j0)) return passos;
+  const trocas = Math.min(trecho.length, j0);
+  return [
+    ...extras.slice(0, fim - trocas),
+    ...extras.slice(fim - trocas, fim).map((p, d): Passo => ({ tipo: "troca", i: p.i, j: d, di: 1, dj: 1 })),
+    ...Array.from({ length: j0 - trocas }, (_, d): Passo => ({ tipo: "pulo", i: primeiro.i, j: trocas + d, di: 0, dj: 1 })),
+    ...extras.slice(fim),
+    ...passos.slice(f),
+  ];
+}
+
+function fimDaLeitura(passos: Passo[], lidos: Token[], esperados: string[]): Passo[] {
+  const u = passos.findLastIndex(alinhado);
+  if (u < 0) return passos;
+  const cauda = passos.slice(u + 1).filter((p) => p.tipo === "extra");
+  const repetidas = cauda.findLastIndex((p) => naJanela(lidos[p.i].norm, p.j, esperados)) + 1;
+  const trecho = cauda.slice(repetidas);
+  if (trecho.length <= CONVERSA_FIM) return passos;
+  const pausa = trecho.findIndex((p) => lidos[p.i].intervalo >= PAUSA_CONVERSA_MS);
+  const proxima = passos[u].j + passos[u].dj;
+  const trocas = Math.min(pausa < 0 ? trecho.length : pausa, esperados.length - proxima);
+  if (trocas <= 0) return passos;
+  return [
+    ...passos.slice(0, u + 1),
+    ...cauda.slice(0, repetidas),
+    ...trecho.slice(0, trocas).map((p, d): Passo => ({ tipo: "troca", i: p.i, j: proxima + d, di: 1, dj: 1 })),
+    ...trecho.slice(trocas),
+  ];
+}
+
+function montar(lidos: Token[], originais: string[], esperados: string[], idioma: Idioma) {
+  const brutos = caminho(lidos, originais, esperados, idioma).filter((p) => !(p.tipo === "extra" && lidos[p.i].hesitacao));
+
+  const falados = brutos.flatMap((p) => (p.tipo === "pulo" ? [] : lidos.slice(p.i, p.i + p.di)));
+  falados.forEach((t, k) => {
+    t.intervalo = k > 0 ? t.inicio - falados[k - 1].fim : Infinity;
+    t.pausa = t.intervalo > PAUSA_MS && k > 0;
+  });
+  const passos = fimDaLeitura(inicioDaLeitura(brutos, lidos, esperados), lidos, esperados);
 
   const itens: ItemTexto[] = originais.map((esperada, indice) => ({ indice, esperada, marca: "nao_lida" }));
   const extras: Extra[] = [];
@@ -272,10 +336,14 @@ function montar(lidos: Token[], originais: string[], esperados: string[], idioma
       return;
     }
     const tentativas: Token[] = [];
+    let depois = primeiro;
     for (let a = k - 1; a >= 0; a--) {
       const anterior = passos[a];
-      if (anterior.tipo !== "extra" || naJanela(lidos[anterior.i].norm, anterior.j, esperados) || !parecida(lidos[anterior.i].norm, esperados[p.j])) break;
-      tentativas.unshift(lidos[anterior.i]);
+      if (anterior.tipo !== "extra") break;
+      const t = lidos[anterior.i];
+      if (naJanela(t.norm, anterior.j, esperados) || !tentativaDe(t.norm, esperados[p.j]) || depois.inicio - t.fim >= PAUSA_CONVERSA_MS) break;
+      depois = t;
+      tentativas.unshift(t);
       absorvidos.add(a);
     }
     if (tentativas.length) {

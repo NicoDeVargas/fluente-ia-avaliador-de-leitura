@@ -525,6 +525,77 @@ describe("alinhar, relógio e saltos", () => {
     expect(r.extras).toEqual([]);
   });
 
+  it("chutes seguidos depois da última palavra certa são trocas e contam no tempo", () => {
+    const corpo = corpoDe("bola-azul");
+    const r = alinhar(corpo, ler("Lia tem uma bola azul. Mas gato cai em pé sim", 11000), "pt");
+    expect(marcas(r).slice(0, 12)).toEqual([...Array(5).fill("correta"), ...Array(6).fill("trocada"), "nao_lida"]);
+    expect(r.itens.slice(5, 11).map((i) => i.dito)).toEqual(["Mas", "gato", "cai", "em", "pé", "sim"]);
+    expect(r.extras).toEqual([]);
+    expect(r.corretas).toBe(5);
+    expect(r.erros).toBe(6);
+    expect(r.segundos).toBe(11);
+    expect(r.pcpm).toBe(27);
+  });
+
+  it("fala depois de uma pausa no fim é conversa, antes dela são trocas", () => {
+    const corpo = corpoDe("bola-azul");
+    const conversa = alinhar(corpo, [...ler("Lia tem uma bola azul.", 5000), ...ler("Mas gato cai em pé sim", 12500, 6500)], "pt");
+    expect(conversa.extras.map((e) => e.tipo)).toEqual(Array(6).fill("insercao"));
+    expect(conversa.erros).toBe(0);
+    expect(conversa.segundos).toBe(5);
+    const misto = alinhar(corpo, [...ler("Lia tem uma bola azul. Mas gato cai", 8000), ...ler("pronto", 10000, 9500)], "pt");
+    expect(marcas(misto).slice(5, 9)).toEqual(["trocada", "trocada", "trocada", "nao_lida"]);
+    expect(misto.extras.map((e) => [e.texto, e.tipo])).toEqual([["pronto", "insercao"]]);
+    expect(misto.segundos).toBe(8);
+  });
+
+  it("chutes no começo sem pausa são trocas das primeiras palavras", () => {
+    const corpo = corpoDe("bola-azul");
+    const r = alinhar(corpo, ler("Ana vai com bola azul. A bola pula no chão", 10000), "pt");
+    expect(marcas(r).slice(0, 10)).toEqual([...Array(3).fill("trocada"), ...Array(7).fill("correta")]);
+    expect(r.itens.slice(0, 3).map((i) => i.dito)).toEqual(["Ana", "vai", "com"]);
+    expect(r.itens[0].inicio).toBe(0);
+    expect(r.extras).toEqual([]);
+    expect(r.corretas).toBe(7);
+    expect(r.erros).toBe(3);
+    expect(r.segundos).toBe(10);
+    expect(r.pcpm).toBe(42);
+  });
+
+  it("fala no começo seguida de pausa é conversa", () => {
+    const corpo = corpoDe("bola-azul");
+    const r = alinhar(corpo, [...ler("Ana vai com", 1500), ...ler("bola azul. A bola pula no chão", 10000, 3000)], "pt");
+    expect(marcas(r).slice(0, 3)).toEqual(Array(3).fill("pulada"));
+    expect(r.extras.map((e) => e.tipo)).toEqual(Array(3).fill("insercao"));
+    expect(r.itens[3].inicio).toBe(3000);
+    expect(r.segundos).toBe(7);
+    expect(r.pcpm).toBe(60);
+  });
+
+  it("tentativa longe da palavra ou curta com outra inicial não é autocorreção", () => {
+    const corpo = corpoDe("horta-da-escola");
+    const r = alinhar(corpo, [...ler("tá", 500), ...ler("Na escola de Davi tem uma horta", 10000, 3500)], "pt");
+    expect(r.itens[0].marca).toBe("correta");
+    expect(r.itens[0].inicio).toBe(3500);
+    expect(r.extras.map((e) => [e.texto, e.tipo])).toEqual([["tá", "insercao"]]);
+    expect(r.segundos).toBe(6.5);
+    const junto = alinhar(corpo, ler("tá Na escola de Davi", 5000), "pt");
+    expect(junto.itens[0].marca).toBe("correta");
+    expect(junto.itens[0].inicio).toBe(1000);
+    const longe = alinhar("o gato caça o rato", [...ler("o gato casa", 3000), ...ler("caça o rato", 8000, 5000)], "pt");
+    expect(longe.itens[2].marca).toBe("correta");
+    expect(longe.extras.map((e) => [e.texto, e.tipo])).toEqual([["casa", "insercao"]]);
+  });
+
+  it("primeira palavra repetida depois de uma conversa: o relógio começa na primeira", () => {
+    const corpo = corpoDe("bola-azul");
+    const r = alinhar(corpo, [...ler("pronto", 500), ...ler("Lia Lia tem uma bola azul.", 8000, 5000)], "pt");
+    expect(r.itens[0].marca).toBe("correta");
+    expect(r.itens[0].inicio).toBe(5000);
+    expect(r.extras.map((e) => [e.texto, e.tipo])).toEqual([["pronto", "insercao"], ["Lia", "repeticao"]]);
+    expect(r.segundos).toBe(3);
+  });
+
   it("alinha um texto longo rapidamente", () => {
     const corpo = corpoDe("quiet-garden");
     const tokens = tokenizar(corpo);
