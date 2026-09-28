@@ -1,53 +1,67 @@
 @import "tailwindcss";
 
 :root {
-  --fundo: #f2f0ec;
-  --superficie: #fcfbf9;
-  --tinta: #1f1d1a;
-  --suave: #5c5750;
-  --linha: #dcd7cf;
-  --acento: #b4231b;
-  --acento-forte: #93190f;
-  --acento-texto: #a8201a;
-  --acento-suave: #f7e4e0;
-  --ok: #1d6a47;
-  --ok-suave: #e1eee6;
-  --bolha: #2b2825;
-  --bolha-texto: #f6f4f0;
+  --fundo: #eff1ee;
+  --superficie: #fafbf9;
+  --papel: #fffefa;
+  --tinta: #1a2027;
+  --suave: #4f5a64;
+  --apagado: #69727b;
+  --linha: #d3d8db;
+  --acento: #1f4e8c;
+  --acento-forte: #163c6e;
+  --acento-texto: #1f4e8c;
+  --acento-suave: #e2eaf5;
+  --erro: #b3261e;
+  --erro-suave: #fbe8e5;
+  --ok: #17684a;
+  --ok-suave: #e0efe7;
+  --pausa: #8a5300;
+  --pausa-suave: #fbeed4;
+  --sombra: 26 42 60;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --fundo: #161513;
-    --superficie: #1f1d1b;
-    --tinta: #ece8e2;
-    --suave: #aaa39a;
-    --linha: #36322e;
-    --acento: #c9352b;
-    --acento-forte: #db4439;
-    --acento-texto: #f0786c;
-    --acento-suave: #3a1c18;
+    --fundo: #111417;
+    --superficie: #181c20;
+    --papel: #1c2025;
+    --tinta: #e8ebed;
+    --suave: #a6afb7;
+    --apagado: #8a939b;
+    --linha: #2e353c;
+    --acento: #3569b5;
+    --acento-forte: #4679c4;
+    --acento-texto: #9bbcf0;
+    --acento-suave: #1a2940;
+    --erro: #f28b80;
+    --erro-suave: #3a1d1a;
     --ok: #6cc596;
-    --ok-suave: #173127;
-    --bolha: #e6e1da;
-    --bolha-texto: #1c1a18;
+    --ok-suave: #16302a;
+    --pausa: #e8b861;
+    --pausa-suave: #33280f;
+    --sombra: 0 0 0;
   }
 }
 
 @theme inline {
   --color-fundo: var(--fundo);
   --color-superficie: var(--superficie);
+  --color-papel: var(--papel);
   --color-tinta: var(--tinta);
   --color-suave: var(--suave);
+  --color-apagado: var(--apagado);
   --color-linha: var(--linha);
   --color-acento: var(--acento);
   --color-acento-forte: var(--acento-forte);
   --color-acento-texto: var(--acento-texto);
   --color-acento-suave: var(--acento-suave);
+  --color-erro: var(--erro);
+  --color-erro-suave: var(--erro-suave);
   --color-ok: var(--ok);
   --color-ok-suave: var(--ok-suave);
-  --color-bolha: var(--bolha);
-  --color-bolha-texto: var(--bolha-texto);
+  --color-pausa: var(--pausa);
+  --color-pausa-suave: var(--pausa-suave);
   --font-sans: var(--fonte-texto);
   --font-display: var(--fonte-titulo);
 }
@@ -63,6 +77,22 @@ body {
   outline-offset: 2px;
 }
 
+.folha {
+  background: var(--papel);
+  box-shadow:
+    0 1px 0 rgb(var(--sombra) / 0.04),
+    0 12px 32px -18px rgb(var(--sombra) / 0.28);
+}
+
+ruby {
+  ruby-position: over;
+}
+
+rt {
+  font-size: 0.5em;
+  line-height: 1;
+}
+
 @keyframes entrar {
   from {
     opacity: 0;
@@ -72,8 +102,8 @@ body {
 
 @keyframes pulsar {
   50% {
-    transform: scale(1.6);
-    opacity: 0.35;
+    transform: scale(1.8);
+    opacity: 0;
   }
 }
 
@@ -85,10 +115,10 @@ body {
 
 @media (prefers-reduced-motion: no-preference) {
   .entrar {
-    animation: entrar 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: entrar 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
   .pulsar {
-    animation: pulsar 1.2s ease-in-out infinite;
+    animation: pulsar 1.4s ease-out infinite;
   }
   .brilho {
     animation: brilho 1.4s ease-in-out infinite;
