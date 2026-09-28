@@ -596,6 +596,56 @@ describe("alinhar, relógio e saltos", () => {
     expect(r.segundos).toBe(3);
   });
 
+  describe("conversa no fim", () => {
+    const bola = () => corpoDe("bola-azul");
+    const dez = "Lia tem uma bola azul. A bola pula no chão";
+
+    it("trecho curto antes da pausa é conversa", () => {
+      const a = alinhar(bola(), [...ler(`${dez} pronto acabei`, 12000), ...ler("tia", 15000, 14000)], "pt");
+      expect(a.erros).toBe(0);
+      expect(a.segundos).toBe(10);
+      const b = alinhar(bola(), [...ler(`${dez} pronto`, 11000), ...ler("posso ir tia", 16000, 13000)], "pt");
+      expect(b.erros).toBe(0);
+      expect(b.extras).toHaveLength(4);
+    });
+
+    it("palavras de fechamento são conversa", () => {
+      const consigo = alinhar(bola(), [...ler(dez, 10000), ...ler("não consigo mais", 13900, 10900)], "pt");
+      expect(consigo.erros).toBe(0);
+      expect(consigo.segundos).toBe(10);
+      const sei = alinhar(bola(), [...ler("Lia tem uma bola azul.", 5000), ...ler("eu não sei ler", 10000, 6000)], "pt");
+      expect(sei.erros).toBe(0);
+      const adulto = alinhar(bola(), [...ler(dez, 6000), ...ler("muito bem pode parar", 8400, 6000)], "pt");
+      expect(adulto.erros).toBe(0);
+      expect(adulto.segundos).toBe(6);
+      const kite = corpoDe("lost-kite");
+      const pronto = alinhar(kite, [...ler(tokenizar(kite).slice(0, 10).join(" "), 1500), ...ler("okay I'm done", 2600, 2150)], "en");
+      expect(pronto.erros).toBe(0);
+      expect(pronto.segundos).toBe(1.5);
+    });
+
+    it("pausa grande para o ritmo da criança é conversa", () => {
+      const r = alinhar(bola(), [...ler(dez, 3000), ...ler("Mas gato cai em pé sim", 5800, 4000)], "pt");
+      expect(r.erros).toBe(0);
+      expect(r.extras).toHaveLength(6);
+      expect(r.segundos).toBe(3);
+    });
+
+    it("leitor lento com pausa pequena continua com trocas", () => {
+      const r = alinhar(bola(), [...ler("Lia tem uma bola azul.", 3500), ...ler("Mas gato cai em", 6600, 3800)], "pt");
+      expect(marcas(r).slice(5, 10)).toEqual(["trocada", "trocada", "trocada", "trocada", "nao_lida"]);
+      expect(r.erros).toBe(4);
+    });
+
+    it("repetição no meio dos chutes não quebra o trecho", () => {
+      const r = alinhar(bola(), ler("Lia tem uma bola azul. Mas azul gato cai", 9000), "pt");
+      expect(marcas(r).slice(5, 9)).toEqual(["trocada", "trocada", "trocada", "nao_lida"]);
+      expect(r.itens.slice(5, 8).map((i) => i.dito)).toEqual(["Mas", "gato", "cai"]);
+      expect(r.extras.map((e) => [e.texto, e.tipo])).toEqual([["azul", "repeticao"]]);
+      expect(r.erros).toBe(3);
+    });
+  });
+
   it("alinha um texto longo rapidamente", () => {
     const corpo = corpoDe("quiet-garden");
     const tokens = tokenizar(corpo);

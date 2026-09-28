@@ -29,6 +29,12 @@ const PAUSA_MS = 3000;
 const PAUSA_CONVERSA_MS = 1500;
 const CONVERSA_INICIO = 3;
 const CONVERSA_FIM = 2;
+const PAUSA_RELATIVA_MS = 700;
+const RITMO_PAUSA = 3;
+const FECHAMENTO: Record<Idioma, string[]> = {
+  pt: ["pronto", "acabei", "terminei", "tia", "tio", "prof", "professora", "não consigo", "não sei", "posso", "parar", "cabou", "acabou"],
+  en: ["done", "finished", "okay", "ok", "i'm", "im", "that's", "can't", "cannot", "teacher", "stop"],
+};
 const EDICAO = 1e9;
 const PULO_SEGUINTE = 1e8;
 const ACERTO = 1e4;
@@ -40,7 +46,7 @@ const ACERTOS_APOS_SALTO = 3;
 const JANELA_REPETICAO = 3;
 const ESPELHADAS = "bdpq";
 
-interface Token { texto: string; norm: string; inicio: number; fim: number; hesitacao: boolean; pausa: boolean; intervalo: number }
+interface Token { texto: string; norm: string; inicio: number; fim: number; hesitacao: boolean; pausa: boolean; intervalo: number; salto: number }
 type Tipo = "par" | "troca" | "extra" | "pulo";
 interface Linha { igual: Uint8Array; tentativa: Uint8Array; juntaEsperados: Uint8Array; repete: Uint8Array }
 interface Passo { tipo: Tipo; i: number; j: number; di: number; dj: number }
@@ -118,7 +124,7 @@ function naJanela(norm: string, j: number, esperados: string[]) {
 
 function lerTokens(palavras: PalavraLida[], idioma: Idioma): Token[] {
   return palavras.flatMap((p) =>
-    pedacos(p.texto).map((texto) => ({ texto, norm: normalizar(texto), inicio: p.inicio, fim: p.fim, hesitacao: ehHesitacao(texto, idioma), pausa: false, intervalo: 0 })),
+    pedacos(p.texto).map((texto) => ({ texto, norm: normalizar(texto), inicio: p.inicio, fim: p.fim, hesitacao: ehHesitacao(texto, idioma), pausa: false, intervalo: 0, salto: 0 })),
   );
 }
 
@@ -279,22 +285,45 @@ function inicioDaLeitura(passos: Passo[], lidos: Token[], esperados: string[]): 
   ];
 }
 
-function fimDaLeitura(passos: Passo[], lidos: Token[], esperados: string[]): Passo[] {
+function mediana(valores: number[]) {
+  if (!valores.length) return 0;
+  const v = [...valores].sort((a, b) => a - b);
+  const meio = v.length >> 1;
+  return v.length % 2 ? v[meio] : (v[meio - 1] + v[meio]) / 2;
+}
+
+function fechamento(normas: string[], idioma: Idioma) {
+  const marcadas = normas.map(() => false);
+  for (const frase of FECHAMENTO[idioma].map((f) => f.split(" ").map(normalizar))) {
+    for (let k = 0; k + frase.length <= normas.length; k++) {
+      if (frase.every((w, d) => normas[k + d] === w)) frase.forEach((_, d) => (marcadas[k + d] = true));
+    }
+  }
+  const quantas = marcadas.filter(Boolean).length;
+  return marcadas[0] || marcadas[marcadas.length - 1] || quantas * 2 >= marcadas.length;
+}
+
+function fimDaLeitura(passos: Passo[], lidos: Token[], esperados: string[], idioma: Idioma): Passo[] {
+  const certa = passos.findLastIndex((p) => p.tipo === "par");
+  if (certa < 0) return passos;
+  const saltos = passos.slice(0, certa + 1).filter((p) => p.tipo !== "pulo" && Number.isFinite(lidos[p.i].salto)).map((p) => lidos[p.i].salto);
+  const limiar = Math.max(PAUSA_RELATIVA_MS, RITMO_PAUSA * mediana(saltos));
+  const pausa = passos.findIndex((p, k) => k > certa && p.tipo !== "pulo" && (lidos[p.i].intervalo >= PAUSA_CONVERSA_MS || lidos[p.i].salto >= limiar));
+  if (pausa >= 0) {
+    passos = [...passos.slice(0, pausa), ...passos.slice(pausa).filter((p) => p.tipo !== "pulo").map((p): Passo => (p.tipo === "troca" ? { ...p, tipo: "extra", dj: 0 } : p))];
+  }
+  const iPausa = pausa < 0 ? Infinity : passos[pausa].i;
   const u = passos.findLastIndex(alinhado);
-  if (u < 0) return passos;
   const cauda = passos.slice(u + 1).filter((p) => p.tipo === "extra");
-  const repetidas = cauda.findLastIndex((p) => naJanela(lidos[p.i].norm, p.j, esperados)) + 1;
-  const trecho = cauda.slice(repetidas);
-  if (trecho.length <= CONVERSA_FIM) return passos;
-  const pausa = trecho.findIndex((p) => lidos[p.i].intervalo >= PAUSA_CONVERSA_MS);
+  const antes = cauda.filter((p) => p.i < iPausa);
+  const chutes = antes.filter((p) => !naJanela(lidos[p.i].norm, p.j, esperados));
+  if (chutes.length <= CONVERSA_FIM || fechamento(chutes.map((p) => lidos[p.i].norm), idioma)) return passos;
   const proxima = passos[u].j + passos[u].dj;
-  const trocas = Math.min(pausa < 0 ? trecho.length : pausa, esperados.length - proxima);
-  if (trocas <= 0) return passos;
+  const trocadas = new Map(chutes.slice(0, esperados.length - proxima).map((p, d) => [p, d]));
+  if (!trocadas.size) return passos;
   return [
     ...passos.slice(0, u + 1),
-    ...cauda.slice(0, repetidas),
-    ...trecho.slice(0, trocas).map((p, d): Passo => ({ tipo: "troca", i: p.i, j: proxima + d, di: 1, dj: 1 })),
-    ...trecho.slice(trocas),
+    ...cauda.map((p): Passo => (trocadas.has(p) ? { tipo: "troca", i: p.i, j: proxima + trocadas.get(p)!, di: 1, dj: 1 } : p)),
   ];
 }
 
@@ -304,9 +333,10 @@ function montar(lidos: Token[], originais: string[], esperados: string[], idioma
   const falados = brutos.flatMap((p) => (p.tipo === "pulo" ? [] : lidos.slice(p.i, p.i + p.di)));
   falados.forEach((t, k) => {
     t.intervalo = k > 0 ? t.inicio - falados[k - 1].fim : Infinity;
+    t.salto = k > 0 ? t.inicio - falados[k - 1].inicio : Infinity;
     t.pausa = t.intervalo > PAUSA_MS && k > 0;
   });
-  const passos = fimDaLeitura(inicioDaLeitura(brutos, lidos, esperados), lidos, esperados);
+  const passos = fimDaLeitura(inicioDaLeitura(brutos, lidos, esperados), lidos, esperados, idioma);
 
   const itens: ItemTexto[] = originais.map((esperada, indice) => ({ indice, esperada, marca: "nao_lida" }));
   const extras: Extra[] = [];
