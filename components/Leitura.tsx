@@ -9,6 +9,7 @@ import { gravacao } from "@/lib/i18n-gravacao";
 import { salvarLeitor, useLeitor } from "@/lib/leitor";
 import { Aviso, campo, primario, secundario } from "@/components/ui";
 import { Resultado } from "@/components/Resultado";
+import { OutroTexto } from "@/components/OutroTexto";
 
 const DURACAO = 60000;
 const MARGEM_FALA = 500;
@@ -306,6 +307,9 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
 
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 pb-40">
+      <div className="-mb-4 flex justify-end">
+        <OutroTexto idioma={idioma} textoId={textoId} idiomaTexto={idiomaTexto} ano={anoTexto} desativado={ocupado} />
+      </div>
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Link
           href={`/${sufixo(idioma)}`}

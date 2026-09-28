@@ -10,7 +10,7 @@ export function segmentar(corpo: string): Segmento[] {
       saida.push({ tipo: "resto", texto: " " });
       continue;
     }
-    for (const pedaco of parte.split(/(?<=[-‐‑–—])/)) {
+    for (const pedaco of parte.split(/(?<=[–—])/)) {
       if (normalizar(pedaco) === "") {
         saida.push({ tipo: "resto", texto: pedaco });
         continue;

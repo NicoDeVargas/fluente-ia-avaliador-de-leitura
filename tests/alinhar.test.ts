@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { alinhar, normalizar, tokenizar, type PalavraLida } from "@/lib/alinhar";
+import { MS_POR_SILABA_SILABADA, alinhar, normalizar, tokenizar, type PalavraLida } from "@/lib/alinhar";
 import { TEXTOS } from "@/lib/textos";
 
 function ler(fala: string, fimTotal: number, inicio = 0): PalavraLida[] {
@@ -14,7 +14,7 @@ describe("normalizar e tokenizar", () => {
   it("ignora acentos, pontuação e maiúsculas", () => {
     expect(normalizar("Pássaro,")).toBe("passaro");
     expect(normalizar("“Caça!”")).toBe("caca");
-    expect(tokenizar("O Pássaro, cantou!  Vendê-la...")).toEqual(["o", "passaro", "cantou", "vende", "la"]);
+    expect(tokenizar("O Pássaro, cantou!  Vendê-la...")).toEqual(["o", "passaro", "cantou", "vendela"]);
   });
 });
 
@@ -234,7 +234,7 @@ describe("alinhar, casos extras", () => {
 
   it("palavra com hífen lida separada", () => {
     const r = alinhar("pegou o guarda-chuva", ler("pegou o guarda chuva", 4000), "pt");
-    expect(marcas(r)).toEqual(Array(4).fill("correta"));
+    expect(marcas(r)).toEqual(Array(3).fill("correta"));
   });
 
   it("última palavra errada antes de parar conta como trocada", () => {
@@ -657,5 +657,118 @@ describe("alinhar, relógio e saltos", () => {
     const ms = (performance.now() - inicio) / 10;
     console.log(`alinhar ${tokens.length}x${palavras.length}: ${ms.toFixed(2)} ms`);
     expect(ms).toBeLessThan(30);
+  });
+});
+
+describe("alinhar, hífen", () => {
+  const corpo = "eles queriam vendê-la na feira";
+  it("palavra com hífen é um item só", () => {
+    const r = alinhar(corpo, ler(corpo, 2500), "pt");
+    expect(r.itens.map((i) => i.esperada)).toEqual(["eles", "queriam", "vendê-la", "na", "feira"]);
+    expect(marcas(r)).toEqual(Array(5).fill("correta"));
+    expect(r.corretas).toBe(5);
+  });
+
+  it("aceita as leituras comuns da ênclise", () => {
+    for (const fala of ["vendê-la", "vende-la", "vendela", "vender ela", "vende la"]) {
+      const r = alinhar(corpo, ler(`eles queriam ${fala} na feira`, 2500), "pt");
+      expect(marcas(r), fala).toEqual(Array(5).fill("correta"));
+      expect(r.extras, fala).toEqual([]);
+      expect(r.itens[2].silabada, fala).toBeUndefined();
+    }
+  });
+
+  it("erro na palavra com hífen conta um", () => {
+    const r = alinhar(corpo, ler("eles queriam vender na feira", 2500), "pt");
+    expect(marcas(r)).toEqual(["correta", "correta", "trocada", "correta", "correta"]);
+    expect(r.erros).toBe(1);
+    const pulada = alinhar(corpo, ler("eles queriam na feira", 2000), "pt");
+    expect(marcas(pulada)).toEqual(["correta", "correta", "pulada", "correta", "correta"]);
+    expect(pulada.erros).toBe(1);
+  });
+});
+
+describe("alinhar, leitura silabada", () => {
+  const corpo = "a borboleta pousou na flor amarela";
+  const rapido = (fala: string) => ler(fala, fala.split(" ").length * 250);
+
+  it("palavra lida em pedaços é correta e silabada", () => {
+    const r = alinhar(corpo, rapido("a bor bo le ta pousou na flor amarela"), "pt");
+    expect(marcas(r)).toEqual(Array(6).fill("correta"));
+    expect(r.itens[1].silabada).toBe(true);
+    expect(r.itens[1].dito).toBe("bor bo le ta");
+    expect(r.extras).toEqual([]);
+    expect(r.silabadas).toBe(1);
+    expect(r.corretas).toBe(6);
+  });
+
+  it("pedaços com hífen do reconhecedor também", () => {
+    const r = alinhar(corpo, rapido("a bor-bo-le-ta pousou na flor a-ma-re-la"), "pt");
+    expect(marcas(r)).toEqual(Array(6).fill("correta"));
+    expect(r.itens.filter((i) => i.silabada).map((i) => i.indice)).toEqual([1, 5]);
+    expect(r.silabadas).toBe(2);
+  });
+
+  it("fragmentos crescentes antes da palavra: autocorreção silabada", () => {
+    const r = alinhar(corpo, rapido("a bor bo bor bole borboleta pousou na flor amarela"), "pt");
+    expect(marcas(r)).toEqual(["correta", "autocorrecao", "correta", "correta", "correta", "correta"]);
+    expect(r.itens[1].silabada).toBe(true);
+    expect(r.itens[1].dito).toBe("bor bo bor bole");
+    expect(r.silabadas).toBe(1);
+  });
+
+  it("pedaços e depois a palavra inteira: autocorreção silabada", () => {
+    const r = alinhar(corpo, rapido("a bor bo le ta borboleta pousou na flor amarela"), "pt");
+    expect(marcas(r)).toEqual(["correta", "autocorrecao", "correta", "correta", "correta", "correta"]);
+    expect(r.itens[1].silabada).toBe(true);
+    expect(r.extras).toEqual([]);
+  });
+
+  it("troca corrigida não é silabada", () => {
+    const r = alinhar(corpo, rapido("a borbuleta borboleta pousou na flor amarela"), "pt");
+    expect(r.itens[1].marca).toBe("autocorrecao");
+    expect(r.itens[1].silabada).toBeUndefined();
+    expect(r.silabadas).toBe(0);
+  });
+
+  it("palavra lenta: 300 ms ou mais por sílaba", () => {
+    expect(MS_POR_SILABA_SILABADA).toBe(300);
+    const palavras = [
+      { texto: "a", inicio: 0, fim: 200 },
+      { texto: "borboleta", inicio: 300, fim: 1500 },
+      { texto: "pousou", inicio: 1600, fim: 2199 },
+      { texto: "na", inicio: 2300, fim: 2900 },
+      { texto: "flor", inicio: 3000, fim: 3900 },
+      { texto: "amarela", inicio: 4000, fim: 4500 },
+    ];
+    const r = alinhar(corpo, palavras, "pt");
+    expect(marcas(r)).toEqual(Array(6).fill("correta"));
+    expect(r.itens.map((i) => !!i.silabada)).toEqual([false, true, false, false, false, false]);
+    expect(r.silabadas).toBe(1);
+  });
+
+  it("palavra de uma sílaba lenta não conta", () => {
+    const r = alinhar("the cat sat", [
+      { texto: "the", inicio: 0, fim: 900 },
+      { texto: "cat", inicio: 1000, fim: 1900 },
+      { texto: "sat", inicio: 2000, fim: 2900 },
+    ], "en");
+    expect(r.silabadas).toBe(0);
+  });
+
+  it("palavra trocada não conta como silabada", () => {
+    const r = alinhar(corpo, [...ler("a", 200), { texto: "bolota", inicio: 300, fim: 3000 }, ...ler("pousou na flor amarela", 4000, 3100)], "pt");
+    expect(r.itens[1].marca).toBe("trocada");
+    expect(r.silabadas).toBe(0);
+  });
+
+  it("composta com hífen lida em duas partes não é silabada", () => {
+    const r = alinhar("pegou o guarda-chuva", rapido("pegou o guarda chuva"), "pt");
+    expect(marcas(r)).toEqual(Array(3).fill("correta"));
+    expect(r.silabadas).toBe(0);
+  });
+
+  it("leitura perfeita e rápida não tem silabadas", () => {
+    for (const t of TEXTOS) expect(alinhar(t.corpo, ler(t.corpo, 20000), t.idioma).silabadas, t.id).toBe(0);
   });
 });

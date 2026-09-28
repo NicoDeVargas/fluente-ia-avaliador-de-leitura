@@ -7,7 +7,9 @@ import { sufixo, textos, type Idioma } from "@/lib/i18n";
 import { salvarUltimoTexto } from "@/lib/leitor";
 import { sortearTexto, type Texto } from "@/lib/textos";
 
-export function OutroTexto({ idioma, textoId, idiomaTexto, ano }: { idioma: Idioma; textoId: string; idiomaTexto: Texto["idioma"]; ano: number }) {
+interface Props { idioma: Idioma; textoId: string; idiomaTexto: Texto["idioma"]; ano: number; desativado?: boolean }
+
+export function OutroTexto({ idioma, textoId, idiomaTexto, ano, desativado }: Props) {
   const router = useRouter();
 
   useEffect(() => {
@@ -25,7 +27,8 @@ export function OutroTexto({ idioma, textoId, idiomaTexto, ano }: { idioma: Idio
     <button
       type="button"
       onClick={trocar}
-      className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-2 text-sm font-semibold text-suave hover:text-tinta"
+      disabled={desativado}
+      className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-2 text-sm font-semibold text-suave hover:text-tinta disabled:pointer-events-none disabled:opacity-40"
     >
       <Shuffle size={16} weight="bold" aria-hidden />
       {textos[idioma].sorteio.outro}

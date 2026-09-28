@@ -4,12 +4,11 @@ import { tokenizar } from "@/lib/alinhar";
 import { TEXTOS } from "@/lib/textos";
 
 describe("segmentar", () => {
-  it("separa pontuação e mantém hífen sem espaço", () => {
+  it("separa pontuação e mantém a palavra com hífen inteira", () => {
     const s = segmentar("Queriam vendê-la, então.");
     expect(s.filter((x) => x.tipo === "palavra").map((x) => x.tipo === "palavra" && [x.antes, x.nucleo, x.depois])).toEqual([
       ["", "Queriam", ""],
-      ["", "vendê", "-"],
-      ["", "la", ","],
+      ["", "vendê-la", ","],
       ["", "então", "."],
     ]);
     expect(s.map((x) => (x.tipo === "palavra" ? x.antes + x.nucleo + x.depois : x.texto)).join("")).toBe("Queriam vendê-la, então.");

@@ -5,6 +5,7 @@ import { idiomaDe, sufixo, textos } from "@/lib/i18n";
 import { TEXTOS } from "@/lib/textos";
 import { sql } from "@/lib/db";
 import { diferencaMediaAbsoluta, fracaoDentro, pearson } from "@/lib/estatistica";
+import { NIVEIS, type Nivel } from "@/lib/classificacao";
 
 export const dynamic = "force-dynamic";
 
@@ -20,14 +21,19 @@ export default async function Estudo({ searchParams }: PageProps<"/estudo">) {
   const idioma = idiomaDe(lang);
   const t = textos[idioma];
   const e = t.estudo;
-  const [linhas, [{ leitores }]] = await Promise.all([
+  const [linhas, [{ leitores }], porNivel] = await Promise.all([
     sql<Linha[]>`
       select texto_id, idioma, corretas, contagem_manual from leituras
       where contagem_manual is not null and lower(trim(apelido)) <> 'teste' order by criada_em`,
     sql<{ leitores: number }[]>`
       select count(distinct lower(trim(apelido)))::int as leitores from leituras
       where contagem_manual is not null and lower(trim(apelido)) <> 'teste'`,
+    sql<{ nivel: Nivel; n: number }[]>`
+      select nivel, count(*)::int as n from leituras
+      where nivel is not null and lower(trim(apelido)) <> 'teste' group by nivel`,
   ]);
+  const totalNiveis = porNivel.reduce((s, x) => s + x.n, 0);
+  const contaNivel = (nivel: Nivel) => porNivel.find((x) => x.nivel === nivel)?.n ?? 0;
   const pares = linhas.map((l) => ({ app: l.corretas, humano: l.contagem_manual }));
   const numero = (x: number, casas: number) => x.toLocaleString(t.locale, { minimumFractionDigits: casas, maximumFractionDigits: casas });
   const dif = diferencaMediaAbsoluta(pares);
@@ -119,6 +125,26 @@ export default async function Estudo({ searchParams }: PageProps<"/estudo">) {
               </div>
             </section>
           </>
+        )}
+
+        {totalNiveis > 0 && (
+          <section aria-labelledby="niveis" className="mt-14">
+            <h2 id="niveis" className="font-display text-xl font-semibold tracking-tight">
+              {e.niveis}
+            </h2>
+            <p className="mt-1 max-w-[62ch] text-sm leading-relaxed text-suave">{e.niveisAjuda}</p>
+            <ul className="mt-4 flex max-w-2xl flex-col gap-2">
+              {NIVEIS.map((nivel) => (
+                <li key={nivel} className="grid grid-cols-[minmax(0,12rem)_minmax(0,1fr)_2.5rem] items-center gap-3 text-sm">
+                  <span>{t.resultado.niveis[nivel]}</span>
+                  <span className="h-2 rounded-full bg-linha">
+                    <span className="block h-2 rounded-full bg-acento" style={{ width: `${(contaNivel(nivel) / totalNiveis) * 100}%` }} />
+                  </span>
+                  <span className="text-right font-semibold tabular-nums">{contaNivel(nivel)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
 
         <div className="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-16">

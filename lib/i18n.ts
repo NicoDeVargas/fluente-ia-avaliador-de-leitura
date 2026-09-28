@@ -1,3 +1,5 @@
+import type { Motivo, Nivel } from "@/lib/classificacao";
+
 export type Idioma = "en" | "pt";
 
 export function idiomaDe(valor: string | string[] | null | undefined): Idioma {
@@ -41,7 +43,7 @@ const en = {
     },
   },
   leitura: {
-    voltar: "Other texts",
+    voltar: "Home",
     leitor: (apelido: string, ano: number) => `${apelido}, grade ${ano}`,
     trocar: "Change",
     instrucao: "Read aloud from the first word below. The title is not read. The minute starts at the first word.",
@@ -88,6 +90,7 @@ const en = {
       trocada: "Misread (what was said above)",
       pulada: "Skipped",
       autocorrecao: "Self-corrected (counts as correct)",
+      silabada: "Read syllable by syllable (estimate)",
       hesitacao: "Pause over 3 seconds before the word",
       repeticao: "Repeated (not an error)",
       insercao: "Added word (not an error)",
@@ -97,7 +100,24 @@ const en = {
     rotuloRef: (n: number) => `ref. ${n}`,
     pausaLonga: "long pause before this word",
     extra: { repeticao: "repeated", insercao: "added" },
-    lido: { trocada: "misread", pulada: "skipped", autocorrecao: "self-corrected", nao_lida: "not reached" },
+    lido: { trocada: "misread", pulada: "skipped", autocorrecao: "self-corrected", nao_lida: "not reached", silabada: "read syllable by syllable" },
+    nivel: "Reader profile",
+    niveis: {
+      nao_le_palavras: "Not reading words yet",
+      silabando: "Reading syllable by syllable",
+      palavra_por_palavra: "Reading word by word",
+      em_desenvolvimento: "Developing reader",
+      fluente: "Fluent reader",
+    } as Record<Nivel, string>,
+    porque: (nivel: Nivel, m: Motivo, ano: number) => {
+      const ritmo = `${m.pcpm} words correct per minute, grade ${ano} reference: ${m.referencia}`;
+      const acuracia = `${Math.round(m.acuracia * 100)}% of the words read were correct`;
+      if (nivel === "nao_le_palavras") return `${m.corretas} words read correctly; at least 5 are needed`;
+      if (nivel === "silabando") return `${m.silabadas} of ${m.lidas} words read syllable by syllable`;
+      if (nivel === "palavra_por_palavra") return `${ritmo}; median pause between words: ${Math.round(m.pausaMediana / 100) / 10} s`;
+      return `${ritmo}; ${acuracia}`;
+    },
+    nivelAviso: "Fluente's own classification, inspired by the reader profiles used in fluency assessments. It is not an official classification.",
     disse: (dito: string) => `said "${dito}"`,
     contagem: "Manual count (optional)",
     contagemAjuda: "If you listened too, how many words did the child read correctly in the minute? Your count helps measure the app's accuracy.",
@@ -134,6 +154,8 @@ const en = {
       "The texts are original and have not been calibrated against standardized passages.",
     ],
     voltar: "Try a reading",
+    niveis: "Reader profiles",
+    niveisAjuda: "How the readings were classified, counting only readings made since profiles were added.",
   },
   sorteio: {
     comecar: "Start",
@@ -181,7 +203,7 @@ const pt: Dicionario = {
     },
   },
   leitura: {
-    voltar: "Outros textos",
+    voltar: "Início",
     leitor: (apelido: string, ano: number) => `${apelido}, ${ano}º ano`,
     trocar: "Trocar",
     instrucao: "Leia em voz alta a partir da primeira palavra abaixo. O título não é lido. O minuto começa na primeira palavra.",
@@ -228,6 +250,7 @@ const pt: Dicionario = {
       trocada: "Trocada (o que foi dito aparece acima)",
       pulada: "Pulada",
       autocorrecao: "Autocorreção (conta como correta)",
+      silabada: "Lida silabando (estimativa)",
       hesitacao: "Pausa de mais de 3 segundos antes da palavra",
       repeticao: "Repetição (não é erro)",
       insercao: "Palavra a mais (não é erro)",
@@ -237,7 +260,24 @@ const pt: Dicionario = {
     rotuloRef: (n: number) => `ref. ${n}`,
     pausaLonga: "pausa longa antes desta palavra",
     extra: { repeticao: "repetição", insercao: "palavra a mais" },
-    lido: { trocada: "trocada", pulada: "pulada", autocorrecao: "autocorreção", nao_lida: "não lida" },
+    lido: { trocada: "trocada", pulada: "pulada", autocorrecao: "autocorreção", nao_lida: "não lida", silabada: "lida silabando" },
+    nivel: "Perfil de leitor",
+    niveis: {
+      nao_le_palavras: "Ainda não lê palavras",
+      silabando: "Lê silabando",
+      palavra_por_palavra: "Lê palavra por palavra",
+      em_desenvolvimento: "Leitor em desenvolvimento",
+      fluente: "Leitor fluente",
+    },
+    porque: (nivel: Nivel, m: Motivo, ano: number) => {
+      const ritmo = `${m.pcpm} palavras corretas por minuto, referência do ${ano}º ano: ${m.referencia}`;
+      const acuracia = `${Math.round(m.acuracia * 100)}% das palavras lidas corretas`;
+      if (nivel === "nao_le_palavras") return `${m.corretas} palavras lidas corretamente; são necessárias pelo menos 5`;
+      if (nivel === "silabando") return `${m.silabadas} de ${m.lidas} palavras lidas silabando`;
+      if (nivel === "palavra_por_palavra") return `${ritmo}; pausa mediana entre as palavras: ${String(Math.round(m.pausaMediana / 100) / 10).replace(".", ",")} s`;
+      return `${ritmo}; ${acuracia}`;
+    },
+    nivelAviso: "Classificação do Fluente, inspirada nos perfis das avaliações de fluência; não é a classificação oficial.",
     disse: (dito: string) => `disse "${dito}"`,
     contagem: "Contagem manual (opcional)",
     contagemAjuda: "Se você também ouviu, quantas palavras a criança leu corretamente no minuto? Sua contagem ajuda a medir a precisão do app.",
@@ -274,6 +314,8 @@ const pt: Dicionario = {
       "Os textos são originais e não foram calibrados com textos padronizados.",
     ],
     voltar: "Fazer uma leitura",
+    niveis: "Perfis de leitor",
+    niveisAjuda: "Como as leituras foram classificadas, contando só as feitas depois que os perfis foram criados.",
   },
   sorteio: {
     comecar: "Começar",

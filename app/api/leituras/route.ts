@@ -3,6 +3,7 @@ import { sql } from "@/lib/db";
 import { hashIp } from "@/lib/ip";
 import { transcrever } from "@/lib/transcrever";
 import { alinhar } from "@/lib/alinhar";
+import { classificar } from "@/lib/classificacao";
 import { TEXTOS } from "@/lib/textos";
 
 export const maxDuration = 60;
@@ -48,12 +49,13 @@ export async function POST(request: Request) {
   }
 
   const resultado = alinhar(texto.corpo, palavras, campos.data.idioma);
+  const { nivel } = classificar(resultado, campos.data.ano, campos.data.idioma);
 
   const [{ id }] = await sql<{ id: string }[]>`
-    insert into leituras (idioma, texto_id, apelido, ano, corretas, erros, lidas, segundos, pcpm, alinhamento, palavras, ip_hash)
+    insert into leituras (idioma, texto_id, apelido, ano, corretas, erros, lidas, segundos, pcpm, silabadas, nivel, alinhamento, palavras, ip_hash)
     values (
       ${campos.data.idioma}, ${campos.data.textoId}, ${campos.data.apelido}, ${campos.data.ano},
-      ${resultado.corretas}, ${resultado.erros}, ${resultado.lidas}, ${resultado.segundos}, ${resultado.pcpm},
+      ${resultado.corretas}, ${resultado.erros}, ${resultado.lidas}, ${resultado.segundos}, ${resultado.pcpm}, ${resultado.silabadas}, ${nivel},
       ${sql.json(JSON.parse(JSON.stringify(resultado)))}, ${sql.json(JSON.parse(JSON.stringify(palavras)))}, ${ipHash}
     ) returning id`;
 

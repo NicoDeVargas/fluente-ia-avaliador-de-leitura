@@ -7,3 +7,5 @@ export const ESTILO: Record<Marca, string> = {
   autocorrecao: "text-ok underline decoration-ok decoration-dotted decoration-[3px] underline-offset-[7px]",
   nao_lida: "text-apagado",
 };
+
+export const ESTILO_SILABADA = "rounded-md bg-pausa-suave px-0.5 tracking-[0.14em] shadow-[inset_0_-2px_0_var(--pausa)]";

@@ -1,8 +1,10 @@
 export interface PalavraLida { texto: string; inicio: number; fim: number }
 export type Marca = "correta" | "trocada" | "pulada" | "autocorrecao" | "nao_lida";
-export interface ItemTexto { indice: number; esperada: string; marca: Marca; dito?: string; inicio?: number; fim?: number; hesitacao?: boolean }
+export interface ItemTexto { indice: number; esperada: string; marca: Marca; dito?: string; inicio?: number; fim?: number; hesitacao?: boolean; silabada?: boolean }
 export interface Extra { texto: string; inicio: number; fim: number; tipo: "repeticao" | "insercao" }
-export interface Resultado { itens: ItemTexto[]; extras: Extra[]; corretas: number; erros: number; lidas: number; segundos: number; pcpm: number }
+export interface Resultado { itens: ItemTexto[]; extras: Extra[]; corretas: number; erros: number; lidas: number; segundos: number; pcpm: number; silabadas: number }
+import { contarSilabas } from "./silabas.ts";
+
 type Idioma = "pt" | "en";
 
 const HESITACOES: Record<Idioma, Set<string>> = {
@@ -19,6 +21,10 @@ const VARIANTES: Record<Idioma, Record<string, string>> = {
 };
 const CONTRACOES: Record<Idioma, Record<string, string>> = {
   pt: { pro: "para o", pra: "para a", pros: "para os", pras: "para as" },
+  en: {},
+};
+const ENCLISE: Record<Idioma, Record<string, string>> = {
+  pt: { lo: "ele", la: "ela", los: "eles", las: "elas" },
   en: {},
 };
 const EQUIVALENTES: Record<Idioma, Map<string, Set<string>>> = { pt: equivalentes("pt"), en: equivalentes("en") };
@@ -45,6 +51,11 @@ const EXTRA_APOS_PRIMEIRA = 3;
 const ACERTOS_APOS_SALTO = 3;
 const JANELA_REPETICAO = 3;
 const ESPELHADAS = "bdpq";
+const MAX_PEDACOS = 6;
+const HIFENS = /[-‐‑]/;
+const SEPARA_TEXTO = /(?<=[–—])/;
+const SEPARA_FALA = /(?<=[-‐‑–—])/;
+export const MS_POR_SILABA_SILABADA = 300;
 
 interface Token { texto: string; norm: string; inicio: number; fim: number; hesitacao: boolean; pausa: boolean; intervalo: number; salto: number }
 type Tipo = "par" | "troca" | "extra" | "pulo";
@@ -67,11 +78,21 @@ export function normalizar(p: string): string {
   return p.toLowerCase().normalize("NFD").replace(/\p{M}/gu, "").replace(/[^\p{L}\p{N}]/gu, "");
 }
 
-function pedacos(corpo: string): string[] {
+function pedacos(corpo: string, separa = SEPARA_TEXTO): string[] {
   return corpo
     .split(/\s+/)
-    .flatMap((p) => p.split(/(?<=[-‐‑–—])/))
+    .flatMap((p) => p.split(separa))
     .filter((p) => normalizar(p) !== "");
+}
+
+function partesDoHifen(original: string) {
+  return original.split(HIFENS).map(normalizar).filter(Boolean);
+}
+
+function alternativas(original: string, idioma: Idioma) {
+  const partes = partesDoHifen(original);
+  const pronome = partes.length === 2 ? ENCLISE[idioma][partes[1]] : undefined;
+  return pronome ? [partes[0] + "r" + pronome] : [];
 }
 
 export function tokenizar(corpo: string): string[] {
@@ -111,6 +132,10 @@ function tentativaDe(tentativa: string, alvo: string) {
   return parecida(tentativa, alvo) && (tentativa.length > 2 || mesmaInicial(tentativa, alvo));
 }
 
+function fragmento(pedaco: string, alvo: string) {
+  return pedaco.length >= 2 && pedaco.length < alvo.length && alvo.includes(pedaco);
+}
+
 function mesmaInicial(a: string, b: string) {
   return a[0] === b[0] || (ESPELHADAS.includes(a[0]) && ESPELHADAS.includes(b[0]));
 }
@@ -124,11 +149,15 @@ function naJanela(norm: string, j: number, esperados: string[]) {
 
 function lerTokens(palavras: PalavraLida[], idioma: Idioma): Token[] {
   return palavras.flatMap((p) =>
-    pedacos(p.texto).map((texto) => ({ texto, norm: normalizar(texto), inicio: p.inicio, fim: p.fim, hesitacao: ehHesitacao(texto, idioma), pausa: false, intervalo: 0, salto: 0 })),
+    pedacos(p.texto, SEPARA_FALA).map((texto) => ({ texto, norm: normalizar(texto), inicio: p.inicio, fim: p.fim, hesitacao: ehHesitacao(texto, idioma), pausa: false, intervalo: 0, salto: 0 })),
   );
 }
 
-const MOVIMENTOS: [Tipo, number, number][] = [["par", 1, 1], ["par", 2, 1], ["par", 1, 2], ["troca", 1, 1], ["extra", 1, 0], ["pulo", 0, 1]];
+const MOVIMENTOS: [Tipo, number, number][] = [
+  ["par", 1, 1], ["par", 2, 1], ["par", 1, 2], ["troca", 1, 1], ["extra", 1, 0], ["pulo", 0, 1],
+  ...Array.from({ length: MAX_PEDACOS - 2 }, (_, d): [Tipo, number, number] => ["par", d + 3, 1]),
+];
+const movimentoJunta = (k: number) => (k === 2 ? 1 : k + 3);
 
 function caminho(lidos: Token[], originais: string[], esperados: string[], idioma: Idioma): Passo[] {
   const n = lidos.length;
@@ -166,10 +195,16 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
     return linha;
   };
   const porLido = lidos.map((t) => linhaDe(t.norm));
+  const alvos = new Map<string, number[]>();
+  originais.forEach((o, j) => [esperados[j], ...alternativas(o, idioma)].forEach((a) => alvos.set(a, [...(alvos.get(a) ?? []), j])));
   const juntaLidos = new Uint8Array(n * m);
-  for (let i = 0; i + 1 < n; i++) {
-    if (lidos[i + 1].hesitacao) continue;
-    for (const j of posicoes.get(lidos[i].norm + lidos[i + 1].norm) ?? []) juntaLidos[i * m + j] = 1;
+  for (let i = 0; i < n; i++) {
+    let junto = lidos[i].norm;
+    for (let k = 2; k <= MAX_PEDACOS && i + k <= n; k++) {
+      if (lidos[i + k - 1].hesitacao) break;
+      junto += lidos[i + k - 1].norm;
+      for (const j of alvos.get(junto) ?? []) juntaLidos[i * m + j] = k;
+    }
   }
   const aposPausa = new Uint8Array(n);
   let fimAnterior = -Infinity;
@@ -199,7 +234,8 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
       const diagonal = aqui + L + 1;
       const dentro = j < m;
       const casa = dentro && igual[j] === 1;
-      const juntaL = dentro && juntaLidos[c] === 1;
+      const juntaK = dentro ? juntaLidos[c] : 0;
+      const juntaL = juntaK > 0;
       const juntaE = dentro && juntaEsperados[j] === 1;
       const repeticao = repete[j] === 1;
       const tenta = dentro && tentativa[j] === 1;
@@ -224,7 +260,7 @@ function caminho(lidos: Token[], originais: string[], esperados: string[], idiom
         const px = s === 1 ? aposSalto : depois[s];
         const Vp = V[px];
         if (casa && (v = -ACERTO + Vp[diagonal]) < melhor) { melhor = v; mov = 0; prox = px; }
-        if (juntaL && (v = -ACERTO + Vp[diagonal + L]) < melhor) { melhor = v; mov = 1; prox = px; }
+        if (juntaL && (v = -ACERTO + Vp[diagonal + (juntaK - 1) * L]) < melhor) { melhor = v; mov = movimentoJunta(juntaK); prox = px; }
         if (juntaE && (v = -2 * ACERTO + Vp[diagonal + 1]) < melhor) { melhor = v; mov = 2; prox = px; }
         if (dentro && !casa && (comoD || (s === P && tenta)) && (v = custoTroca + Vp[diagonal]) < melhor) { melhor = v; mov = 3; prox = px; }
         const barato = s === 1 ? tenta : ehR && (tenta || imediata);
@@ -359,9 +395,16 @@ function montar(lidos: Token[], originais: string[], esperados: string[], idioma
       item.dito = primeiro.texto;
       return;
     }
+    const juntos = lidos.slice(p.i, p.i + p.di);
+    const normas = juntos.map((t) => t.norm);
+    const emPedacos = p.di >= 2 && p.dj === 1 && normas.join("") === esperados[p.j] && normas.join(" ") !== partesDoHifen(originais[p.j]).join(" ");
+    const silabas = contarSilabas(originais[p.j], idioma);
+    const lenta = p.dj === 1 && silabas >= 2 && (ultimo.fim - primeiro.inicio) / silabas >= MS_POR_SILABA_SILABADA;
+    if (emPedacos) item.dito = juntos.map((t) => t.texto).join(" ");
+    if (emPedacos || lenta) item.silabada = true;
     const seguinte = passos[k + 1];
-    if (p.di === 2 && seguinte?.tipo === "extra" && lidos[seguinte.i].norm === esperados[p.j]) {
-      Object.assign(item, { marca: "autocorrecao", dito: `${primeiro.texto} ${ultimo.texto}`, fim: lidos[seguinte.i].fim });
+    if (p.di >= 2 && seguinte?.tipo === "extra" && lidos[seguinte.i].norm === esperados[p.j]) {
+      Object.assign(item, { marca: "autocorrecao", dito: juntos.map((t) => t.texto).join(" "), fim: lidos[seguinte.i].fim });
       absorvidos.add(k + 1);
       return;
     }
@@ -371,7 +414,7 @@ function montar(lidos: Token[], originais: string[], esperados: string[], idioma
       const anterior = passos[a];
       if (anterior.tipo !== "extra") break;
       const t = lidos[anterior.i];
-      if (naJanela(t.norm, anterior.j, esperados) || !tentativaDe(t.norm, esperados[p.j]) || depois.inicio - t.fim >= PAUSA_CONVERSA_MS) break;
+      if (naJanela(t.norm, anterior.j, esperados) || !(tentativaDe(t.norm, esperados[p.j]) || fragmento(t.norm, esperados[p.j])) || depois.inicio - t.fim >= PAUSA_CONVERSA_MS) break;
       depois = t;
       tentativas.unshift(t);
       absorvidos.add(a);
@@ -379,6 +422,7 @@ function montar(lidos: Token[], originais: string[], esperados: string[], idioma
     if (tentativas.length) {
       Object.assign(item, { marca: "autocorrecao", dito: tentativas.map((x) => x.texto).join(" "), inicio: tentativas[0].inicio, hesitacao: tentativas[0].pausa });
     }
+    if (tentativas.length >= 2 && tentativas.every((x) => fragmento(x.norm, esperados[p.j]))) item.silabada = true;
   });
 
   passos.forEach((p, k) => {
@@ -409,5 +453,6 @@ export function alinhar(corpo: string, palavras: PalavraLida[], idioma: Idioma):
   const segundos = alinhados.length
     ? Math.max(1, Math.min(60, Math.round(Math.max(...alinhados.map((i) => i.fim!)) - alinhados[0].inicio!) / 1000))
     : 1;
-  return { itens, extras, corretas, erros, lidas: corretas + erros, segundos, pcpm: Math.round((corretas * 60) / segundos) };
+  const silabadas = itens.filter((i) => i.silabada && (i.marca === "correta" || i.marca === "autocorrecao")).length;
+  return { itens, extras, corretas, erros, lidas: corretas + erros, segundos, pcpm: Math.round((corretas * 60) / segundos), silabadas };
 }

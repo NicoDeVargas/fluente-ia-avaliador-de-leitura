@@ -18,7 +18,8 @@ import {
 } from "@phosphor-icons/react";
 import type { Extra, ItemTexto, Marca, Resultado as TResultado } from "@/lib/alinhar";
 import { segmentar } from "@/lib/segmentos";
-import { ESTILO } from "@/lib/marcas";
+import { ESTILO, ESTILO_SILABADA } from "@/lib/marcas";
+import { NIVEIS, classificar } from "@/lib/classificacao";
 import { REFERENCIA_PCPM } from "@/lib/referencias";
 import { sufixo, textos, type Idioma } from "@/lib/i18n";
 import { campo, primario, secundario } from "@/components/ui";
@@ -39,9 +40,11 @@ interface Props {
 }
 
 const limpo = (s: string) => s.replace(/[^\p{L}\p{N}\s'-]/gu, "");
+const silabada = (i: ItemTexto) => !!i.silabada && (i.marca === "correta" || i.marca === "autocorrecao");
 
-function Amostra({ tipo }: { tipo: Marca | "hesitacao" | "repeticao" | "insercao" }) {
+function Amostra({ tipo }: { tipo: Marca | "hesitacao" | "repeticao" | "insercao" | "silabada" }) {
   if (tipo === "hesitacao") return <Hesitacao />;
+  if (tipo === "silabada") return <span className={`font-semibold ${ESTILO_SILABADA}`}>Aa</span>;
   if (tipo === "repeticao" || tipo === "insercao") return <Chip tipo={tipo} texto="aa" />;
   return <span className={`font-semibold ${ESTILO[tipo]}`}>Aa</span>;
 }
@@ -101,6 +104,8 @@ export function Resultado(props: Props) {
   const itens = resultado.itens;
   const referencia = REFERENCIA_PCPM[ano];
   const ultimaLida = itens.findLastIndex((i) => i.marca !== "nao_lida");
+  const classificacao = classificar(resultado, ano, idiomaTexto);
+  const posicaoNivel = NIVEIS.indexOf(classificacao.nivel);
 
   const extrasApos = useMemo(() => {
     const mapa = new Map<number, Extra[]>();
@@ -115,8 +120,9 @@ export function Resultado(props: Props) {
   const presentes = useMemo(() => {
     const marcas = new Set<string>(itens.map((i) => i.marca));
     if (itens.some((i) => i.hesitacao)) marcas.add("hesitacao");
+    if (itens.some(silabada)) marcas.add("silabada");
     for (const e of resultado.extras) marcas.add(e.tipo);
-    const ordem = ["correta", "trocada", "pulada", "autocorrecao", "hesitacao", "repeticao", "insercao", "nao_lida"] as const;
+    const ordem = ["correta", "trocada", "pulada", "autocorrecao", "silabada", "hesitacao", "repeticao", "insercao", "nao_lida"] as const;
     return ordem.filter((m) => marcas.has(m) || m === "correta");
   }, [itens, resultado.extras]);
 
@@ -182,13 +188,15 @@ export function Resultado(props: Props) {
 
   function palavra(item: ItemTexto, antes: string, nucleo: string, depois: string) {
     const podeTocar = audioUrl && item.inicio !== undefined && item.fim !== undefined;
-    const rotulo =
+    const silabando = silabada(item);
+    const rotuloMarca =
       item.marca === "correta"
         ? null
         : item.marca === "trocada" || item.marca === "autocorrecao"
           ? `${r.lido[item.marca]}, ${r.disse(limpo(item.dito ?? ""))}`
           : r.lido[item.marca];
-    const conteudo =
+    const rotulo = [rotuloMarca, silabando ? r.lido.silabada : null].filter(Boolean).join(", ");
+    const marcado =
       (item.marca === "trocada" || item.marca === "autocorrecao") && item.dito ? (
         <ruby>
           <span className={ESTILO[item.marca]}>{nucleo}</span>
@@ -197,6 +205,7 @@ export function Resultado(props: Props) {
       ) : (
         <span className={ESTILO[item.marca]}>{nucleo}</span>
       );
+    const conteudo = silabando ? <span className={ESTILO_SILABADA}>{marcado}</span> : marcado;
     const interno = (
       <>
         {item.hesitacao && (
@@ -264,6 +273,17 @@ export function Resultado(props: Props) {
               <span className="text-suave">, {t.metricaLonga}</span>
             </span>
           </h1>
+          <div className="mt-6 border-l-4 border-acento pl-4">
+            <p className="text-sm font-semibold text-suave">{r.nivel}</p>
+            <p className="mt-0.5 font-display text-2xl font-semibold tracking-tight sm:text-3xl">{r.niveis[classificacao.nivel]}</p>
+            <div className="mt-2 flex max-w-60 gap-1" aria-hidden>
+              {NIVEIS.map((n, k) => (
+                <span key={n} className={`h-1.5 flex-1 rounded-full ${k <= posicaoNivel ? "bg-acento" : "bg-linha"}`} />
+              ))}
+            </div>
+            <p className="mt-2 max-w-[52ch] leading-relaxed">{r.porque(classificacao.nivel, classificacao.motivo, ano)}</p>
+            <p className="mt-1 max-w-[52ch] text-xs leading-relaxed text-suave">{r.nivelAviso}</p>
+          </div>
           {referencia !== undefined && (
             <>
               <Escala pcpm={resultado.pcpm} referencia={referencia} rotuloRef={r.rotuloRef(referencia)} />
