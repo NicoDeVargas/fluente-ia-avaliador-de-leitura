@@ -1,0 +1,1361 @@
+{
+  "geradoEm": "2026-09-28",
+  "resumo": {
+    "n": 30,
+    "mediaDifCorretas": 0.27,
+    "dentroDe1": 0.967,
+    "dentroDe3": 1,
+    "exatos": 23,
+    "errosGabarito": 42,
+    "errosApp": 38,
+    "precisaoErros": 0.974,
+    "revocacaoErros": 0.881,
+    "asr": {
+      "trocaAlheiaNaoLiteral": "4/12",
+      "pseudopalavraViraCorreta": "5/6",
+      "fragmentoMantido": "2/6",
+      "hesitacaoTranscrita": "3/6",
+      "repeticaoMantida": "6/6"
+    },
+    "aviso": "voz sintética adulta (Windows System.Speech: Maria pt-BR, Zira en-US), não é voz de criança; mede o pipeline, não a leitura infantil real"
+  },
+  "resultados": [
+    {
+      "texto": "bola-azul",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola e corre atrás dela. A bola bate na porta e para. O gato pula em cima da bola. Lia ri muito. Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
+      "transcricao": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola e corre atrás dela. A bola bate na porta e para. O gato pula em cima da bola. Lia ri muito. Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
+      "gabarito": {
+        "corretas": 58,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 58,
+        "erros": 0,
+        "segundos": 28.534,
+        "pcpm": 122,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "bola-azul",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola e janela atrás dela. A bola bate na porta e para. O gato pula em coma da bola. Lia ri muito. Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
+      "transcricao": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola e janela atrás dela. A bola bate na porta e para. O gato pula em cima da bola. Lia ri muito. Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
+      "gabarito": {
+        "corretas": 56,
+        "erros": 2,
+        "indicesErro": [
+          20,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 57,
+        "erros": 1,
+        "segundos": 28.666,
+        "pcpm": 119,
+        "indicesErro": [
+          20
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 20,
+          "esperada": "corre",
+          "dita": "janela",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "janela"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 34,
+          "esperada": "cima",
+          "dita": "coma",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "bola-azul",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola e corre atrás dela. A bola bate O gato pula em cima da bola. Lia ri muito. Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
+      "transcricao": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola e corre atrás dela. A bola bate, o gato pula em cima da bola. Lia ri muito. Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
+      "gabarito": {
+        "corretas": 54,
+        "erros": 4,
+        "indicesErro": [
+          26,
+          27,
+          28,
+          29
+        ]
+      },
+      "app": {
+        "corretas": 54,
+        "erros": 4,
+        "segundos": 25.994,
+        "pcpm": 125,
+        "indicesErro": [
+          26,
+          27,
+          28,
+          29
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            26,
+            27,
+            28,
+            29
+          ],
+          "trecho": "na porta e para.",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "bola-azul",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola a bola e corre atrás dela. A bola bate na porta e para. O gato pula em cima da bola. Lia ri mu… muito. Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
+      "transcricao": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. O gato vê a bola, a bola e corre atrás dela. A bola bate na porta e para. O gato pula em cima da bola. Lia rimou. Muito! Ela pega a bola e joga de novo. Agora o gato e a menina brincam juntos no quintal.",
+      "gabarito": {
+        "corretas": 58,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 57,
+        "erros": 1,
+        "segundos": 30.94,
+        "pcpm": 111,
+        "indicesErro": [
+          38
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            17,
+            18
+          ],
+          "trecho": "a bola",
+          "asrOcorrencias": 5,
+          "extras": [
+            "a:repeticao",
+            "bola:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 39,
+          "esperada": "muito.",
+          "fragmento": "mu",
+          "asrAntes": "rimou",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "bola-azul",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. hã O gato vê a bola e sorvete atrás dela. A bola bate na porta e para. O gato pula em",
+      "transcricao": "Lia tem uma bola azul. A bola pula no chão e rola pela sala. Hã? O gato vê a bola e sorvete atrás dela. A bola bate na porta e para. O gato pula em.",
+      "gabarito": {
+        "corretas": 33,
+        "erros": 1,
+        "indicesErro": [
+          20
+        ]
+      },
+      "app": {
+        "corretas": 33,
+        "erros": 1,
+        "segundos": 17.262,
+        "pcpm": 115,
+        "indicesErro": [
+          20
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 14,
+          "dita": "hã",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 20,
+          "esperada": "corre",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 33
+        }
+      ]
+    },
+    {
+      "texto": "horta-da-escola",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as folhas da alface estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta",
+      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as folhas da alface estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 40.195,
+        "pcpm": 104,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "horta-da-escola",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, caminhão e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as filhas da alface estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta",
+      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, caminhão e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as folhas da alface estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          22,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 40.004,
+        "pcpm": 103,
+        "indicesErro": [
+          22
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 22,
+          "esperada": "cenoura",
+          "dita": "caminhão",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "caminhão"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "folhas",
+          "dita": "filhas",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "horta-da-escola",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura e tomate. Toda manhã, as crianças regam as verde. Um dia, Davi viu que as folhas da alface estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta",
+      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura e tomate. Toda manhã, as crianças regam as verde. Um dia, Davi viu que as folhas da alface estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 38.361,
+        "pcpm": 103,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "plantas com um regador",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "horta-da-escola",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura alface cenoura e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as folhas da alface es… estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta",
+      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura, alface, cenoura e tomate. Toda manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as folhas da alface S Estavam cheias de furos. Quem estava comendo a horta? A professora pediu que todos olhassem com atenção. Debaixo de uma folha, Davi achou uma lagarta.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 43.809,
+        "pcpm": 96,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "alface, cenoura",
+          "asrOcorrencias": 2,
+          "extras": [
+            "alface,:repeticao",
+            "cenoura:repeticao",
+            "S:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "estavam",
+          "fragmento": "es",
+          "asrAntes": "s",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "horta-da-escola",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A hã turma de Davi plantou alface, cenoura e tomate. caminhão manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu que as",
+      "transcricao": "Na escola de Davi tem uma horta atrás do refeitório. Cada turma cuida de um canteiro. A turma de Davi plantou alface, cenoura e tomate. Cada manhã, as crianças regam as plantas com um regador verde. Um dia, Davi viu Kevs.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 39,
+        "erros": 1,
+        "segundos": 23.846,
+        "pcpm": 98,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 2,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "Toda",
+          "dita": "caminhão",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "Cada"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "faltou-luz",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu as",
+      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu-as.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 35.464,
+        "pcpm": 118,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "faltou-luz",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não caminhão ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó goardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu as",
+      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não caminhou ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu-as.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          22,
+          44
+        ]
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 35.513,
+        "pcpm": 117,
+        "indicesErro": [
+          22
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 22,
+          "esperada": "conseguia",
+          "dita": "caminhão",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "caminhou"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 44,
+          "esperada": "guardava",
+          "dita": "goardava",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "faltou-luz",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia ver as próprias mãos. Seu irmão menor começou do barulho dos trovões. Clara lembrou que a avó guardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu as",
+      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia ver as próprias mãos. Seu irmão menor começou do barulho dos trovões. Clara lembrou que a avó guardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, Ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu-as.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 33.866,
+        "pcpm": 117,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "a chorar, com medo",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "faltou-luz",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia nao conseguia ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava ve… velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu as",
+      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia, não conseguia ver as próprias mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que a avó guardava velas na gaveta da cozinha. Andando devagar e tateando as paredes, ela chegou até lá e encontrou a caixa de fósforos. O pai acendeu-as.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 38.435,
+        "pcpm": 109,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "não conseguia",
+          "asrOcorrencias": 2,
+          "extras": [
+            "não:repeticao",
+            "conseguia:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "velas",
+          "fragmento": "ve",
+          "asrAntes": "guardava",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "faltou-luz",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou hã tão escura que ela não conseguia ver as caminhão mãos. Seu irmão menor começou a chorar, com medo do barulho dos trovões. Clara lembrou que",
+      "transcricao": "Era uma noite de chuva forte quando a luz acabou na rua de Clara. A casa ficou tão escura que ela não conseguia ver as caminhão-mãos. Seu irmão menor começou a chorar com medo do barulho dos trovões. Clara lembrou que",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 21.762,
+        "pcpm": 113,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "próprias",
+          "dita": "caminhão",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "caminhão-"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "biblioteca-do-bairro",
+      "idioma": "pt",
+      "cenario": "limpo",
+      "roteiro": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, outros preferiam vendê- la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia,",
+      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, outros preferiam vendê-la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 39.104,
+        "pcpm": 107,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "biblioteca-do-bairro",
+      "idioma": "pt",
+      "cenario": "duas_trocas",
+      "roteiro": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim sorvete virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. algons queriam derrubar a casa, outros preferiam vendê- la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia,",
+      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim sorvete virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, outros preferiam vendê-la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia.",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          21,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 39.422,
+        "pcpm": 105,
+        "indicesErro": [
+          21
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 21,
+          "esperada": "tinha",
+          "dita": "sorvete",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "sorvete"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "Alguns",
+          "dita": "algons",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "biblioteca-do-bairro",
+      "idioma": "pt",
+      "cenario": "frase_pulada",
+      "roteiro": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num sábado, os moradores do bairro o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, outros preferiam vendê- la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia,",
+      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num sábado, os moradores do bairro— o que fazer com aquele lugar abandonado? Alguns queriam derrubar a casa, outros preferiam vendê-la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia.",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 37.241,
+        "pcpm": 106,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "se reuniram para decidir",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "biblioteca-do-bairro",
+      "idioma": "pt",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado tinha virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, ou… outros preferiam vendê- la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia,",
+      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado, tinha virado um matagal. Num sábado, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado. Alguns queriam derrubar a casa, Ou— outros preferiam vendê-la. Mateus levantou a mão e sugeriu que ali funcionasse uma biblioteca. No começo, os adultos acharam graça da ideia.",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 42.047,
+        "pcpm": 100,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "tinha virado",
+          "asrOcorrencias": 2,
+          "extras": [
+            "tinha:repeticao",
+            "virado:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 47,
+          "esperada": "outros",
+          "fragmento": "ou",
+          "asrAntes": "ou",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "autocorrecao",
+            "dito": "Ou—"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "biblioteca-do-bairro",
+      "idioma": "pt",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam hã quebradas e o jardim tinha virado um matagal. Num tesoura, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado.",
+      "transcricao": "No fim da rua onde Mateus morava, havia uma casa antiga que ninguém visitava. As janelas estavam quebradas e o jardim tinha virado um matagal. Num dia, os moradores do bairro se reuniram para decidir o que fazer com aquele lugar abandonado.",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          26
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 22.738,
+        "pcpm": 108,
+        "indicesErro": [
+          26
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "hã",
+          "asrTranscreveu": false
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 26,
+          "esperada": "sábado,",
+          "dita": "tesoura",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "dia,"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "lost-kite",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The kite went up and up until it looked as small as a bird. Then a strong gust pulled the string out of his hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "transcricao": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The kite went up and up until it looked as small as a bird. Then a strong gust pulled the string out of his hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 23.889,
+        "pcpm": 176,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "lost-kite",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The kite window up and up until it looked as small as a bird. Then a strong gust pulled the strong out of his hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "transcricao": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The kite window up and up until it looked as small as a bird. Then a strong gust pulled the string out of his hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          24,
+          42
+        ]
+      },
+      "app": {
+        "corretas": 69,
+        "erros": 1,
+        "segundos": 24.049,
+        "pcpm": 172,
+        "indicesErro": [
+          24
+        ]
+      },
+      "difCorretas": 1,
+      "difErros": 1,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 24,
+          "esperada": "went",
+          "dita": "window",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "window"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 42,
+          "esperada": "string",
+          "dita": "strong",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "lost-kite",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The kite went up and up until it looked bird. Then a strong gust pulled the string out of his hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "transcricao": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The kite went up and up until it looked bird. Then a strong gust pulled the string out of his hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 23.169,
+        "pcpm": 171,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "as small as a",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "lost-kite",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The dad The kite went up and up until it looked as small as a bird. Then a strong gust pulled the string out of his ha… hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "transcricao": "Sam had a red kite with a long yellow tail. On a windy day, he ran to the park with his dad. The dad— the kite went up and up until it looked as small as a bird. Then a strong gust pulled the string out of his ha— hand. The kite flew over the trees and was gone. Sam felt sad all the way home. The next morning, a girl knocked on",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 26.163,
+        "pcpm": 161,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "dad. The",
+          "asrOcorrencias": 2,
+          "extras": [
+            "dad—:repeticao",
+            "the:repeticao",
+            "ha—:insercao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 46,
+          "esperada": "hand.",
+          "fragmento": "ha",
+          "asrAntes": "ha",
+          "asrManteveFragmento": true,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "lost-kite",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Sam had a red kite with a long yellow tail. On a windy day, he ran to um the park with his dad. The kite went up and up pocket it looked as small as a bird. Then a strong gust pulled the",
+      "transcricao": "Sam had a red kite with a long yellow tail. On a windy day, he ran to, um, the park with his dad. The kite went up and up. Pocket. It looked as small as a bird. Then a strong gust pulled the",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          28
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 14.338,
+        "pcpm": 172,
+        "indicesErro": [
+          28
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 28,
+          "esperada": "until",
+          "dita": "pocket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "Pocket."
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    },
+    {
+      "texto": "quiet-garden",
+      "idioma": "en",
+      "cenario": "limpo",
+      "roteiro": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the quiet garden. There were no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an old apple tree. Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
+      "transcricao": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the Quiet Garden. There were no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an old apple tree. Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 27.309,
+        "pcpm": 154,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": []
+    },
+    {
+      "texto": "quiet-garden",
+      "idioma": "en",
+      "cenario": "duas_trocas",
+      "roteiro": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the jacket garden. There were no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an old appla tree. Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
+      "transcricao": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the Jacket Garden. There were no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an old ipla tree. Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
+      "gabarito": {
+        "corretas": 68,
+        "erros": 2,
+        "indicesErro": [
+          22,
+          43
+        ]
+      },
+      "app": {
+        "corretas": 68,
+        "erros": 2,
+        "segundos": 27.275,
+        "pcpm": 150,
+        "indicesErro": [
+          22,
+          43
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 2,
+      "artefatos": [
+        {
+          "tipo": "troca_alheia",
+          "indice": 22,
+          "esperada": "quiet",
+          "dita": "jacket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "Jacket"
+          }
+        },
+        {
+          "tipo": "troca_pseudopalavra",
+          "indice": 43,
+          "esperada": "apple",
+          "dita": "appla",
+          "asrTranscreveuDita": false,
+          "app": {
+            "marca": "trocada",
+            "dito": "ipla"
+          }
+        }
+      ]
+    },
+    {
+      "texto": "quiet-garden",
+      "idioma": "en",
+      "cenario": "frase_pulada",
+      "roteiro": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the quiet garden. There were no fountains or statues, only beans, and a wooden bench under an old apple tree. Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
+      "transcricao": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the Quiet Garden. There were no fountains or statues, only beans and a wooden bench under an old apple tree. Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
+      "gabarito": {
+        "corretas": 66,
+        "erros": 4,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "app": {
+        "corretas": 66,
+        "erros": 4,
+        "segundos": 24.528,
+        "pcpm": 161,
+        "indicesErro": [
+          31,
+          32,
+          33,
+          34
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 4,
+      "artefatos": [
+        {
+          "tipo": "pulo",
+          "indices": [
+            31,
+            32,
+            33,
+            34
+          ],
+          "trecho": "tall sunflowers, rows of",
+          "app": [
+            "pulada",
+            "pulada",
+            "pulada",
+            "pulada"
+          ]
+        }
+      ]
+    },
+    {
+      "texto": "quiet-garden",
+      "idioma": "en",
+      "cenario": "repeticao_autocorrecao",
+      "roteiro": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the quiet the quiet garden. There were no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an old apple tree. ev… Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
+      "transcricao": "Maya's grandmother lived in a small house at the edge of town, and behind it was a garden that everyone called the quiet— the quiet garden. There were no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an old apple tree. Um Every summer, Maya helped her grandmother pull weeds and water the plants before the sun grew too hot. One afternoon, Maya noticed that the bees",
+      "gabarito": {
+        "corretas": 70,
+        "erros": 0,
+        "indicesErro": []
+      },
+      "app": {
+        "corretas": 70,
+        "erros": 0,
+        "segundos": 29.67,
+        "pcpm": 142,
+        "indicesErro": []
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 0,
+      "artefatos": [
+        {
+          "tipo": "repeticao",
+          "indices": [
+            21,
+            22
+          ],
+          "trecho": "the quiet",
+          "asrOcorrencias": 2,
+          "extras": [
+            "the:repeticao",
+            "quiet:repeticao"
+          ]
+        },
+        {
+          "tipo": "autocorrecao",
+          "indice": 45,
+          "esperada": "Every",
+          "fragmento": "ev",
+          "asrAntes": "um",
+          "asrManteveFragmento": false,
+          "app": {
+            "marca": "correta",
+            "dito": null
+          }
+        }
+      ]
+    },
+    {
+      "texto": "quiet-garden",
+      "idioma": "en",
+      "cenario": "hesitacao_troca_parada",
+      "roteiro": "Maya's grandmother lived in a small house at the edge of town, and behind it was a um garden that everyone called the quiet garden. There jacket no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an",
+      "transcricao": "Maya's grandmother lived in a small house at the edge of town, and behind it was a, um, garden that everyone called the Quiet Garden. There jacket no fountains or statues, only tall sunflowers, rows of beans, and a wooden bench under an",
+      "gabarito": {
+        "corretas": 41,
+        "erros": 1,
+        "indicesErro": [
+          25
+        ]
+      },
+      "app": {
+        "corretas": 41,
+        "erros": 1,
+        "segundos": 16.582,
+        "pcpm": 148,
+        "indicesErro": [
+          25
+        ]
+      },
+      "difCorretas": 0,
+      "difErros": 0,
+      "errosCasados": 1,
+      "artefatos": [
+        {
+          "tipo": "hesitacao",
+          "antesDe": 17,
+          "dita": "um",
+          "asrTranscreveu": true
+        },
+        {
+          "tipo": "troca_alheia",
+          "indice": 25,
+          "esperada": "were",
+          "dita": "jacket",
+          "asrTranscreveuDita": true,
+          "app": {
+            "marca": "trocada",
+            "dito": "jacket"
+          }
+        },
+        {
+          "tipo": "parada",
+          "ultimaLida": 41
+        }
+      ]
+    }
+  ]
+}
