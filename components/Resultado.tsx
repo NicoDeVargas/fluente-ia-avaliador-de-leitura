@@ -29,6 +29,7 @@ interface Props {
   textoId: string;
   titulo: string;
   corpo: string;
+  idiomaTexto: "pt" | "en";
   apelido: string;
   ano: number;
   resultado: TResultado;
@@ -53,11 +54,12 @@ function Hesitacao() {
   );
 }
 
-function Chip({ tipo, texto }: { tipo: Extra["tipo"]; texto: string }) {
+function Chip({ tipo, texto, rotulo }: { tipo: Extra["tipo"]; texto: string; rotulo?: string }) {
   const Icone = tipo === "repeticao" ? ArrowClockwise : Plus;
   return (
     <span className="inline-flex items-center gap-0.5 rounded-md border border-dashed border-suave/60 px-1 align-[0.15em] text-[0.62em] leading-[1.5] text-suave">
       <Icone size="0.9em" weight="bold" aria-hidden />
+      {rotulo && <span className="sr-only">{rotulo}: </span>}
       {texto}
     </span>
   );
@@ -85,7 +87,7 @@ function Escala({ pcpm, referencia, rotuloRef }: { pcpm: number; referencia: num
 }
 
 export function Resultado(props: Props) {
-  const { idioma, id, textoId, titulo, corpo, apelido, ano, resultado, audioUrl, onLerDeNovo } = props;
+  const { idioma, id, textoId, titulo, corpo, idiomaTexto, apelido, ano, resultado, audioUrl, onLerDeNovo } = props;
   const t = textos[idioma];
   const r = t.resultado;
   const audio = useRef<HTMLAudioElement>(null);
@@ -197,7 +199,12 @@ export function Resultado(props: Props) {
       );
     const interno = (
       <>
-        {item.hesitacao && <Hesitacao />}
+        {item.hesitacao && (
+          <>
+            <Hesitacao />
+            <span className="sr-only">({r.pausaLonga}) </span>
+          </>
+        )}
         {conteudo}
         {rotulo && <span className="sr-only"> ({rotulo})</span>}
       </>
@@ -242,7 +249,7 @@ export function Resultado(props: Props) {
       <section aria-labelledby="pontuacao" className="grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:gap-16">
         <div>
           <p className="text-sm font-semibold text-suave">
-            {titulo}
+            <span lang={idiomaTexto}>{titulo}</span>
             <span className="mx-2 text-linha" aria-hidden>
               |
             </span>
@@ -259,7 +266,7 @@ export function Resultado(props: Props) {
           </h1>
           {referencia !== undefined && (
             <>
-              <Escala pcpm={resultado.pcpm} referencia={referencia} rotuloRef={`ref. ${referencia}`} />
+              <Escala pcpm={resultado.pcpm} referencia={referencia} rotuloRef={r.rotuloRef(referencia)} />
               <p className="mt-2 flex items-center gap-2 font-semibold">
                 {acimaDaReferencia ? (
                   <ArrowUp size={18} weight="bold" className="text-ok" aria-hidden />
@@ -325,10 +332,10 @@ export function Resultado(props: Props) {
 
         <div className="mt-5 grid gap-6 lg:grid-cols-[minmax(0,50rem)_16rem] lg:justify-between">
           <div className="folha rounded-2xl border border-linha px-5 py-7 sm:px-10 sm:py-10">
-            <p className="max-w-[38ch] text-[1.35rem] leading-[2.5] sm:text-[1.6rem]">
+            <p lang={idiomaTexto} className="max-w-[38ch] text-[1.35rem] leading-[2.5] sm:text-[1.6rem]">
               {extrasApos.get(-1)?.map((e, k) => (
                 <Fragment key={`x${k}`}>
-                  <Chip tipo={e.tipo} texto={e.texto} />{" "}
+                  <Chip tipo={e.tipo} texto={e.texto} rotulo={r.extra[e.tipo]} />{" "}
                 </Fragment>
               ))}
               {segmentos.map((s, k) => {
@@ -341,7 +348,7 @@ export function Resultado(props: Props) {
                     {extrasApos.get(s.indice)?.map((e, j) => (
                       <Fragment key={j}>
                         {" "}
-                        <Chip tipo={e.tipo} texto={e.texto} />
+                        <Chip tipo={e.tipo} texto={e.texto} rotulo={r.extra[e.tipo]} />
                       </Fragment>
                     ))}
                     {s.indice === ultimaLida && ultimaLida < itens.length - 1 && (

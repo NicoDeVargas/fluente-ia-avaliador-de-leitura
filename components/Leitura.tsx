@@ -10,11 +10,12 @@ import { Aviso, campo, primario, secundario } from "@/components/ui";
 import { Resultado } from "@/components/Resultado";
 
 const DURACAO = 60000;
+const LIMITE = 70000;
 const MINIMO = 5000;
 const TIPOS = ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus"];
 
 type Fase = "pronto" | "pedindo" | "gravando" | "analisando" | "resultado";
-type Erro = "semMicrofone" | "semSuporte" | "curta" | "falhou" | "muitas";
+type Erro = "semMicrofone" | "semSuporte" | "curta" | "falhou" | "muitas" | "falhaGravacao";
 
 interface Props {
   idioma: Idioma;
@@ -22,6 +23,7 @@ interface Props {
   titulo: string;
   corpo: string;
   anoTexto: number;
+  idiomaTexto: "pt" | "en";
 }
 
 function extensao(tipo: string) {
@@ -30,7 +32,7 @@ function extensao(tipo: string) {
   return "webm";
 }
 
-export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
+export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto }: Props) {
   const t = textos[idioma];
   const l = t.leitura;
   const leitor = useLeitor();
@@ -51,6 +53,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
   const url = useRef<string | null>(null);
 
   useEffect(() => {
+    cancelado.current = false;
     return () => {
       cancelado.current = true;
       if (relogio.current) clearInterval(relogio.current);
@@ -68,20 +71,27 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
     forma.append("textoId", textoId);
     forma.append("apelido", leitor.apelido);
     forma.append("ano", String(leitor.ano));
-    forma.append("idioma", idioma);
+    forma.append("idioma", idiomaTexto);
     const resposta = await fetch("/api/leituras", {
       method: "POST",
       body: forma,
     }).catch(() => null);
+    if (cancelado.current) return;
     if (!resposta?.ok) {
       setErro(resposta?.status === 429 ? "muitas" : "falhou");
       setFase("pronto");
       return;
     }
-    const dados = (await resposta.json()) as {
+    const dados = (await resposta.json().catch(() => null)) as {
       id: string;
       resultado: TResultado;
-    };
+    } | null;
+    if (cancelado.current) return;
+    if (!dados) {
+      setErro("falhou");
+      setFase("pronto");
+      return;
+    }
     setSaida(dados);
     setFase("resultado");
     window.history.replaceState(null, "", `/leitura/${dados.id}${sufixo(idioma)}`);
@@ -105,18 +115,40 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
         },
       });
     } catch {
+      if (cancelado.current) return;
       setErro("semMicrofone");
       setFase("pronto");
       return;
     }
+    const parar = () => fluxo.getTracks().forEach((x) => x.stop());
+    if (cancelado.current) {
+      parar();
+      return;
+    }
     const tipo = TIPOS.find((x) => MediaRecorder.isTypeSupported(x));
-    const rec = new MediaRecorder(fluxo, tipo ? { mimeType: tipo } : undefined);
+    let rec: MediaRecorder;
+    try {
+      rec = new MediaRecorder(fluxo, tipo ? { mimeType: tipo } : undefined);
+    } catch {
+      parar();
+      setErro("semSuporte");
+      setFase("pronto");
+      return;
+    }
     const partes: Blob[] = [];
     rec.ondataavailable = (e) => {
       if (e.data.size) partes.push(e.data);
     };
+    rec.onerror = () => {
+      if (relogio.current) clearInterval(relogio.current);
+      descartar.current = true;
+      if (rec.state !== "inactive") rec.stop();
+      else parar();
+      setErro("falhaGravacao");
+      setFase("pronto");
+    };
     rec.onstop = () => {
-      fluxo.getTracks().forEach((x) => x.stop());
+      parar();
       if (relogio.current) clearInterval(relogio.current);
       if (cancelado.current) return;
       if (descartar.current) {
@@ -144,8 +176,8 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
     setFase("gravando");
     relogio.current = window.setInterval(() => {
       const passou = Date.now() - inicio.current;
-      setDecorrido(Math.min(DURACAO, passou));
-      if (passou >= DURACAO && rec.state === "recording") rec.stop();
+      setDecorrido(Math.min(LIMITE, passou));
+      if (passou >= LIMITE && rec.state === "recording") rec.stop();
     }, 200);
   }
 
@@ -160,6 +192,8 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
   }
 
   function lerDeNovo() {
+    if (url.current) URL.revokeObjectURL(url.current);
+    url.current = null;
     setSaida(null);
     setGravacao(null);
     setErro(null);
@@ -177,6 +211,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
           textoId={textoId}
           titulo={titulo}
           corpo={corpo}
+          idiomaTexto={idiomaTexto}
           apelido={leitor.apelido}
           ano={leitor.ano}
           resultado={saida.resultado}
@@ -188,7 +223,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
     );
   }
 
-  const restante = Math.ceil((DURACAO - decorrido) / 1000);
+  const restante = Math.max(0, Math.ceil((DURACAO - decorrido) / 1000));
   const ocupado = fase === "gravando" || fase === "analisando" || fase === "pedindo";
 
   return (
@@ -229,7 +264,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
           <span className="mx-2 text-linha" aria-hidden>
             |
           </span>
-          <span lang={t.lang}>{titulo}</span>
+          <span lang={idiomaTexto}>{titulo}</span>
         </p>
         <p className="mt-1 max-w-[62ch] text-sm leading-relaxed text-suave">{l.instrucao}</p>
       </div>
@@ -237,12 +272,18 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
       <article
         className={`folha rounded-2xl border px-5 py-8 transition-colors sm:px-12 sm:py-12 ${fase === "gravando" ? "border-acento/50" : "border-linha"}`}
       >
-        <p className="max-w-[32ch] text-[1.6rem] leading-[1.85] tracking-[0.005em] sm:text-[2.1rem] sm:leading-[1.8]">{corpo}</p>
+        <p lang={idiomaTexto} className="max-w-[32ch] text-[1.6rem] leading-[1.85] tracking-[0.005em] sm:text-[2.1rem] sm:leading-[1.8]">
+          {corpo}
+        </p>
       </article>
 
       <div className="fixed inset-x-0 bottom-0 z-10 border-t border-linha bg-fundo/92 backdrop-blur supports-[backdrop-filter]:bg-fundo/80">
         {fase === "gravando" && (
-          <div className="h-1 bg-acento transition-[width] duration-200 ease-linear" style={{ width: `${(decorrido / DURACAO) * 100}%` }} aria-hidden />
+          <div
+            className="h-1 bg-acento transition-[width] duration-200 ease-linear"
+            style={{ width: `${Math.min(1, decorrido / DURACAO) * 100}%` }}
+            aria-hidden
+          />
         )}
         <div className="mx-auto flex max-w-4xl flex-col gap-3 px-4 py-3 sm:px-6 sm:py-4">
           {erro && (
@@ -259,23 +300,26 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto }: Props) {
             </Aviso>
           )}
           {fase === "gravando" ? (
-            <div className="flex items-center gap-4">
-              <div className="flex flex-1 items-center gap-3" role="timer" aria-live="off">
-                <span className="relative flex size-3" aria-hidden>
-                  <span className="pulsar absolute inset-0 rounded-full bg-erro" />
-                  <span className="relative size-3 rounded-full bg-erro" />
-                </span>
-                <span className="sr-only">{l.gravando}</span>
-                <span className="font-display text-4xl font-semibold tabular-nums leading-none">{restante}</span>
-                <span className="text-sm text-suave">s {l.restante}</span>
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="flex flex-1 items-center gap-3" role="timer" aria-live="off">
+                  <span className="relative flex size-3" aria-hidden>
+                    <span className="pulsar absolute inset-0 rounded-full bg-erro" />
+                    <span className="relative size-3 rounded-full bg-erro" />
+                  </span>
+                  <span className="sr-only">{l.gravando}</span>
+                  <span className="font-display text-4xl font-semibold tabular-nums leading-none">{restante}</span>
+                  <span className="text-sm text-suave">s {l.restante}</span>
+                </div>
+                <button type="button" onClick={cancelar} className={`${secundario} px-4`}>
+                  {l.cancelar}
+                </button>
+                <button type="button" onClick={terminar} className={`${primario} sm:min-w-36`}>
+                  <Stop size={18} weight="fill" aria-hidden />
+                  {l.terminei}
+                </button>
               </div>
-              <button type="button" onClick={cancelar} className={`${secundario} hidden sm:inline-flex`}>
-                {l.cancelar}
-              </button>
-              <button type="button" onClick={terminar} className={`${primario} min-w-36`}>
-                <Stop size={18} weight="fill" aria-hidden />
-                {l.terminei}
-              </button>
+              <p className="text-sm text-suave">{l.atrasado}</p>
             </div>
           ) : fase === "analisando" ? (
             <div role="status" className="flex min-h-12 items-center gap-3">

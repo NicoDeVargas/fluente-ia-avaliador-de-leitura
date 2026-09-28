@@ -41,6 +41,7 @@ export default async function Leitura({ params, searchParams }: PageProps<"/leit
             textoId={texto.id}
             titulo={texto.titulo}
             corpo={texto.corpo}
+            idiomaTexto={texto.idioma}
             apelido={linha.apelido}
             ano={linha.ano}
             resultado={linha.alinhamento}

@@ -16,7 +16,7 @@ const en = {
   topo: { estudo: "Accuracy study", inicio: "Home", idioma: "Language" },
   inicio: {
     titulo: "A one-minute reading check, scored word by word.",
-    problema: "Teachers time each child reading aloud for a minute and count correct words by ear, one by one. Fluente listens, counts, and shows every word.",
+    problema: "Teachers time each child reading aloud and count correct words by ear; Fluente listens, counts and shows every word.",
     leitor: "Who is reading",
     apelido: "Nickname",
     apelidoAjuda: "A first name or nickname. No full names.",
@@ -67,6 +67,8 @@ const en = {
     lerDeNovo: "Read again",
     salvarApelido: "Continue",
     dica: "One minute. Tap Done if the reader finishes early.",
+    atrasado: "Started late? Keep reading. We count 60 s from your first word.",
+    falhaGravacao: "The recording stopped unexpectedly. Please try again.",
   },
   resultado: {
     titulo: "Result",
@@ -97,6 +99,9 @@ const en = {
       nao_lida: "Not reached",
     },
     parouAqui: "Stopped here",
+    rotuloRef: (n: number) => `ref. ${n}`,
+    pausaLonga: "long pause before this word",
+    extra: { repeticao: "repeated", insercao: "added" },
     lido: { trocada: "misread", pulada: "skipped", autocorrecao: "self-corrected", nao_lida: "not reached" },
     disse: (dito: string) => `said "${dito}"`,
     contagem: "Manual count (optional)",
@@ -151,7 +156,7 @@ const pt: Dicionario = {
   inicio: {
     titulo: "A leitura de um minuto, conferida palavra por palavra.",
     problema:
-      "Hoje a professora cronometra cada criança lendo em voz alta e conta de ouvido as palavras corretas, uma a uma. O Fluente escuta, conta e mostra cada palavra.",
+      "Hoje a professora cronometra cada criança lendo em voz alta e conta de ouvido as palavras corretas; o Fluente escuta, conta e mostra cada palavra.",
     leitor: "Quem vai ler",
     apelido: "Apelido",
     apelidoAjuda: "Um primeiro nome ou apelido. Sem nome completo.",
@@ -202,6 +207,8 @@ const pt: Dicionario = {
     lerDeNovo: "Ler de novo",
     salvarApelido: "Continuar",
     dica: "Um minuto. Toque em Terminei se a leitura acabar antes.",
+    atrasado: "Começou atrasado? Continue lendo. Contamos 60 s a partir da primeira palavra.",
+    falhaGravacao: "A gravação parou de repente. Tente de novo, por favor.",
   },
   resultado: {
     titulo: "Resultado",
@@ -232,6 +239,9 @@ const pt: Dicionario = {
       nao_lida: "Não chegou a ler",
     },
     parouAqui: "Parou aqui",
+    rotuloRef: (n: number) => `ref. ${n}`,
+    pausaLonga: "pausa longa antes desta palavra",
+    extra: { repeticao: "repetição", insercao: "palavra a mais" },
     lido: { trocada: "trocada", pulada: "pulada", autocorrecao: "autocorreção", nao_lida: "não lida" },
     disse: (dito: string) => `disse "${dito}"`,
     contagem: "Contagem manual (opcional)",

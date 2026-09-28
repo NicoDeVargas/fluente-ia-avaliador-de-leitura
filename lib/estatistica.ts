@@ -15,7 +15,7 @@ export function fracaoDentro(pares: Par[], limite: number): number | null {
 
 export function pearson(pares: Par[]): number | null {
   const n = pares.length;
-  if (n < 2) return null;
+  if (n < 3) return null;
   const mx = pares.reduce((s, p) => s + p.app, 0) / n;
   const my = pares.reduce((s, p) => s + p.humano, 0) / n;
   let sxy = 0;

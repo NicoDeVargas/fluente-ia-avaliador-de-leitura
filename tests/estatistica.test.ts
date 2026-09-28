@@ -42,6 +42,15 @@ describe("estatística", () => {
     expect(pearson(pares)).toBeCloseTo(0.9944, 4);
   });
 
+  it("pearson exige ao menos três pares", () => {
+    expect(
+      pearson([
+        { app: 1, humano: 2 },
+        { app: 2, humano: 4 },
+      ]),
+    ).toBeNull();
+  });
+
   it("sem dados ou sem variância", () => {
     expect(diferencaMediaAbsoluta([])).toBeNull();
     expect(fracaoDentro([], 3)).toBeNull();
@@ -50,6 +59,7 @@ describe("estatística", () => {
       pearson([
         { app: 5, humano: 1 },
         { app: 5, humano: 2 },
+        { app: 5, humano: 3 },
       ]),
     ).toBeNull();
   });

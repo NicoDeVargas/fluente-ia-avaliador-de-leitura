@@ -14,7 +14,7 @@ const Campos = z.object({
   idioma: z.enum(["pt", "en"]),
 });
 
-const TAMANHO_MAXIMO = 8 * 1024 * 1024;
+const TAMANHO_MAXIMO = 12 * 1024 * 1024;
 
 export async function POST(request: Request) {
   const forma = await request.formData().catch(() => null);
