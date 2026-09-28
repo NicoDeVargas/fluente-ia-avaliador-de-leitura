@@ -211,8 +211,8 @@ describe("alinhar, casos extras", () => {
     expect(r.extras.map((e) => e.tipo)).toEqual(["insercao", "insercao"]);
     expect(r.corretas).toBe(1);
     expect(r.erros).toBe(0);
-    expect(r.segundos).toBe(2);
-    expect(r.pcpm).toBe(30);
+    expect(r.segundos).toBe(1);
+    expect(r.pcpm).toBe(60);
   });
 
   it("várias tentativas antes de acertar viram uma autocorreção", () => {
@@ -343,6 +343,105 @@ describe("alinhar, como um avaliador humano", () => {
     const pt = alinhar("o gato é preto", ler("o ãh gato né é... preto", 6000), "pt");
     expect(marcas(pt)).toEqual(Array(4).fill("correta"));
     expect(pt.extras).toEqual([]);
+  });
+});
+
+describe("alinhar, relógio e saltos", () => {
+  const corpoDe = (id: string) => TEXTOS.find((t) => t.id === id)!.corpo;
+
+  it("título lido em voz alta não conta no tempo", () => {
+    const corpo = corpoDe("bola-azul");
+    const texto = tokenizar(corpo).slice(0, 10).join(" ");
+    const palavras = [...ler("A bola azul", 1500), ...ler(texto, 8500, 3500)];
+    const r = alinhar(corpo, palavras, "pt");
+    expect(r.extras.map((e) => e.tipo)).toEqual(["insercao", "insercao", "insercao"]);
+    expect(r.corretas).toBe(10);
+    expect(r.itens[0].inicio).toBe(3500);
+    expect(r.itens[0].hesitacao).toBe(false);
+    expect(r.segundos).toBe(5);
+    expect(r.pcpm).toBe(120);
+  });
+
+  it("vou começar antes do texto não marca hesitação nem muda o PCPM", () => {
+    const corpo = "o gato subiu no muro";
+    const texto = ler(corpo, 9500, 4500);
+    const com = alinhar(corpo, [...ler("vou começar", 1000), ...texto], "pt");
+    const sem = alinhar(corpo, texto, "pt");
+    expect(com.itens.map((i) => i.hesitacao)).toEqual(Array(5).fill(false));
+    expect(com.segundos).toBe(5);
+    expect(com.pcpm).toBe(60);
+    expect(com.pcpm).toBe(sem.pcpm);
+    expect(com.corretas).toBe(sem.corretas);
+  });
+
+  it("o corte de 60 s conta a partir da primeira palavra do texto", () => {
+    const palavras: PalavraLida[] = [
+      { texto: "vou", inicio: 0, fim: 300 },
+      { texto: "começar", inicio: 300, fim: 800 },
+      { texto: "um", inicio: 5000, fim: 5500 },
+      { texto: "dois", inicio: 30000, fim: 30500 },
+      { texto: "tres", inicio: 64500, fim: 65000 },
+      { texto: "quatro", inicio: 65000, fim: 65500 },
+    ];
+    const r = alinhar("um dois tres quatro cinco", palavras, "pt");
+    expect(marcas(r)).toEqual(["correta", "correta", "correta", "nao_lida", "nao_lida"]);
+    expect(r.segundos).toBe(60);
+  });
+
+  function lerComSalto(fala: string[]) {
+    const corpo = corpoDe("faltou-luz");
+    const tokens = tokenizar(corpo);
+    const inicio = tokens.indexOf("seu");
+    const fim = tokens.indexOf("trovoes");
+    return { corpo, inicio, fim, palavras: ler([...tokens.slice(0, inicio), ...fala, ...tokens.slice(fim + 3, fim + 8)].join(" "), 30000) };
+  }
+
+  it("repetição logo depois de pular um trecho não desfaz o salto", () => {
+    const { corpo, inicio, fim, palavras } = lerComSalto(["clara", "lembrou", "lembrou"]);
+    const r = alinhar(corpo, palavras, "pt");
+    const m = marcas(r);
+    expect(m.slice(0, inicio).every((x) => x === "correta")).toBe(true);
+    expect(m.slice(inicio, fim + 1)).toEqual(Array(fim + 1 - inicio).fill("pulada"));
+    expect(m.slice(fim + 1, fim + 8)).toEqual(Array(7).fill("correta"));
+    expect(r.extras.map((e) => [e.texto, e.tipo])).toEqual([["lembrou", "repeticao"]]);
+    expect(r.erros).toBe(12);
+  });
+
+  it("autocorreção logo depois de pular um trecho não desfaz o salto", () => {
+    const { corpo, inicio, fim, palavras } = lerComSalto(["clara", "lem", "lembrou"]);
+    const r = alinhar(corpo, palavras, "pt");
+    expect(marcas(r).slice(inicio, fim + 1)).toEqual(Array(12).fill("pulada"));
+    expect(r.itens[fim + 1].marca).toBe("correta");
+    expect(r.itens[fim + 2].marca).toBe("autocorrecao");
+    expect(r.itens[fim + 2].dito).toBe("lem");
+    expect(r.extras).toEqual([]);
+    expect(r.erros).toBe(12);
+  });
+
+  it("pular uma frase e parar logo depois ainda é salto", () => {
+    const corpo = corpoDe("horta-da-escola");
+    const tokens = tokenizar(corpo);
+    const quem = tokens.indexOf("quem");
+    const r = alinhar(corpo, ler([...tokens.slice(0, quem), "a", "professora"].join(" "), 20000), "pt");
+    const m = marcas(r);
+    expect(m.slice(quem, quem + 5)).toEqual(Array(5).fill("pulada"));
+    expect(m.slice(quem + 5, quem + 7)).toEqual(["correta", "correta"]);
+    expect(m.slice(quem + 7).every((x) => x === "nao_lida")).toBe(true);
+    expect(r.corretas).toBe(quem + 2);
+    expect(r.erros).toBe(5);
+  });
+
+  it("alinha um texto longo rapidamente", () => {
+    const corpo = corpoDe("quiet-garden");
+    const tokens = tokenizar(corpo);
+    const fala = [...tokens, ...tokens].map((t, k) => (k % 7 === 3 ? "blue" : t)).join(" ");
+    const palavras = ler(fala, 59000);
+    for (let k = 0; k < 10; k++) alinhar(corpo, palavras, "en");
+    const inicio = performance.now();
+    for (let k = 0; k < 10; k++) alinhar(corpo, palavras, "en");
+    const ms = (performance.now() - inicio) / 10;
+    console.log(`alinhar ${tokens.length}x${palavras.length}: ${ms.toFixed(2)} ms`);
+    expect(ms).toBeLessThan(30);
   });
 });
 

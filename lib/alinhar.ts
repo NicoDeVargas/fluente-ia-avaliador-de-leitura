@@ -22,6 +22,7 @@ const CONTRACOES: Record<Idioma, Record<string, string>> = {
   en: {},
 };
 const EQUIVALENTES: Record<Idioma, Map<string, Set<string>>> = { pt: equivalentes("pt"), en: equivalentes("en") };
+const JUNCOES: Record<Idioma, Map<string, string>> = { pt: juncoes("pt"), en: juncoes("en") };
 
 const LIMITE_MS = 60000;
 const PAUSA_MS = 3000;
@@ -34,7 +35,7 @@ const JANELA_REPETICAO = 3;
 
 interface Token { texto: string; norm: string; inicio: number; fim: number; hesitacao: boolean; pausa: boolean }
 type Tipo = "par" | "troca" | "extra" | "pulo";
-interface Movimento { tipo: Tipo; di: number; dj: number; custo: number; proximo: number }
+interface Linha { igual: Uint8Array; tentativa: Uint8Array; juntaEsperados: Uint8Array; repete: Uint8Array }
 interface Passo { tipo: Tipo; i: number; j: number; di: number; dj: number }
 
 function equivalentes(idioma: Idioma) {
@@ -43,6 +44,10 @@ function equivalentes(idioma: Idioma) {
   NUMEROS[idioma].forEach((palavras, n) => palavras.split(" ").forEach((p) => juntar(String(n), p)));
   Object.entries(VARIANTES[idioma]).forEach(([lido, esperado]) => juntar(lido, esperado));
   return mapa;
+}
+
+function juncoes(idioma: Idioma) {
+  return new Map(Object.entries(CONTRACOES[idioma]).map(([lido, esperado]) => [lido, esperado.split(" ").map(normalizar).join("")]));
 }
 
 export function normalizar(p: string): string {
@@ -65,20 +70,27 @@ function ehHesitacao(p: string, idioma: Idioma) {
 }
 
 function distancia(a: string, b: string) {
-  let anterior = Array.from({ length: b.length + 1 }, (_, k) => k);
+  let anterior = new Int32Array(b.length + 1);
+  let atual = new Int32Array(b.length + 1);
+  for (let j = 0; j <= b.length; j++) anterior[j] = j;
   for (let i = 1; i <= a.length; i++) {
-    const atual = [i];
+    atual[0] = i;
+    const ca = a.charCodeAt(i - 1);
     for (let j = 1; j <= b.length; j++) {
-      atual[j] = Math.min(anterior[j] + 1, atual[j - 1] + 1, anterior[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      const troca = anterior[j - 1] + (ca === b.charCodeAt(j - 1) ? 0 : 1);
+      const lado = Math.min(anterior[j], atual[j - 1]) + 1;
+      atual[j] = troca < lado ? troca : lado;
     }
-    anterior = atual;
+    [anterior, atual] = [atual, anterior];
   }
   return anterior[b.length];
 }
 
 function parecida(tentativa: string, alvo: string) {
   if (tentativa === alvo) return false;
-  return alvo.startsWith(tentativa) || distancia(tentativa, alvo) <= Math.max(1, Math.floor(alvo.length / 3));
+  if (alvo.startsWith(tentativa)) return true;
+  const limite = Math.max(1, Math.floor(alvo.length / 3));
+  return tentativa[0] === alvo[0] && Math.abs(tentativa.length - alvo.length) <= limite && distancia(tentativa, alvo) <= limite;
 }
 
 function naJanela(norm: string, j: number, esperados: string[]) {
@@ -89,52 +101,104 @@ function naJanela(norm: string, j: number, esperados: string[]) {
 }
 
 function lerTokens(palavras: PalavraLida[], idioma: Idioma): Token[] {
-  const tokens = palavras.flatMap((p) =>
+  return palavras.flatMap((p) =>
     pedacos(p.texto).map((texto) => ({ texto, norm: normalizar(texto), inicio: p.inicio, fim: p.fim, hesitacao: ehHesitacao(texto, idioma), pausa: false })),
   );
-  const partida = tokens.find((t) => !t.hesitacao)?.inicio ?? 0;
-  return tokens.filter((t) => t.inicio < partida + LIMITE_MS);
 }
 
-function caminho(lidos: Token[], esperados: string[], idioma: Idioma): Passo[] {
+const MOVIMENTOS: [Tipo, number, number][] = [["par", 1, 1], ["par", 2, 1], ["par", 1, 2], ["troca", 1, 1], ["extra", 1, 0], ["pulo", 0, 1]];
+
+function caminho(lidos: Token[], originais: string[], esperados: string[], idioma: Idioma): Passo[] {
   const n = lidos.length;
   const m = esperados.length;
-  const estados = ACERTOS_APOS_SALTO + 1;
-  const largura = m + 1;
-  const V = Array.from({ length: estados }, () => new Float64Array((n + 1) * largura).fill(Infinity));
-  const valor = (s: number, i: number, j: number) => V[s][i * largura + j];
-  const equivale = (lido: string, esperado: string) => lido === esperado || !!EQUIVALENTES[idioma].get(lido)?.has(esperado);
-  const juntas = (lido: string, a: string, b: string) => lido === a + b || normalizar(CONTRACOES[idioma][lido] ?? "") === a + b;
-  const depoisDeAcerto = (s: number) => (s === 1 ? ACERTOS_APOS_SALTO : s <= 2 ? 0 : s - 1);
+  const L = m + 1;
+  const K = ACERTOS_APOS_SALTO;
+  const estados = 2 + 2 * (K - 1);
+  const primeiroFinal = 2 + (K - 1);
+  const depois = Array.from({ length: estados }, (_, s) => (s < 2 || (s - 2) % (K - 1) === 0 ? 0 : s - 1));
+  const equivalentes = EQUIVALENTES[idioma];
+  const juncoes = JUNCOES[idioma];
 
-  function movimentos(s: number, i: number, j: number): Movimento[] {
-    const lista: Movimento[] = [];
-    const t = lidos[i];
-    const proximo = depoisDeAcerto(s);
-    if (j < m) {
-      const igual = equivale(t.norm, esperados[j]);
-      if (igual) lista.push({ tipo: "par", di: 1, dj: 1, custo: -ACERTO, proximo });
-      if (i + 1 < n && !lidos[i + 1].hesitacao && t.norm + lidos[i + 1].norm === esperados[j]) lista.push({ tipo: "par", di: 2, dj: 1, custo: -ACERTO, proximo });
-      if (j + 1 < m && juntas(t.norm, esperados[j], esperados[j + 1])) lista.push({ tipo: "par", di: 1, dj: 2, custo: -2 * ACERTO, proximo });
-      if (s === 0 && !igual) lista.push({ tipo: "troca", di: 1, dj: 1, custo: EDICAO, proximo: 0 });
+  const pares = esperados.map((e, j) => (j + 1 < m ? e + esperados[j + 1] : ""));
+  const posicoes = new Map<string, number[]>();
+  esperados.forEach((e, j) => posicoes.set(e, [...(posicoes.get(e) ?? []), j]));
+  const linhas = new Map<string, Linha>();
+  const linhaDe = (a: string) => {
+    const pronta = linhas.get(a);
+    if (pronta) return pronta;
+    const variantes = equivalentes.get(a);
+    const contracao = juncoes.get(a);
+    const linha: Linha = { igual: new Uint8Array(m), tentativa: new Uint8Array(m), juntaEsperados: new Uint8Array(m), repete: new Uint8Array(L) };
+    for (let j = 0; j < m; j++) {
+      const e = esperados[j];
+      linha.igual[j] = a === e || !!variantes?.has(e) ? 1 : 0;
+      linha.tentativa[j] = !linha.igual[j] && parecida(a, e) ? 1 : 0;
+      linha.juntaEsperados[j] = pares[j] !== "" && (a === pares[j] || contracao === pares[j]) ? 1 : 0;
     }
-    if (t.hesitacao) lista.push({ tipo: "extra", di: 1, dj: 0, custo: 0, proximo: s });
-    else if (s === 0) lista.push({ tipo: "extra", di: 1, dj: 0, custo: naJanela(t.norm, j, esperados) ? EDICAO - REPETICAO : EDICAO, proximo: 0 });
-    if (j < m && s === 0) {
-      lista.push({ tipo: "pulo", di: 0, dj: 1, custo: EDICAO, proximo: 0 });
-      lista.push({ tipo: "pulo", di: 0, dj: 1, custo: EDICAO, proximo: 1 });
+    for (const j of posicoes.get(a) ?? []) {
+      for (let k = j; k <= Math.min(m, j + JANELA_REPETICAO); k++) linha.repete[k] = 1;
     }
-    if (j < m && s === 1) lista.push({ tipo: "pulo", di: 0, dj: 1, custo: PULO_SEGUINTE, proximo: 1 });
-    return lista;
+    linhas.set(a, linha);
+    return linha;
+  };
+  const porLido = lidos.map((t) => linhaDe(t.norm));
+  const juntaLidos = new Uint8Array(n * m);
+  for (let i = 0; i + 1 < n; i++) {
+    if (lidos[i + 1].hesitacao) continue;
+    for (const j of posicoes.get(lidos[i].norm + lidos[i + 1].norm) ?? []) juntaLidos[i * m + j] = 1;
   }
+  const inicioDeFrase = new Uint8Array(m);
+  for (let j = 1; j < m; j++) inicioDeFrase[j] = /[.!?…]["”’)]*$/.test(originais[j - 1]) ? 1 : 0;
 
-  for (let j = 0; j <= m; j++) V[0][n * largura + j] = 0;
+  const V = Array.from({ length: estados }, (_, s) => {
+    const v = new Float64Array((n + 1) * L).fill(Infinity);
+    if (s === 0 || s >= primeiroFinal) v.fill(0, n * L);
+    return v;
+  });
+  const escolha = new Uint8Array(estados * n * L);
+  const destino = new Uint8Array(estados * n * L);
+
+  const tamanho = n * L;
   for (let i = n - 1; i >= 0; i--) {
+    const hesitacao = lidos[i].hesitacao;
+    const { igual, tentativa, juntaEsperados, repete } = porLido[i];
     for (let j = m; j >= 0; j--) {
+      const c = i * m + j;
+      const aqui = i * L + j;
+      const diagonal = aqui + L + 1;
+      const dentro = j < m;
+      const casa = dentro && igual[j] === 1;
+      const juntaL = dentro && juntaLidos[c] === 1;
+      const juntaE = dentro && juntaEsperados[j] === 1;
+      const repeticao = repete[j] === 1;
+      const tenta = dentro && tentativa[j] === 1;
+      const custoExtra = repeticao ? EDICAO - REPETICAO : EDICAO;
+      const aposSalto = dentro && inicioDeFrase[j] ? estados - 1 : primeiroFinal - 1;
       for (let s = 0; s < estados; s++) {
+        const extraPermitido = hesitacao || s === 0 || (s >= 2 && repeticao) || tenta;
+        if (s >= 2 && !casa && !juntaL && !juntaE && !extraPermitido) {
+          V[s][aqui] = Infinity;
+          continue;
+        }
         let melhor = Infinity;
-        for (const mv of movimentos(s, i, j)) melhor = Math.min(melhor, mv.custo + valor(mv.proximo, i + mv.di, j + mv.dj));
-        V[s][i * largura + j] = melhor;
+        let mov = 0;
+        let prox = 0;
+        let v: number;
+        const px = s === 1 ? aposSalto : depois[s];
+        const Vp = V[px];
+        if (casa && (v = -ACERTO + Vp[diagonal]) < melhor) { melhor = v; mov = 0; prox = px; }
+        if (juntaL && (v = -ACERTO + Vp[diagonal + L]) < melhor) { melhor = v; mov = 1; prox = px; }
+        if (juntaE && (v = -2 * ACERTO + Vp[diagonal + 1]) < melhor) { melhor = v; mov = 2; prox = px; }
+        if (dentro && s === 0 && !casa && (v = EDICAO + V[0][diagonal]) < melhor) { melhor = v; mov = 3; prox = 0; }
+        if (extraPermitido && (v = (hesitacao ? 0 : custoExtra) + V[s][aqui + L]) < melhor) { melhor = v; mov = 4; prox = s; }
+        if (dentro && s === 0) {
+          if ((v = EDICAO + V[0][aqui + 1]) < melhor) { melhor = v; mov = 5; prox = 0; }
+          if ((v = EDICAO + V[1][aqui + 1]) < melhor) { melhor = v; mov = 5; prox = 1; }
+        }
+        if (dentro && s === 1 && (v = PULO_SEGUINTE + V[1][aqui + 1]) < melhor) { melhor = v; mov = 5; prox = 1; }
+        V[s][aqui] = melhor;
+        escolha[s * tamanho + aqui] = mov;
+        destino[s * tamanho + aqui] = prox;
       }
     }
   }
@@ -144,25 +208,21 @@ function caminho(lidos: Token[], esperados: string[], idioma: Idioma): Passo[] {
   let j = 0;
   let s = 0;
   while (i < n) {
-    const atual = valor(s, i, j);
-    const mv = movimentos(s, i, j).find((x) => x.custo + valor(x.proximo, i + x.di, j + x.dj) === atual)!;
-    passos.push({ tipo: mv.tipo, i, j, di: mv.di, dj: mv.dj });
-    i += mv.di;
-    j += mv.dj;
-    s = mv.proximo;
+    const k = s * tamanho + i * L + j;
+    const [tipo, di, dj] = MOVIMENTOS[escolha[k]];
+    passos.push({ tipo, i, j, di, dj });
+    s = destino[k];
+    i += di;
+    j += dj;
   }
   return passos;
 }
 
-export function alinhar(corpo: string, palavras: PalavraLida[], idioma: Idioma): Resultado {
-  const originais = pedacos(corpo);
-  const esperados = originais.map(normalizar);
-  const lidos = lerTokens(palavras, idioma);
-  const passos = caminho(lidos, esperados, idioma).filter((p) => !(p.tipo === "extra" && lidos[p.i].hesitacao));
+function montar(lidos: Token[], originais: string[], esperados: string[], idioma: Idioma) {
+  const passos = caminho(lidos, originais, esperados, idioma).filter((p) => !(p.tipo === "extra" && lidos[p.i].hesitacao));
 
   const falados = passos.flatMap((p) => (p.tipo === "pulo" ? [] : lidos.slice(p.i, p.i + p.di)));
   falados.forEach((t, k) => (t.pausa = k > 0 && t.inicio - falados[k - 1].fim > PAUSA_MS));
-  const partida = falados[0]?.inicio ?? 0;
 
   const itens: ItemTexto[] = originais.map((esperada, indice) => ({ indice, esperada, marca: "nao_lida" }));
   const extras: Extra[] = [];
@@ -209,10 +269,27 @@ export function alinhar(corpo: string, palavras: PalavraLida[], idioma: Idioma):
     extras.push({ texto: t.texto, inicio: t.inicio, fim: t.fim, tipo: naJanela(t.norm, p.j, esperados) ? "repeticao" : "insercao" });
   });
 
+  const alinhados = itens.filter((i) => i.inicio !== undefined);
+  if (alinhados.length) alinhados[0].hesitacao = false;
+  return { itens, extras, alinhados };
+}
+
+export function alinhar(corpo: string, palavras: PalavraLida[], idioma: Idioma): Resultado {
+  const originais = pedacos(corpo);
+  const esperados = originais.map(normalizar);
+  const tokens = lerTokens(palavras, idioma);
+  let r = montar(tokens, originais, esperados, idioma);
+  if (r.alinhados.length) {
+    const limite = r.alinhados[0].inicio! + LIMITE_MS;
+    if (tokens.some((t) => t.inicio >= limite)) r = montar(tokens.filter((t) => t.inicio < limite), originais, esperados, idioma);
+  }
+  const { itens, extras, alinhados } = r;
+
   const conta = (...marcas: Marca[]) => itens.filter((i) => marcas.includes(i.marca)).length;
   const corretas = conta("correta", "autocorrecao");
   const erros = conta("trocada", "pulada");
-  const fins = itens.filter((i) => i.fim !== undefined).map((i) => i.fim!);
-  const segundos = fins.length ? Math.max(1, Math.min(60, Math.round(Math.max(...fins) - partida) / 1000)) : 1;
+  const segundos = alinhados.length
+    ? Math.max(1, Math.min(60, Math.round(Math.max(...alinhados.map((i) => i.fim!)) - alinhados[0].inicio!) / 1000))
+    : 1;
   return { itens, extras, corretas, erros, lidas: corretas + erros, segundos, pcpm: Math.round((corretas * 60) / segundos) };
 }
