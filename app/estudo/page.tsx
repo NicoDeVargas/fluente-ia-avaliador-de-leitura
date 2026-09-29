@@ -30,20 +30,18 @@ export default async function Estudo({ searchParams }: PageProps<"/estudo">) {
   const idioma = idiomaDe(lang);
   const t = textos[idioma];
   const e = t.estudo;
-  const [linhas, [{ leitores }], porNivel, roteirizadas] = await Promise.all([
-    sql<Linha[]>`
+  const linhas = await sql<Linha[]>`
       select texto_id, idioma, corretas, contagem_manual from leituras
-      where contagem_manual is not null and lower(trim(apelido)) <> 'teste' order by criada_em`,
-    sql<{ leitores: number }[]>`
+      where contagem_manual is not null and lower(trim(apelido)) <> 'teste' order by criada_em`;
+  const [{ leitores }] = await sql<{ leitores: number }[]>`
       select count(distinct lower(trim(apelido)))::int as leitores from leituras
-      where contagem_manual is not null and lower(trim(apelido)) <> 'teste'`,
-    sql<{ nivel: Nivel; n: number }[]>`
+      where contagem_manual is not null and lower(trim(apelido)) <> 'teste'`;
+  const porNivel = await sql<{ nivel: Nivel; n: number }[]>`
       select nivel, count(*)::int as n from leituras
-      where nivel is not null and lower(trim(apelido)) <> 'teste' group by nivel`,
-    sql<LinhaRoteiro[]>`
+      where nivel is not null and lower(trim(apelido)) <> 'teste' group by nivel`;
+  const roteirizadas = await sql<LinhaRoteiro[]>`
       select apelido, roteiro, gabarito, alinhamento from leituras
-      where roteiro is not null and gabarito is not null and lower(trim(apelido)) <> 'teste' order by criada_em`,
-  ]);
+      where roteiro is not null and gabarito is not null and lower(trim(apelido)) <> 'teste' order by criada_em`;
   const numero = (x: number, casas: number) => x.toLocaleString(t.locale, { minimumFractionDigits: casas, maximumFractionDigits: casas });
   const resumo = resumirRoteiros(roteirizadas.map((l) => ({ leitor: l.apelido, roteiro: l.roteiro, gabarito: l.gabarito, resultado: l.alinhamento })));
   const pct = (x: number | null) => (x === null ? "-" : `${Math.round(x * 100)}%`);
