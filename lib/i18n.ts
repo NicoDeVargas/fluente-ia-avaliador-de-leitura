@@ -1,4 +1,5 @@
 import type { Motivo, Nivel } from "@/lib/classificacao";
+import type { Deteccao, TipoInstrucao } from "@/lib/roteiro";
 
 export type Idioma = "en" | "pt";
 
@@ -66,6 +67,18 @@ const en = {
     dica: "One minute. Tap Done if the reader finishes early.",
     atrasado: "Started late? Keep reading. We count 60 s from your first word.",
     falhaGravacao: "The recording stopped unexpectedly. Please try again.",
+    roteiro: {
+      ativar: "Scripted mode (adult test)",
+      ajuda: "Read normally, but follow each tag above the text: say the given word, skip the phrase, repeat, start wrong and fix it, or sound out syllables.",
+      outro: "Another script",
+      etiqueta: {
+        troca: (w: string) => `say: ${w}`,
+        pula: () => "skip",
+        repete: () => "repeat",
+        autocorrecao: (w: string) => `start with: ${w}…`,
+        silaba: () => "syllables",
+      } as Record<TipoInstrucao, (w: string) => string>,
+    },
   },
   resultado: {
     titulo: "Result",
@@ -128,6 +141,18 @@ const en = {
     outroTexto: "Choose another text",
     lerDeNovo: "Read again",
     naoEncontrada: "This reading doesn't exist or was removed.",
+    roteiro: {
+      titulo: "Script vs. app",
+      ajuda: "Each scripted error and whether the app marked it as the script expects. The answer key counts every word up to where the app says the reading stopped.",
+      tipos: { troca: "Say another word", pula: "Skip a phrase", repete: "Repeat", autocorrecao: "Start wrong, then fix", silaba: "Sound out syllables" } as Record<TipoInstrucao, string>,
+      esperado: { troca: "misread", pula: "skipped", repete: "repetition, word correct", autocorrecao: "correct", silaba: "read syllable by syllable" } as Record<TipoInstrucao, string>,
+      deteccao: { detectada: "detected", nao_detectada: "missed", nao_alcancada: "not reached" } as Record<Deteccao, string>,
+      esperadoRotulo: "expected",
+      gabarito: "Answer key",
+      app: "App",
+      corretas: "correct",
+      erros: "errors",
+    },
   },
   estudo: {
     titulo: "How close is the app to a human count?",
@@ -156,6 +181,20 @@ const en = {
     voltar: "Try a reading",
     niveis: "Reader profiles",
     niveisAjuda: "How the readings were classified, counting only readings made since profiles were added.",
+    roteiro: {
+      titulo: "Scripted readings with real human voices",
+      intro: "Adults read aloud while following randomly generated errors, so the answer key is known without a listener. The one number taken from the app is where the reading stopped.",
+      vazio: "No scripted readings yet.",
+      leituras: "readings",
+      leitores: "readers",
+      diferenca: "mean |app correct − key|, in words",
+      dentro1: "within 1 word of the key",
+      dentro3: "within 3 words of the key",
+      precisao: "error precision, by word",
+      revocacao: "error recall, by word",
+      deteccao: "Detection by instruction type",
+      silabadasFora: (n: number) => `${n} words marked as read syllable by syllable outside the script`,
+    },
   },
   sorteio: {
     comecar: "Start",
@@ -226,6 +265,18 @@ const pt: Dicionario = {
     dica: "Um minuto. Toque em Terminei se a leitura acabar antes.",
     atrasado: "Começou atrasado? Continue lendo. Contamos 60 s a partir da primeira palavra.",
     falhaGravacao: "A gravação parou de repente. Tente de novo, por favor.",
+    roteiro: {
+      ativar: "Modo roteiro (teste com adultos)",
+      ajuda: "Leia normalmente, mas siga cada etiqueta acima do texto: diga a palavra indicada, pule o trecho, repita, comece errado e corrija, ou silabe.",
+      outro: "Outro roteiro",
+      etiqueta: {
+        troca: (w: string) => `diga: ${w}`,
+        pula: () => "pule",
+        repete: () => "repita",
+        autocorrecao: (w: string) => `comece com: ${w}…`,
+        silaba: () => "silabe",
+      },
+    },
   },
   resultado: {
     titulo: "Resultado",
@@ -288,6 +339,18 @@ const pt: Dicionario = {
     outroTexto: "Escolher outro texto",
     lerDeNovo: "Ler de novo",
     naoEncontrada: "Esta leitura não existe ou foi removida.",
+    roteiro: {
+      titulo: "Roteiro vs. app",
+      ajuda: "Cada erro do roteiro e se o app o marcou como o roteiro espera. O gabarito conta todas as palavras até onde o app diz que a leitura parou.",
+      tipos: { troca: "Dizer outra palavra", pula: "Pular um trecho", repete: "Repetir", autocorrecao: "Começar errado e corrigir", silaba: "Silabar" },
+      esperado: { troca: "trocada", pula: "pulada", repete: "repetição, palavra correta", autocorrecao: "correta", silaba: "lida silabando" },
+      deteccao: { detectada: "detectado", nao_detectada: "não detectado", nao_alcancada: "não alcançado" },
+      esperadoRotulo: "esperado",
+      gabarito: "Gabarito",
+      app: "App",
+      corretas: "corretas",
+      erros: "erros",
+    },
   },
   estudo: {
     titulo: "Quão perto o app chega da contagem humana?",
@@ -316,6 +379,20 @@ const pt: Dicionario = {
     voltar: "Fazer uma leitura",
     niveis: "Perfis de leitor",
     niveisAjuda: "Como as leituras foram classificadas, contando só as feitas depois que os perfis foram criados.",
+    roteiro: {
+      titulo: "Leituras roteirizadas com voz humana",
+      intro: "Adultos leem em voz alta seguindo erros sorteados, então o gabarito é conhecido sem ninguém ouvir. O único número tirado do app é onde a leitura parou.",
+      vazio: "Ainda não há leituras roteirizadas.",
+      leituras: "leituras",
+      leitores: "leitores",
+      diferenca: "|corretas do app − gabarito| médio, em palavras",
+      dentro1: "até 1 palavra do gabarito",
+      dentro3: "até 3 palavras do gabarito",
+      precisao: "precisão dos erros, por palavra",
+      revocacao: "revocação dos erros, por palavra",
+      deteccao: "Detecção por tipo de instrução",
+      silabadasFora: (n: number) => `${n} palavras marcadas como silabadas fora do roteiro`,
+    },
   },
   sorteio: {
     comecar: "Começar",

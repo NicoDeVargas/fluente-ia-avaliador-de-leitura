@@ -6,6 +6,8 @@ import { TEXTOS } from "@/lib/textos";
 import { sql } from "@/lib/db";
 import { diferencaMediaAbsoluta, fracaoDentro, pearson } from "@/lib/estatistica";
 import { NIVEIS, type Nivel } from "@/lib/classificacao";
+import type { Resultado } from "@/lib/alinhar";
+import { TIPOS_INSTRUCAO, resumirRoteiros, type Gabarito, type Instrucao } from "@/lib/roteiro";
 
 export const dynamic = "force-dynamic";
 
@@ -16,12 +18,19 @@ interface Linha {
   contagem_manual: number;
 }
 
+interface LinhaRoteiro {
+  apelido: string;
+  roteiro: Instrucao[];
+  gabarito: Gabarito;
+  alinhamento: Resultado;
+}
+
 export default async function Estudo({ searchParams }: PageProps<"/estudo">) {
   const { lang } = await searchParams;
   const idioma = idiomaDe(lang);
   const t = textos[idioma];
   const e = t.estudo;
-  const [linhas, [{ leitores }], porNivel] = await Promise.all([
+  const [linhas, [{ leitores }], porNivel, roteirizadas] = await Promise.all([
     sql<Linha[]>`
       select texto_id, idioma, corretas, contagem_manual from leituras
       where contagem_manual is not null and lower(trim(apelido)) <> 'teste' order by criada_em`,
@@ -31,11 +40,25 @@ export default async function Estudo({ searchParams }: PageProps<"/estudo">) {
     sql<{ nivel: Nivel; n: number }[]>`
       select nivel, count(*)::int as n from leituras
       where nivel is not null and lower(trim(apelido)) <> 'teste' group by nivel`,
+    sql<LinhaRoteiro[]>`
+      select apelido, roteiro, gabarito, alinhamento from leituras
+      where roteiro is not null and gabarito is not null and lower(trim(apelido)) <> 'teste' order by criada_em`,
   ]);
+  const numero = (x: number, casas: number) => x.toLocaleString(t.locale, { minimumFractionDigits: casas, maximumFractionDigits: casas });
+  const resumo = resumirRoteiros(roteirizadas.map((l) => ({ leitor: l.apelido, roteiro: l.roteiro, gabarito: l.gabarito, resultado: l.alinhamento })));
+  const pct = (x: number | null) => (x === null ? "-" : `${Math.round(x * 100)}%`);
+  const destaquesRoteiro = [
+    { valor: String(resumo.n), rotulo: e.roteiro.leituras },
+    { valor: String(resumo.leitores), rotulo: e.roteiro.leitores },
+    { valor: resumo.diferenca === null ? "-" : numero(resumo.diferenca, 1), rotulo: e.roteiro.diferenca },
+    { valor: pct(resumo.dentro1), rotulo: e.roteiro.dentro1 },
+    { valor: pct(resumo.dentro3), rotulo: e.roteiro.dentro3 },
+    { valor: pct(resumo.precisao), rotulo: e.roteiro.precisao },
+    { valor: pct(resumo.revocacao), rotulo: e.roteiro.revocacao },
+  ];
   const totalNiveis = porNivel.reduce((s, x) => s + x.n, 0);
   const contaNivel = (nivel: Nivel) => porNivel.find((x) => x.nivel === nivel)?.n ?? 0;
   const pares = linhas.map((l) => ({ app: l.corretas, humano: l.contagem_manual }));
-  const numero = (x: number, casas: number) => x.toLocaleString(t.locale, { minimumFractionDigits: casas, maximumFractionDigits: casas });
   const dif = diferencaMediaAbsoluta(pares);
   const dentro = fracaoDentro(pares, 3);
   const r = pearson(pares);
@@ -146,6 +169,45 @@ export default async function Estudo({ searchParams }: PageProps<"/estudo">) {
             </ul>
           </section>
         )}
+
+        <section aria-labelledby="roteirizadas" className="mt-14">
+          <h2 id="roteirizadas" className="font-display text-xl font-semibold tracking-tight">
+            {e.roteiro.titulo}
+          </h2>
+          <p className="mt-1 max-w-[62ch] text-sm leading-relaxed text-suave">{e.roteiro.intro}</p>
+          {resumo.n === 0 ? (
+            <p className="mt-4 rounded-2xl border border-dashed border-linha px-5 py-6">{e.roteiro.vazio}</p>
+          ) : (
+            <>
+              <dl className="mt-6 grid grid-cols-2 gap-x-6 gap-y-8 border-y border-linha py-8 sm:grid-cols-4 lg:grid-cols-7">
+                {destaquesRoteiro.map((d) => (
+                  <div key={d.rotulo} className="flex flex-col-reverse justify-end gap-2">
+                    <dt className="text-sm leading-snug text-suave">{d.rotulo}</dt>
+                    <dd className="font-display text-3xl font-semibold tracking-tight tabular-nums sm:text-4xl">{d.valor}</dd>
+                  </div>
+                ))}
+              </dl>
+              <h3 className="mt-8 text-sm font-semibold text-suave">{e.roteiro.deteccao}</h3>
+              <ul className="mt-3 flex max-w-2xl flex-col gap-2">
+                {TIPOS_INSTRUCAO.map((tipo) => {
+                  const { detectadas, total } = resumo.porTipo[tipo];
+                  return (
+                    <li key={tipo} className="grid grid-cols-[minmax(0,12rem)_minmax(0,1fr)_4.5rem] items-center gap-3 text-sm">
+                      <span>{t.resultado.roteiro.tipos[tipo]}</span>
+                      <span className="h-2 rounded-full bg-linha">
+                        <span className="block h-2 rounded-full bg-acento" style={{ width: `${total ? (detectadas / total) * 100 : 0}%` }} />
+                      </span>
+                      <span className="text-right font-semibold tabular-nums">
+                        {detectadas}/{total}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+              <p className="mt-3 text-sm text-suave">{e.roteiro.silabadasFora(resumo.silabadasForaDoRoteiro)}</p>
+            </>
+          )}
+        </section>
 
         <div className="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-16">
           <section aria-labelledby="metodo">

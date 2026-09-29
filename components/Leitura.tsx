@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Microphone, PencilSimple, Stop } from "@phosphor-icons/react";
+import { ArrowLeft, ArrowsClockwise, Microphone, PencilSimple, Stop } from "@phosphor-icons/react";
 import type { Resultado as TResultado } from "@/lib/alinhar";
 import { sufixo, textos, type Idioma } from "@/lib/i18n";
 import { gravacao } from "@/lib/i18n-gravacao";
@@ -10,6 +10,8 @@ import { salvarLeitor, useLeitor } from "@/lib/leitor";
 import { Aviso, campo, primario, secundario } from "@/components/ui";
 import { Resultado } from "@/components/Resultado";
 import { OutroTexto } from "@/components/OutroTexto";
+import { segmentar } from "@/lib/segmentos";
+import { gerarRoteiro, type Instrucao } from "@/lib/roteiro";
 
 const DURACAO = 60000;
 const MARGEM_FALA = 500;
@@ -44,6 +46,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
   const g = gravacao[idioma];
   const leitor = useLeitor();
   const [editando, setEditando] = useState(false);
+  const [roteiro, setRoteiro] = useState<Instrucao[] | null>(null);
   const [fase, setFase] = useState<Fase>("pronto");
   const [erro, setErro] = useState<Erro | null>(null);
   const [decorrido, setDecorrido] = useState(0);
@@ -92,6 +95,7 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
     forma.append("apelido", leitor.apelido);
     forma.append("ano", String(leitor.ano));
     forma.append("idioma", idiomaTexto);
+    if (roteiro) forma.append("roteiro", JSON.stringify(roteiro));
     const resposta = await fetch("/api/leituras", {
       method: "POST",
       body: forma,
@@ -297,11 +301,13 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
           contagemInicial={null}
           audioUrl={audio?.url}
           onLerDeNovo={lerDeNovo}
+          roteiro={roteiro}
         />
       </div>
     );
   }
 
+  const novoRoteiro = () => gerarRoteiro(corpo, idiomaTexto, anoTexto, Math.random);
   const restante = Math.max(0, Math.ceil((DURACAO - decorrido) / 1000));
   const ocupado = fase === "escutando" || fase === "gravando" || fase === "analisando" || fase === "pedindo";
 
@@ -349,13 +355,36 @@ export function Leitura({ idioma, textoId, titulo, corpo, anoTexto, idiomaTexto 
           <span lang={idiomaTexto}>{titulo}</span>
         </p>
         <p className="mt-1 max-w-[62ch] text-sm leading-relaxed text-suave">{l.instrucao}</p>
+        {!ocupado && (
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+            <label className="inline-flex min-h-11 cursor-pointer items-center gap-2.5 text-sm font-semibold">
+              <input
+                type="checkbox"
+                checked={!!roteiro}
+                onChange={(e) => setRoteiro(e.target.checked ? novoRoteiro() : null)}
+                className="size-5 accent-[var(--acento)]"
+              />
+              {l.roteiro.ativar}
+            </label>
+            {roteiro && (
+              <button type="button" onClick={() => setRoteiro(novoRoteiro())} className={`${secundario} min-h-11 px-4 py-2 text-sm`}>
+                <ArrowsClockwise size={16} weight="bold" aria-hidden />
+                {l.roteiro.outro}
+              </button>
+            )}
+          </div>
+        )}
+        {roteiro && <p className="mt-2 max-w-[62ch] text-sm leading-relaxed">{l.roteiro.ajuda}</p>}
       </div>
 
       <article
         className={`folha rounded-2xl border px-5 py-8 transition-colors sm:px-12 sm:py-12 ${fase === "gravando" || fase === "escutando" ? "border-acento/50" : "border-linha"}`}
       >
-        <p lang={idiomaTexto} className="max-w-[32ch] text-[1.6rem] leading-[1.85] tracking-[0.005em] sm:text-[2.1rem] sm:leading-[1.8]">
-          {corpo}
+        <p
+          lang={idiomaTexto}
+          className={`max-w-[32ch] text-[1.6rem] tracking-[0.005em] sm:text-[2.1rem] ${roteiro ? "leading-[2.5] sm:leading-[2.3]" : "leading-[1.85] sm:leading-[1.8]"}`}
+        >
+          {roteiro ? <TextoRoteiro corpo={corpo} roteiro={roteiro} etiqueta={l.roteiro.etiqueta} /> : corpo}
         </p>
       </article>
 
@@ -488,4 +517,34 @@ function FormLeitor({ idioma, anoPadrao, apelidoPadrao, onPronto }: { idioma: Id
       </button>
     </form>
   );
+}
+
+function TextoRoteiro({ corpo, roteiro, etiqueta }: { corpo: string; roteiro: Instrucao[]; etiqueta: Record<Instrucao["tipo"], (w: string) => string> }) {
+  const segmentos = segmentar(corpo);
+  const saida: React.ReactNode[] = [];
+  for (let k = 0; k < segmentos.length; k++) {
+    const s = segmentos[k];
+    const instrucao = s.tipo === "palavra" ? roteiro.find((i) => i.indice === s.indice) : undefined;
+    if (!instrucao) {
+      saida.push(<Fragment key={k}>{s.tipo === "resto" ? s.texto : s.antes + s.nucleo + s.depois}</Fragment>);
+      continue;
+    }
+    let trecho = "";
+    let j = k;
+    for (; j < segmentos.length; j++) {
+      const x = segmentos[j];
+      trecho += x.tipo === "resto" ? x.texto : x.antes + x.nucleo + x.depois;
+      if (x.tipo === "palavra" && x.indice >= instrucao.fim) break;
+    }
+    k = j;
+    saida.push(
+      <ruby key={k} className="[ruby-align:center]">
+        <mark className="rounded-md bg-pausa-suave px-1 text-tinta shadow-[inset_0_-3px_0_var(--pausa)]">{trecho}</mark>
+        <rp>(</rp>
+        <rt className="pb-0.5 font-sans text-[0.55em] font-bold tracking-normal text-pausa">{etiqueta[instrucao.tipo](instrucao.dizer ?? "")}</rt>
+        <rp>)</rp>
+      </ruby>,
+    );
+  }
+  return <>{saida}</>;
 }

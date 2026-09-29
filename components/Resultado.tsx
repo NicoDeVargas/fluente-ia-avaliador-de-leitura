@@ -23,6 +23,8 @@ import { NIVEIS, classificar } from "@/lib/classificacao";
 import { REFERENCIA_PCPM } from "@/lib/referencias";
 import { sufixo, textos, type Idioma } from "@/lib/i18n";
 import { campo, primario, secundario } from "@/components/ui";
+import { PainelRoteiro } from "@/components/PainelRoteiro";
+import type { Instrucao } from "@/lib/roteiro";
 
 interface Props {
   idioma: Idioma;
@@ -37,6 +39,7 @@ interface Props {
   contagemInicial: number | null;
   audioUrl?: string;
   onLerDeNovo?: () => void;
+  roteiro?: Instrucao[] | null;
 }
 
 const limpo = (s: string) => s.replace(/[^\p{L}\p{N}\s'-]/gu, "");
@@ -90,7 +93,7 @@ function Escala({ pcpm, referencia, rotuloRef }: { pcpm: number; referencia: num
 }
 
 export function Resultado(props: Props) {
-  const { idioma, id, textoId, titulo, corpo, idiomaTexto, apelido, ano, resultado, audioUrl, onLerDeNovo } = props;
+  const { idioma, id, textoId, titulo, corpo, idiomaTexto, apelido, ano, resultado, audioUrl, onLerDeNovo, roteiro } = props;
   const t = textos[idioma];
   const r = t.resultado;
   const audio = useRef<HTMLAudioElement>(null);
@@ -324,6 +327,8 @@ export function Resultado(props: Props) {
           )}
         </div>
       </section>
+
+      {roteiro && roteiro.length > 0 && <PainelRoteiro idioma={idioma} idiomaTexto={idiomaTexto} corpo={corpo} roteiro={roteiro} resultado={resultado} />}
 
       <section aria-labelledby="texto-marcado">
         <div className="flex flex-wrap items-end justify-between gap-4">

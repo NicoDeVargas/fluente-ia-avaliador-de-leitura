@@ -6,6 +6,7 @@ import { idiomaDe, sufixo, textos } from "@/lib/i18n";
 import { TEXTOS } from "@/lib/textos";
 import { sql } from "@/lib/db";
 import type { Resultado as TResultado } from "@/lib/alinhar";
+import type { Instrucao } from "@/lib/roteiro";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,7 @@ interface Linha {
   ano: number;
   alinhamento: TResultado;
   contagem_manual: number | null;
+  roteiro: Instrucao[] | null;
 }
 
 export default async function Leitura({ params, searchParams }: PageProps<"/leitura/[id]">) {
@@ -25,7 +27,7 @@ export default async function Leitura({ params, searchParams }: PageProps<"/leit
   const idioma = idiomaDe(lang);
   const t = textos[idioma];
   if (!UUID.test(id)) notFound();
-  const [linha] = await sql<Linha[]>`select idioma, texto_id, apelido, ano, alinhamento, contagem_manual from leituras where id = ${id}`;
+  const [linha] = await sql<Linha[]>`select idioma, texto_id, apelido, ano, alinhamento, contagem_manual, roteiro from leituras where id = ${id}`;
   const texto = linha && TEXTOS.find((x) => x.id === linha.texto_id && x.idioma === linha.idioma);
 
   return (
@@ -46,6 +48,7 @@ export default async function Leitura({ params, searchParams }: PageProps<"/leit
             ano={linha.ano}
             resultado={linha.alinhamento}
             contagemInicial={linha.contagem_manual}
+            roteiro={linha.roteiro}
           />
         ) : (
           <div className="flex flex-col items-start gap-5">

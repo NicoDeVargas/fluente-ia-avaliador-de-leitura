@@ -20,3 +20,4 @@ create index if not exists leituras_criada_em on leituras (criada_em);
 create index if not exists leituras_ip_hash on leituras (ip_hash, criada_em);
 
 alter table leituras add column if not exists silabadas int, add column if not exists nivel text;
+alter table leituras add column if not exists roteiro jsonb, add column if not exists gabarito jsonb;
